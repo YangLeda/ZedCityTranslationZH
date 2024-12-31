@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -24,6 +24,7 @@ const dictStronghold = {
     gym: "健身房",
     "Train your stats to become more effective in combat": "锻炼属性在战斗中变得更强",
     train: "锻炼",
+    "The damage you make on impact": "命中时造成的伤害",
 };
 
 const dictAll = { ...dictCommon, ...dictStronghold };
