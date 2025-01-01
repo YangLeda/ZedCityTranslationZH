@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.6
+// @version      3.7
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -477,11 +477,11 @@
             "把这当作你的入门任务。清理掉一些那些行尸走肉，感受一下现在的局势。坚持下来，我们再看看你是否有能力走得更远。祝你好运——你会需要它的。",
         "Objective: Hunt a zed in the Arcade (Darkened Restrooms": "目标：在游戏厅（昏暗的洗手间）狩猎一只僵尸",
         Progress: "进度",
-        Myena: "迈耶娜",
+        Myena: "Myena",
         "You walk into a dark alley surrounded by street lamps on either side, hanging down from the street lamps is a spaghetti mess of entangled wires attached to powered bug zappers providing little light to the alley along with the faint buzzing noise of the power circulating around. The intrigue of other humans possibly surviving here draws you in, until you notice the hidden shadow of a slender woman sat against the walls of the alleyway. The shadowy figure begins to become clear as she lifts to her to look you up and down":
             "你走进一条黑暗的巷子，街灯两旁被杂乱的电线缠绕着，电击器发出的微弱光线照亮着巷道，同时伴随着电力流动时的嗡嗡声。你开始对这里可能还有其他幸存者产生兴趣，直到你注意到巷子墙角隐藏的身影，一位瘦削的女人坐在那里。她抬头看你，逐渐显现出她的模样。",
         "Another survivor eh? … It’s been a while since I’ve seen someone new around here. You must have got into the city just recently, I’m Myena - a ‘nightwalker’ of sorts, trading in information, scouting different locations and just generally surviving this forsaken wasteland":
-            "另一个幸存者，嗯？……我很久没见到新面孔了。你应该是最近才进城的，我是迈耶娜——某种意义上的‘夜行者’，交易信息、侦察不同的地点，反正就是在这个被遗弃的废土上生存。",
+            "另一个幸存者，嗯？……我很久没见到新面孔了。你应该是最近才进城的，我是Myena——某种意义上的‘夜行者’，交易信息、侦察不同的地点，反正就是在这个被遗弃的废土上生存。",
         "You stare for a moment waiting to see if you can offer anything in exchange for something of value":
             "你凝视着她，等待着看看自己是否能用什么交换一些有价值的东西。",
         "So, wanna make yourself useful? I need some fuel to help start fixing up my bike. Just a little will do. If you can go find some for me, I'll let you in on some valuable information. So what'ya say":
@@ -1009,7 +1009,7 @@
             "现在你已经制作了一根棒球棒，是时候好好利用它了。回到游戏厅，清除更多的僵尸。它们仍然四处爬行，但有了你的新武器，你清除它们的机会会大得多",
         "Just remember: Always go equipped. The more prepared you are, the better your chances of making it out in one piece. Good luck":
             "记住：永远要做好装备准备。你准备得越充分，全身而退的机会就越大。祝你好运",
-        "Objective: Kill 2 zeds in the Arcade (Darkened Restrooms": "目标：在游戏厅（黑暗洗手间）杀死2个僵尸",
+        "Objective: Kill 2 zeds in the Arcade (Darkened Restrooms": "目标：在游戏厅（昏暗的洗手间）杀死2个僵尸",
         INJURED: "受伤",
         "Fight Outcome": "战斗结果",
         "You are injured for": "你受伤",
@@ -1028,7 +1028,7 @@
             "是的，用武器击倒僵尸容易多了，但不要太沉迷于战斗。我需要你暂停狩猎，前往废料场。那里散落着废料——金属、零件，以及任何你能找到的东西",
         "Search the area and bring back any scrap you can collect. It’s all useful, and you’re gonna need it for what’s coming next":
             "搜索该区域，带回任何你能收集到的废料。这些都很有用，你将需要它们来应对接下来的挑战",
-        "Objective: Scavenge the scrapyard 3x": "目标：在废料场搜寻3次",
+        "Objective: Scavenge the scrapyard 3x": "目标：在废品场搜寻3次",
         "Every piece of scrap metal you find can be more than just useful—it can be your ticket to survival and even a way to make a living. Melt it down into nails for building, forge it into weapons, or trade it for cash to get what you need":
             "你找到的每一块废金属不仅仅是有用——它可以是你生存的关键，甚至是谋生的方式。将它熔炼成建筑用的钉子，锻造成武器，或者用来交易换取你需要的东西",
         "Head back to your Stronghold and build a Furnace. With it, you’ll be able to refine all that scrap into something valuable, whether you're crafting or trading to keep yourself going":
@@ -1263,7 +1263,7 @@
         "Things still not working, guess I'll be looking at the sparkies next then. Alright listen, Garbo is just around the corner from here. Has a workshop setup on top of the bridge. And hey, when you get back here, maybe could you bring me a water? I'm melting from all this work on the bike and that sure would wet my lips, if you know what I mean":
             "东西还是不能用，看来我接下来要检查火花塞了。好了听着，Garbo就在这附近。他在桥顶上建了一个作坊。对了，当你回来时，能不能给我带瓶水？修这辆摩托车让我快热化了，喝点水就能解渴了，你懂我的意思吧。",
         "Objective: Visit Garbo and Get Water": "目标：拜访Garbo并带回水",
-        "Garbo's Junkyard": "Garbo的废品场",
+        "Garbo's Junkyard": "Garbo的垃圾场",
         "Shady part of the City where we might find a blacksmith": "城市里一个阴暗的角落，我们可能会在那里找到一个铁匠。",
         "Upgrade Luck": "提升幸运值",
         "Luck Perk": "幸运技能",
