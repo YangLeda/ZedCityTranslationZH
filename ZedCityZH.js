@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.2
+// @version      3.3
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -1199,6 +1199,9 @@
         "You watch him walk away until he turns a corner and finally go back yourself as well, the empty alleyway still echoing with Gray's footsteps":
             "你看着他走到拐角处，直到他消失，你自己也回去了，空旷的巷子里依然回响着Gray的脚步声",
         "Objective: Procure a large number of vials and ash for Gray": "目标：为Gray获取大量瓶子和灰烬",
+        Offline: "离线",
+        "Offline for maintenance": "离线维护中",
+        Retry: "重试",
     };
 
     // 词典：待处理
