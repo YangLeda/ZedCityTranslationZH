@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.8
+// @version      3.9
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -11,10 +11,7 @@
 // ==/UserScript==
 
 (() => {
-    const logConfig_printUnmatchedTextToConsole = false;
     const unmatchedTexts = [];
-    const logConfig_saveUnmatchedTextToArray = true;
-    const logConfig_printUnmatchedTextArray = true;
 
     const excludes = ["K", "M", "B", "D", "H", "S", "Lv", "MAX", "wiki", "discord", "XP", "N/A", "x"];
 
@@ -1682,17 +1679,10 @@
             return dictAllLowerCase[text.toLowerCase()];
         } else {
             if (window.location.href.includes("www.zed.city") && !ignoreUnmatchDueToBeingPossiblePlayerID) {
-                if (logConfig_printUnmatchedTextToConsole) {
-                    console.log(text);
+                if (!unmatchedTexts.includes(text)) {
+                    unmatchedTexts.push(text);
                 }
-                if (logConfig_saveUnmatchedTextToArray) {
-                    if (!unmatchedTexts.includes(text)) {
-                        unmatchedTexts.push(text);
-                    }
-                }
-                if (logConfig_printUnmatchedTextArray) {
-                    console.log(unmatchedTexts);
-                }
+                console.log(unmatchedTexts);
             }
             return oriText;
         }
