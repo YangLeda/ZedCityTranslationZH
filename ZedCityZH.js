@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.4
+// @version      3.5
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -1232,6 +1232,58 @@
         "Sign in with Discord": "通过Discord登录",
         "Survivor Name": "幸存者名称",
         "Your Stronghold": "你的据点",
+        "Continue Playing": "继续游戏",
+        "Open Release is now live": "公开发布现已上线",
+        "We've been saying thank you left and right, so all that's left is this": "我们已经四处致谢，现在只剩下这一件事了",
+        "Welcome to Zed City, everyone, and we hope you enjoy the full release as much as we enjoyed bringing it to you":
+            "欢迎来到Zed City，我们希望你能像我们享受带来这款游戏一样，享受完整的发布内容。",
+        "This is the final reset, any progress you make from here will be persistent": "这是最终的重置，从现在开始，你的所有进度都会被保存。",
+        "Best of luck, Survivors": "祝你好运，幸存者们",
+        "Economy Changes": "经济变动",
+        "Value of most items changed by a factor of x": "大多数物品的价值变动了倍数 x",
+        "Most stronghold building upgrades now require cash": "大多数据点建筑升级现在需要现金。",
+        "Gym upgrade material costs changed": "健身房升级材料成本已更改。",
+        "Scrap restock in junk store adjusted": "废品店的补货已调整。",
+        "Faction creation now costs": "创建帮派现在需要花费",
+        "Character level required to create faction increased from 5 to": "创建派系所需的角色等级从5提升到",
+        Homepage: "主页",
+        "New homepage look": "全新的主页界面",
+        "Access codes no longer required": "不再需要邀请码。",
+        "Login with discord account now possible": "现在可以通过Discord账号登录。",
+        "Donator house temporarily offline": "捐赠者之家暂时下线。",
+        "You need to be level": "你需要达到等级",
+        "We thank you for taking part in alpha, your account has been reset and you have been awarded a special trophy for your help":
+            "感谢你参与Alpha测试，你的账号已被重置，并为你的帮助颁发了一座特殊奖杯。",
+        "Alpha Survivor": "Alpha测试幸存者",
+        "Wow you already got that fuel huh! You're a real useful type huh. Alright well look let me tell you a bit more about the city and the who's who around these parts":
+            "哇，你已经拿到那些燃料了？你真是个有用的人啊。好吧，让我跟你多讲讲这座城市和这里的那些人。",
+        "You sit down while watching Myena refilling her bikes petrol tank": "你坐下来，看着Myena为她的摩托车加满油箱。",
+        "So, I guess the first person you should go and see is Garbo. He's a real piece of work but if you got the parts then he's got the time":
+            "所以，我想你应该先去见见Garbo。他是个古怪的人，但如果你有零件，他就有时间。",
+        "Myena gives the bike a once over and tries the ignition": "Myena检查了一遍摩托车并尝试启动引擎。",
+        "Things still not working, guess I'll be looking at the sparkies next then. Alright listen, Garbo is just around the corner from here. Has a workshop setup on top of the bridge. And hey, when you get back here, maybe could you bring me a water? I'm melting from all this work on the bike and that sure would wet my lips, if you know what I mean":
+            "东西还是不能用，看来我接下来要检查火花塞了。好了听着，Garbo就在这附近。他在桥顶上建了一个作坊。对了，当你回来时，能不能给我带瓶水？修这辆摩托车让我快热化了，喝点水就能解渴了，你懂我的意思吧。",
+        "Objective: Visit Garbo and Get Water": "目标：拜访Garbo并带回水",
+        "Garbo's Junkyard": "Garbo的废品场",
+        "Shady part of the City where we might find a blacksmith": "城市里一个阴暗的角落，我们可能会在那里找到一个铁匠。",
+        "Upgrade Luck": "提升幸运值",
+        "Luck Perk": "幸运技能",
+        Garbo: "Garbo",
+        "A large man stands by a hand made metal forge and an anvil. He looks over his tools and equipment, handling different objects, picking them up inspecting quickly and then placing them back down again, fiddling with a random assort of items while speaking to himself in confused muddled sentences":
+            "一个大块头男人站在手工打造的金属炉和铁砧旁。他查看着自己的工具和设备，拿起不同的物品快速检查后再放回原位，一边摆弄着各种乱七八糟的物件，一边自言自语着一些混乱不清的句子。",
+        "Scrap? Metals? Titanium!!! Ohhhh titanium, I love titanium. Ohhhhh what I’d do to rub my fingers across some titanium. Oh. Huh. Oh, I see you. Come here, what have you got in your pockets":
+            "废料？金属？钛！！！哦，钛，我爱钛。哦，我多想摸摸钛。哦。嗯？哦，我看到你了。过来，你口袋里有什么？",
+        "He pulls you in and rifles through your pockets": "他把你拉过去，翻找你的口袋。",
+        "Oh no no no, all pretty useless. You’re not a very good hoarder are you": "哦，不不不，都是些没用的东西。你可不是个合格的囤货者，对吧。",
+        "He pushes you away in disinterest": "他失去兴趣地把你推开。",
+        "Come back when you've got something of value to me": "等你有对我有价值的东西再回来吧。",
+        "Objective: Provide iron bars": "目标：提供铁锭",
+        "Upgrade Morale": "提升士气",
+        "Upgrade Life": "提升生命值",
+        "Upgrade Strength": "提升力量",
+        "Upgrade Defense": "提升防御",
+        "Upgrade Speed": "提升速度",
+        "Upgrade Agility": "提升敏捷",
     };
 
     // 词典：待处理
