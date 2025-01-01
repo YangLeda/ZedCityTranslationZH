@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.0
+// @version      3.1
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -964,14 +964,14 @@
         "started an attack on": "开始攻击",
         Fists: "拳头",
         missed: "未击中",
-        "with their": "用他们的",
+        "with their": "用",
         "tried to bite": "试图咬",
         "but missed": "但未击中",
         hit: "击中",
         "and took": "并造成",
-        "used its teeth to bite": "用牙齿咬了",
+        "used its teeth to bite": "用牙齿咬",
         "Stop Auto": "停止自动攻击",
-        "was defeated by": "被击败给",
+        "was defeated by": "被击败于",
         Complete: "完成",
         "Objective Completed": "目标完成",
         "So, you made it out in one piece. Not bad—for a beginner. But don’t get cocky; that was just a Crawler, the easiest of the lot. Out here, there are things way nastier waiting to tear into you. If you want to survive, you’re going to need a lot more than luck":
@@ -1024,7 +1024,6 @@
         Use: "使用",
         "Consume Item": "消耗物品",
         "Are you sure you want to use this": "你确定要使用这个吗",
-        "You have ran out of Bandage": "你已经用完了绷带",
         "Medical Cooldown": "医疗冷却时间",
         "Yeah, it's a lot easier to take down zeds with a weapon, but don’t get too caught up in the fighting. I need you to take a break from the hunt and head over to the Scrapyard. There’s scrap scattered around in there—metal, parts, whatever you can find":
             "是的，用武器击倒僵尸容易多了，但不要太沉迷于战斗。我需要你暂停狩猎，前往废料场。那里散落着废料——金属、零件，以及任何你能找到的东西",
@@ -1129,6 +1128,25 @@
         Transceiver: "无线电收发器",
         "Donator Pack": "捐赠者礼包",
         "Role Updated": "角色已更新",
+        "Raging Bloater": "狂怒膨胀者",
+        "Weakness: Rifle": "弱点：步枪",
+        Equip: "装备",
+        "Equip Item": "装备物品",
+        "Are you sure you want to equip this": "你确定要装备这个吗",
+        "Item has been equipped": "物品已装备",
+        Unequip: "卸下",
+        Zombie: "僵尸",
+        Drink: "饮用",
+        "Raging Crawler": "狂怒爬行者",
+        "Frenzied Zombie": "狂暴僵尸",
+        "Weakness: Pistol": "弱点：手枪",
+        "Frenzied Spitter": "狂暴喷吐者",
+        "Weakness: Piercing": "弱点：穿刺",
+        "Are you sure you want to drink this": "你确定要喝这个吗",
+        "Booster Cooldown": "增强剂冷却时间",
+        "Unequip Item": "卸下物品",
+        "Are you sure you want to unequip this": "你确定要卸下这个吗",
+        "Item has been unequipped": "物品已卸下",
     };
 
     // 词典：待处理
@@ -1432,6 +1450,10 @@
         if (/^Build ([\w\s-']+)$/.test(text)) {
             let res = /^Build ([\w\s-']+)$/.exec(text);
             return "建造" + res[1];
+        }
+        if (/^You have ran out of ([\w\s-']+)!$/.test(text)) {
+            let res = /^You have ran out of ([\w\s-']+)!$/.exec(text);
+            return "你已经用完了" + res[1] + "！";
         }
 
         // 消除后面空格
