@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      2.0
+// @version      2.1
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
 // @icon         https://www.zed.city/favicon.ico
-// @grant        unsafeWindow
+// @grant        none
 // ==/UserScript==
 
 (() => {
@@ -27,7 +27,7 @@
         /[\u4e00-\u9fff]/,
     ];
 
-    // 词典：已人工审核过。建议先用ChatGPT翻译，然后人工审核。必须经过人工审核再加入此列表。
+    // 词典
     const dictCommon = {
         purge: "大清洗",
         stronghold: "据点",
@@ -70,7 +70,7 @@
         "Your ability to resist damage": "你抵抗伤害的能力",
         "The chance of hitting your target": "击中目标的概率",
         Raids: "突袭",
-        Activity: "活动",
+        Activity: "活动日志",
         Rank: "排名",
         Members: "成员",
         Respect: "声望",
@@ -267,7 +267,7 @@
         "Rad Immunity": "辐射免疫力",
         "Membership Expires": "会员到期",
         Notifications: "通知",
-        "No activity found": "无活动",
+        "No activity found": "无活动日志",
         am: "上午",
         "View Profile": "查看个人资料",
         Settings: "设置",
@@ -313,14 +313,14 @@
         "e-Cola": "原子可乐",
         "Booster (Easter": "增强剂（复活节）",
         Chocolate: "巧克力",
-        Eyebellini: "眼球贝利尼鸡尾酒",
+        Eyebellini: "眼球鸡尾酒",
         "Mixed Vegetables": "混合蔬菜",
         Pickaxe: "镐",
         "Wooden Fishing Rod": "木质钓鱼竿",
         Low: "低",
         "Buddys Pass": "伙伴通行证",
         Miscellaneous: "杂项",
-        "Generals RFID": "将军的射频识别卡",
+        "Generals RFID": "将军的射频ID",
         "Security Card": "安保卡",
         "Silver key": "银钥匙",
         "Take Item": "拿取物品",
@@ -374,7 +374,7 @@
         Raid: "袭击",
         "Team Size": "团队大小",
         "Raid a Farm": "袭击农场",
-        Setup: "设置",
+        Setup: "筹备",
         "Raid a Hospital": "袭击医院",
         "Manage Roles": "管理角色",
         Status: "状态",
@@ -384,8 +384,8 @@
         "Distilling Beer": "蒸馏啤酒",
         Distillers: "蒸馏器",
         pm: "下午",
-        "Set up Raid on Farm": "设置袭击农场",
-        "Are you sure you want to set up raid on farm?": "你确定要设置袭击农场吗",
+        "Set up Raid on Farm": "筹备袭击农场",
+        "Are you sure you want to set up raid on farm?": "你确定要筹备袭击农场吗",
         Team: "团队",
         Empty: "空",
         Join: "加入",
@@ -413,7 +413,7 @@
         "Farm Items": "耕作物品",
         "Distill Items": "蒸馏物品",
         "Complete Raid": "完成袭击",
-        "st January 2025 6PM": "2025年1月1日 6PM",
+        "st January 2025 6PM": "日1月2025年 6PM",
         "Hello to all the Survivors of Zed City! Be it those who have been with us for years, or those who have joined just recently, we would like to thank every single one of you for participating in the closed alpha stage of Zed City. Despite the frankly inconvenient method of registration, so many have joined us over the years and helped bring the game to the state it is now":
             "致所有Zed City的幸存者们！无论是那些陪伴我们多年的玩家，还是最近加入的玩家，我们都要感谢你们每一位，感谢你们参与Zed City的封闭Alpha测试阶段。尽管注册方式确实不太方便，然而，依然有许多人加入我们，帮助游戏发展至今天的模样。",
         "Thanks to all of you, we can now move on to the open release stage of the game": "感谢你们，我们现在可以进入游戏的公开发布阶段。",
@@ -559,6 +559,57 @@
         "Sports Store": "体育用品店",
         Refill: "补充",
         Name: "名字",
+        Topics: "话题",
+        Replies: "回复",
+        Author: "作者",
+        "Last Post": "最后发布",
+        "No topics were found": "无话题",
+        "click here to create one": "点击此处创建一个话题",
+        "Add Topic": "添加话题",
+        of: "共",
+        "Create Topic": "创建话题",
+        Title: "标题",
+        Write: "编写",
+        Preview: "预览",
+        Markdown: "Markdown",
+        WYSIWYG: "所见即所得",
+        Blockquote: "引用",
+        Strike: "删除线",
+        "Inline code": "内联代码",
+        "Insert image": "插入图片",
+        Italic: "斜体",
+        Bold: "粗体",
+        "Add Reply": "添加回复",
+        Post: "发布",
+        "months ago": "个月前",
+        "Active a day ago": "1 天前在线",
+        "Active a minute ago": "1 分钟前在线",
+        "Active a month ago": "1 月前在线",
+        "Active a year ago": "1 年前在线",
+        "Active an hour ago": "1 小时前在线",
+        "Active an hour ago": "1 小时前在线",
+        leave: "离开",
+        "Purge Event": "清洗活动",
+        visit: "访问",
+        "You gained": "你获得了",
+        "Your rad is already full": "你的辐射值已经满了",
+        "Your energy has been refilled": "你的能量已经重新填充",
+        "Unrefined Plastic": "未精炼塑料",
+        "Pumpkin Pie": "南瓜派",
+        Revolver: "左轮手枪",
+        Spear: "长矛",
+        Wire: "铁丝",
+        "Iron Ore": "铁矿石",
+        Explosives: "爆炸物",
+        Thread: "线",
+        "Zed Juice": "僵尸汁",
+        Water: "水",
+        ZedBull: "僵尸红牛",
+        Perch: "栖木",
+        Tarp: "防水布",
+        Lighter: "打火机",
+        "Barracks key": "军营钥匙",
+        "Police RFID": "警用射频ID",
     };
 
     // 词典：待优化
@@ -584,10 +635,272 @@
         "angela deposited 9x Ash": "angela存入9个灰烬",
         "Your membership will expire in": "您的会员将在",
         "a month": "一个月后到期",
+        "Zen Egg": "禅蛋",
+        "ZedBull Egg": "僵尸红牛蛋",
+        "Witch's Brew": "巫师饮品",
+        "Survivor Egg": "幸存者蛋",
+        SMG: "冲锋枪",
     };
 
     // 词典：ChatGPT生成，未经过人工审核。
-    const dictGpt = {};
+    const dictGpt = {
+        "You are no longer able to load ammo into your vehicle (all ammo can be fired without loading it into your vehicle":
+            "你不再需要将弹药加载到车辆中（所有弹药可以直接发射，而无需先加载到车辆中）",
+        "Ranged Weapons": "远程武器",
+        "Expand your arsenal with the inclusion of weapons featuring ammo. Engage in the art of archery by crafting bows and arrows at your dedicated crafting bench":
+            "通过加入具有弹药的武器来扩展你的武器库。在专用的制作工作台上制作弓箭，参与射箭艺术。",
+        "Delve into the culinary arts by gathering ingredients in the kitchen to concoct delectable recipes. Savor the fruits of your labor as food items provide substantial morale boosts":
+            "通过在厨房收集食材，制作美味的食谱，深入烹饪艺术。品尝你努力的成果，食物可以显著提升士气。",
+        "A dedicated weapon bench has been established for the creation of firearms, offering survivors a new dimension in their arsenal":
+            "已建立专用的武器台，用于制作火器，为幸存者的武器库增添了新的维度。",
+        "Explore the intricacies of combat by crafting various ammo types at the specialized Ammo Bench. Each gun now demands specific ammunition, adding strategic depth to your battles":
+            "在专门的弹药工作台上制作各种类型的弹药，深入探索战斗的细节。每把枪现在都需要特定的弹药，增加了战斗的战略深度。",
+        Blueprints: "蓝图",
+        "Unlock the secrets of the game with not all blueprints automatically revealed. Some must be discovered or purchased, adding an element of mystery and excitement to your journey":
+            "解锁游戏的秘密，部分蓝图并非自动揭示，某些蓝图必须通过发现或购买，给你的旅程增添神秘和刺激的元素。",
+        "Venture into revamped hunting locations, now featuring distinct rooms and an array of challenging NPCs with escalating difficulty levels":
+            "探索重新设计的狩猎地点，现有独特的房间和一系列难度逐渐增加的挑战NPC。",
+        "A donator store has been added where you can spend points on energy + rad immunity refills. A refill will be added to your account for every 1 week of inactivity":
+            "新增了一个捐赠商店，你可以用积分购买能量和辐射免疫重置。每一周的不活跃都会为你的账户添加一次重置。",
+        "Immerse yourself in the community with enhanced forums boasting improved post formatting and user-friendly layouts, ensuring a seamless and enjoyable interaction with fellow survivors":
+            "沉浸在社区中，体验改进后的论坛，拥有更好的帖子格式和用户友好的布局，确保与其他幸存者的互动更加流畅愉快。",
+        "The issue preventing workers from gaining farming/distillery XP has been successfully resolved": "解决了阻止工人获得农耕/酿酒经验的问题。",
+        "Action names in farm, distillery & furnace have been fixed": "已修复农场、酿酒厂和熔炉中的动作名称。",
+        "Number formatting has been fixed on team efficiency boost": "已修复团队效率提升中的数字格式。",
+        "Create faction will not show if you are already in one": "如果你已经在一个派系中，将不会显示创建派系选项。",
+        "Faction Roles": "派系角色",
+        "Roles have been added to factions, allowing leaders to delegate and assign permissions to members. Custom names can be used which will be visible on the faction profile":
+            "已为派系添加角色，允许领导者委派和分配权限给成员。可以使用自定义名称，这些名称将在派系资料页中显示。",
+        "Daily Rations": "每日配给",
+        "Factions now have the ability to allocate rations to members with roles, any member with rations assigned will be able to claim their allowance once per day":
+            "派系现在可以分配配给给具有角色的成员，任何分配了配给的成员每天可以领取一次。",
+        "Farm & Distillery": "农场与酿酒厂",
+        "The farm and distillery are now upgradable allowing for a maximum of 5 workers to join when fully upgraded":
+            "农场和酿酒厂现在可以升级，最大允许5名工人加入，升级完成后。",
+        "Player Profiles": "玩家资料",
+        "Basic profiles have been created, you can click on any display name in-game to see the players stats":
+            "已创建基本的玩家资料，你可以点击游戏中的任何显示名称查看该玩家的统计数据。",
+        "Resource bars will refill when activating membership": "激活会员后，资源条将自动填充。",
+        "Fixed some layout issues on public homepage": "修复了公共主页上的一些布局问题。",
+        "Radio tower bugs have been resolved": "已解决无线电塔的错误。",
+        "Accepting / declining faction applications has been fixed": "接受/拒绝派系申请的功能已修复。",
+        "Scavenges will not fail now if your morale is": "如果你的士气足够高，垃圾捡拾将不会失败。",
+        "Players will be automatically logged in after creating an account": "创建账户后，玩家将自动登录。",
+        "Improved number formatting on factions": "已改进派系中的数字格式。",
+        "Active page on the menu has been fixed and should now work in most sub-pages": "菜单中的活动页面已修复，现在应在大多数子页面中正常工作。",
+        "Clicking train in gym too fast would cause an error - this has been fixed": "在健身房点击训练过快会导致错误，这个问题已修复。",
+        "Some pages have added caching so once it has been loaded it will not need to load again":
+            "一些页面已添加缓存，加载完成后将不再需要重新加载。",
+        "Added a link in donator house to help support us with development / hosting costs":
+            "在捐赠者之家添加了一个链接，帮助我们支持开发/托管费用。",
+        "Chance of success is now based on your scavenge level": "成功的几率现在基于你的垃圾捡拾技能等级。",
+        "Morale will have a small boost to the chance of success": "士气将对成功几率产生小幅提升。",
+        "A min level has been added to scrapyard": "垃圾场已添加最低等级要求。",
+        'Scavenges will show a list of "Discovered Loot", the list of items will unlock as you find them':
+            "垃圾捡拾将显示“已发现的战利品”列表，物品列表将在你找到它们时解锁。",
+        "Luck skill maths have been changed to apply to all types of loot": "幸运技能的计算方式已更改，适用于所有类型的战利品。",
+        "When a hunt is completed, you will be returned back to the same area": "完成狩猎后，你将返回同一地点。",
+        "Bug has been fixed when ordering faction members by level or last active": "修复了按等级或最后活跃时间排序派系成员时出现的错误。",
+        "Fixed a bug where leveling up would give the wrong energy if you have membership": "修复了拥有会员时升级给出错误能量的bug。",
+        "Zed Wiki": "Zed 维基",
+        "A community led wiki has been created to give a more detailed guide to the games features. You can access this by using the menu in the top left and going to Wiki. We would like to thank LadyGuenevere for her help on this":
+            "已创建由社区主导的维基，提供更详细的游戏功能指南。你可以通过左上角的菜单访问维基。我们要感谢LadyGuenevere的帮助。",
+        "The quest system has been refactored to meet the requirements of the upcoming explore feature, this will mean that your quest progress has been reset":
+            "任务系统已重构，以适应即将发布的探索功能，这将意味着你的任务进度已被重置。",
+        "Some other bug fixes and improvements for quests are": "一些其他关于任务的bug修复和改进：",
+        "Fixed a bug when completing a quest without any rewards": "修复了完成任务时没有任何奖励的bug。",
+        "Progress will now show on quest objectives": "任务目标的进度现在会显示出来。",
+        "Membership will give you some points, increased max energy and regeneration times with more benefits to be added":
+            "会员将给予你一些积分、增加最大能量和恢复次数，未来将增加更多福利。",
+        "Survivors list & faction members will now show how long ago a player was last active": "幸存者列表和派系成员现在会显示玩家上次活跃的时间。",
+        "Radio tower error on first load has been fixed": "首次加载时无线电塔的错误已修复。",
+        "Radio tower & collecting from furnace / crafting bench will no longer add to notifications log":
+            "无线电塔和从炉子/制作台收集物品将不再添加到通知日志中。",
+        "Notifications will now work as expected when in a fight / injured": "在战斗中或受伤时，通知将按预期工作。",
+        "Fixed a bug with limits on leaderboard counters": "修复了排行榜计数器的限制bug。",
+        "Discord bot fixed a bug causing roles to be set incorrectly if the player had DM blocked":
+            "Discord机器人修复了一个bug，解决了当玩家阻止私信时角色设置不正确的问题。",
+        "A server migration has been completed to more efficient hardware and various security patches have been applied":
+            "服务器迁移已完成，迁移到了更高效的硬件，并应用了各种安全补丁。",
+        "Fixed broken error messages when trying to craft / smelt with not enough resources": "修复了在资源不足时尝试制作/熔炼时出现的错误信息。",
+        "Fixed typo on notification sent when being kicked from a faction": "修复了被踢出派系时发送的通知中的拼写错误。",
+        V: "V",
+        "Added direct link for easier sign up with access code": "新增了直接链接，以便通过访问码更轻松地注册。",
+        "Discord bot has been created to give out access codes": "已创建Discord机器人，发放访问码。",
+        "Nicknames on discord will be set to your in-game username after you sign up using the code given to you":
+            "在Discord上的昵称将在你使用给定的访问码注册后设置为你在游戏中的用户名。",
+        "Added water as a requirement for brewing beer": "增加了水作为酿造啤酒的必要材料。",
+        "Added city stats": "新增了城市统计数据。",
+        "Fixed member leaving faction activity log": "修复了成员离开派系时活动日志的问题。",
+        "Faction members will display in order of level with the leader first": "派系成员将按等级顺序显示，领导者排在最前面。",
+        "Fixed avatar upload": "修复了头像上传的问题。",
+        "Fixed mobile layout issue with faction stats": "修复了移动设备上派系统计数据的布局问题。",
+        "Changed hover information for morale": "更改了士气的悬停信息。",
+        "Fixed a bug where timers would disappear from the stats bar": "修复了计时器从统计条中消失的bug。",
+        "Fixed a bug with pages on the survivors list": "修复了幸存者列表页面的bug。",
+        "Added number formatting to hall of fame": "为名人堂添加了数字格式。",
+        "Added detection of a new version with a notice to reload (this will be visible from the next update":
+            "添加了新版本的检测和重新加载通知（将从下一个更新开始可见）。",
+        "You can now create or join a faction to with other survivors, this will enable you to grow and brew new resources with the addition of Farm and Distillery. Teamwork will be required to produce resources more efficiently, new player skills have been added (Farming & Distilling), completing these actions will help you level up and give bigger efficiency boosts":
+            "你现在可以创建或加入派系，与其他幸存者一起成长，并利用农场和酿酒厂生产新资源。团队合作将是提高资源生产效率的关键，新增了玩家技能（农耕和酿酒），完成这些行动将帮助你升级，并提供更大的效率提升。",
+        "Complete raids with your faction to gain loot & faction respect": "与派系一起完成突袭，获得战利品和派系尊敬。",
+        "Added notification system": "新增了通知系统。",
+        "Gym pays out xp when training": "在健身房训练时，会发放经验值。",
+        "A list of players can be found in City -> Survivors": "玩家列表可以在城市 -> 幸存者中找到。",
+        "Quantity amounts now display correctly on Crafting & Furnace": "制作和炉子中的物品数量现在正确显示。",
+        "Crawlers are easier to defeat": "爬行者更容易被击败。",
+        "Resource bars will refill when leveling up": "升级时，资源条将自动填充。",
+        "Page title (tab name) will change on different pages": "不同页面上的标签名将发生变化。",
+        "Skills have been added to actions Scavenging, Hunting, Crafting & Forging. You will gain skill XP everytime you complete an action":
+            "技能已添加到垃圾捡拾、狩猎、制作和锻造行动中。每次完成行动时，你将获得技能经验。",
+        "Upgrade & progress bars should run smoothly now": "升级和进度条现在应该运行顺畅。",
+        "Perks will allow you to upgrade your max rad immunity, max morale, max life, luck and all fight stats. Skill Points are gained for each level up, there will be more ways to gain them in the future. Your game stats will be available with your current hall of fame rank and a list of your active perks":
+            "特权将允许你提升最大辐射免疫、最大士气、最大生命、幸运以及所有战斗统计数据。每次升级都会获得技能点，未来将有更多获得技能点的方法。你的游戏统计数据将与当前名人堂排名和活跃特权列表一起显示。",
+        "News is available on the homepage": "新闻将在首页上显示。",
+        "Updated homepage layout": "更新了首页布局。",
+        "Added discord invite link to homepage": "在首页添加了Discord邀请链接。",
+        "Hall of fame has been added to the city": "名人堂已添加到城市。",
+        "Formatting has been added to stats bar": "已为统计条添加了格式。",
+        "Added fix with recovering HP after being injured": "修复了受伤后恢复生命值的问题。",
+        "On the login page, if you have an active session then you will be able to continue without logging in again":
+            "在登录页面，如果你有一个活跃的会话，你将能够继续而不需要重新登录。",
+        "Cleaned up old code": "清理了旧代码。",
+        "Fixed bug stopping all apple devices working": "修复了阻止所有Apple设备正常工作的bug。",
+        "Added report a bug to sub menu": "在子菜单中添加了报告bug功能。",
+        "Halloween Event": "万圣节活动",
+        "Happy Halloween": "万圣节快乐",
+        "To celebrate the seasonal event, we have added a range of special items for you to find across zed city":
+            "为了庆祝季节性活动，我们在Zed城添加了一系列特别物品供你寻找",
+        "You can also check in with quest giver called Crazy Hari, who will reward you for finding them all with a special trophy item":
+            "你还可以去找名为Crazy Hari的任务发布者，她会奖励你特别的奖杯物品，作为你找到所有物品的奖励",
+        "Event Time (GMT): 30th October 2024 22:00:00 - 6th November": "活动时间（GMT）：2024年10月30日22:00:00 - 11月6日",
+        Outposts: "前哨基地",
+        PvP: "玩家对战",
+        "Fight other players to gain control of key outposts scattered throughout Zed City. Outposts can be found in the Military Base, Demolition Site and Construction Yard. You can control up to 3 outposts, with each offering unique actions and new crafting recipes":
+            "与其他玩家战斗，争夺分布在Zed城的关键前哨基地。前哨基地可以在军事基地、拆除场和建筑工地找到。你可以控制最多3个前哨基地，每个前哨基地提供独特的行动和新的制作配方",
+        "Take over outposts and battle for dominance over the best land": "占领前哨基地，争夺最佳土地的统治权",
+        "Take position in your outpost to defend it and defeat anyone attacking": "在你的前哨基地占据位置，防守并击败任何攻击者",
+        "Be a contributor to war by manufacturing explosives or a defender of the peace by constructing defences":
+            "通过制造炸药成为战争的贡献者，或者通过建造防御设施成为和平的捍卫者",
+        "Explore Zones": "探索区域",
+        "Visit the Demolition Site and Construction Yard to clear hoards of zombies and use new craftable picklocks to open locked gates. Explore through multiple zones to access increasingly rare loot drops":
+            "前往拆除场和建筑工地，清除成群的僵尸，使用新的可制作开锁器打开锁住的门。通过多个区域探索，获取越来越稀有的战利品掉落",
+        "New multi-zone environments, get lost and explore new lands": "新的多区域环境，迷失其中，探索新土地",
+        "Key mechanics and respawning zeds in unique locations": "关键机制和在独特位置重生的僵尸",
+        "Some blueprints will now require a minimum skill level": "一些蓝图现在需要最低技能等级",
+        "Layout improvement has been made to fill in empty spaces on some pages": "已对一些页面进行了布局改进，以填补空白区域",
+        "The order of permissions has been fixed when creating a faction role": "创建派系角色时，权限顺序已修复",
+        "Faction profiles can now be visited while exploring": "在探索时可以查看派系档案",
+        Login: "登录",
+        'Added a "remember me" feature to ensure you stay logged in': "添加了“记住我”功能，以确保你保持登录状态",
+        "Reduced amount of Advanced Tools required to craft a level 1 vehicle from 10 to": "减少了制作1级车辆所需的高级工具数量，从10个减少到",
+        "When you attempt to craft a blueprint you don't have enough quantity for, it will now show how many items you have":
+            "当你尝试制作一个蓝图而数量不足时，现在会显示你有多少物品",
+        "Fishing has been expanded, train your new skill by catching a range of new fish, which can be found in various spots across the game. Three fishing rods have been added and they can be obtained in the crafting bench":
+            "钓鱼系统已扩展，通过捕捉新的鱼类来训练你的新技能，鱼类可以在游戏中的不同地点找到。添加了三种钓鱼竿，可以在制作台获得",
+        "A new building has been added to factions. Team up with faction members to produce new materials and train up your refinery skills":
+            "派系中添加了一座新建筑。与派系成员组队，生产新材料并训练你的炼油技能",
+        "Explore the reserve and try to catch some fish at the new spots, you may need to defeat some zeds before you are safe to explore":
+            "探索保护区，并尝试在新地点捕捉一些鱼，在你安全探索之前，可能需要击败一些僵尸",
+        "A new location to explore, gain access to new materials after you defeat the zeds lingering around the place":
+            "一个新的探索地点，击败周围徘徊的僵尸后，你将能够获得新材料",
+        "Various new trades have been made available in the radio tower": "无线电塔提供了各种新的交易",
+        "Removed extra message when destroying / unloading items to reduce clicks": "删除了销毁/卸载物品时的额外信息，减少点击次数",
+        "Health will no longer regenerate while you are in a fight": "在战斗中，健康将不再恢复",
+        "Vehicle weight will now show to 2 decimal places": "车辆重量现在显示到小数点后两位",
+        "Vehicle weight with easter eggs has been fixed": "复活节彩蛋的车辆重量已修复",
+        "Fixed bug with radiation immunity not regenerating": "修复了辐射免疫无法恢复的漏洞",
+        "Fixed issue showing incorrect quantity in scavenge": "修复了搜索中显示数量不正确的问题",
+        "Fixed layout issue on market": "修复了市场布局问题",
+        "Quest UI": "任务界面",
+        "The quest layout has been updated, you can now see the progress on your objectives from the main quest list. You can click on completed objectives to view more information about them":
+            "任务布局已更新，你现在可以从主任务列表查看目标进度。你可以点击已完成的任务来查看更多信息",
+        "Travel time to Military Base has been increased to 1 hour": "前往军事基地的旅行时间已增加至1小时",
+        "Flux has been added to some loot drops": "某些战利品掉落中已加入Flux",
+        "Fixed a bug stopping you from adding the maximum items you have to the market": "修复了一个漏洞，导致你无法将所有物品添加到市场",
+        "A bug causing radiation immunity to show 1 when you have none left has been resolved": "修复了一个漏洞，导致在辐射免疫耗尽时显示为1",
+        "The page you are on will no longer be lost when you view an item in the market": "在市场查看物品时，当前页面将不会丢失",
+        "An issue causing some old weapons to be lost has been fixed": "修复了导致一些旧武器丢失的问题",
+        "Fixed a bug which allowed items to be repaired by loading them into a vehicle": "修复了允许通过将物品加载到车辆中来修复物品的漏洞",
+        "Resolved a bug where some items bought from market / store would not be stacked": "解决了从市场/商店购买的一些物品无法堆叠的漏洞",
+        "Item Market": "物品市场",
+        "You can now trade with other survivors using the Market, browse through 100s of offers from other survivors and create up to 6 listings to sell your unwanted items":
+            "你现在可以通过市场与其他幸存者交易，浏览来自其他幸存者的100多个报价，并创建最多6个列表来出售你不需要的物品",
+        "Fixed layout issues with radio tower trades on mobile": "修复了在移动设备上无线电塔交易的布局问题",
+        "Fixed bug which was selling the wrong items in stores": "修复了商店出售错误物品的漏洞",
+        "Weapons for sale in store will now stack again": "商店出售的武器现在将再次堆叠",
+        "A bug causing weapons to use durability with no ammo has been fixed": "修复了一个漏洞，导致武器在没有弹药的情况下消耗耐久度",
+        "Fixed an issue where faction crafting was not showing items from faction storage": "修复了派系制作未显示来自派系储存物品的问题",
+        "Inventory will now handle multiple pages without taking up a lot of space": "库存现在可以处理多页数据，而不会占用大量空间",
+        "Item Durability": "物品耐久度",
+        "Weapons, armour and equipment will now break after their condition reaches 0%. Weapons and armour will remain in your inventory, in a future update we will add ways for these to be dismantled / repaired":
+            "武器、护甲和设备在其耐久度达到0%后将会损坏。武器和护甲将保留在你的库存中，在未来的更新中，我们将添加这些物品被拆解/修复的方法",
+        "Scavenge Loot": "搜寻战利品",
+        "Loot scavenged will no longer dispaly notifications, a new section has been added to show loot recently gained":
+            "搜寻到的战利品将不再显示通知，已添加新部分来显示最近获得的战利品",
+        "Fixed layout issues with item filters on inventory": "修复了库存中物品过滤器的布局问题",
+        "Zed Bot has been updated to handle the full discord sign up process": "Zed Bot已更新，能够处理完整的Discord注册流程",
+        'You can now use "Auto-Attack" in fights to automate the battle': "你现在可以在战斗中使用“自动攻击”来自动化战斗",
+        "Easter Event": "复活节活动",
+        "To all our dear players": "致所有亲爱的玩家",
+        "As part of our ongoing improvements and features being rolled out during alpha, we have decided this Easter would be a great first candidate for a special holiday event. So with that said may we introduce to you the Great Easter Egg Hunt of 2024 in Zed City":
+            "作为我们在alpha阶段推出的持续改进和新功能的一部分，我们决定这次复活节将是第一个特殊节日活动的绝佳候选者。我们很高兴向您介绍2024年Zed城的大复活节彩蛋狩猎",
+        "Collect all these yummy eggs to receive special buffs and bonuses": "收集所有这些美味的彩蛋，获得特殊的增益效果和奖励",
+        "You can also check in with a new holiday quest giver called Crazy Hari, who can find nothing better to do in the apocalypse but collect all the eggs for her collection":
+            "你还可以去找一个新的节日任务发布者，名叫Crazy Hari，她在末日中找不到更好的事情做，只能为她的收藏收集所有彩蛋",
+        "Throughout the event you can expect to find lots of common eggs in different scavenges and hunts. These can then be traded using the radio tower to get more rare eggs":
+            "在活动过程中，你可以期待在不同的搜寻和狩猎中找到很多普通彩蛋。然后，你可以通过无线电塔交易这些彩蛋，获取更多稀有彩蛋",
+        "If you collect an entire set, you can even trade it for the much prized and precious golden egg":
+            "如果你收集了整套彩蛋，你甚至可以将其交易为珍贵的金蛋",
+        "Event Time (GMT): 27th March 2024 22:00:00 - 2nd April": "活动时间（GMT）：2024年3月27日22:00:00 - 4月2日",
+        "Crafting arrows and advanced tools can now be queued": "现在可以排队制作箭矢和高级工具",
+        "Crafting time for advanced tools has been reduced to 15 mins": "高级工具的制作时间已减少至15分钟",
+        "A bug causing new quests to show as completed has been resolved": "修复了一个漏洞，导致新任务显示为已完成",
+        "Time formatting on farm & distillery for team efficiency have been fixed": "农场和酒厂的时间格式已修复，以提高团队效率",
+        "A bug has been resolved which was stopping a full stack of items being loaded into a vehicle":
+            "已解决一个漏洞，阻止了将完整堆叠的物品加载到车辆中",
+        "Travel times will now be displayed on the explore locations": "旅行时间现在将在探索位置上显示",
+        "You are no longer able to load ammo into your vehicle (all ammo can be fired without loading it into your vehicle)":
+            "你现在无法将弹药加载到你的车辆中（所有弹药可以在没有加载到车辆中的情况下开火）",
+        "Population counter has been added to explore locations": "已在探索位置添加人口计数器",
+        "Quantity inputs will now use the numpad on mobile and tablet devices": "数量输入现在将在移动设备和平板设备上使用数字小键盘",
+        "Quantity selector on all crafting benches has been replaced and now allows you to input a number":
+            "所有制作台上的数量选择器已被替换，现在允许你输入数字",
+        "Alpha introduction will be hidden if you are above level": "alpha介绍将被隐藏如果你的等级超过",
+        "You can now explore remote locations in the pursuit of better resources and loot. Once your garage is built and the vehicle repaired, you will be able to travel to the military base. Your vehicle will have a weight capacity, so you will need to decide what valuable loot to transport back":
+            "你现在可以探索偏远的地点，寻找更好的资源和战利品。一旦你的车库建好并修理好车辆，你就可以前往军事基地。你的车辆将有一个重量限制，因此你需要决定哪些有价值的战利品需要带回",
+        "Garbo Quests": "Garbo任务",
+        "To get started with explore and your new vehicle, head over to Garbo and finish up all his quests":
+            "要开始探索和使用新车辆，请前往Garbo并完成他的所有任务",
+        "Armour Crafting": "盔甲制作",
+        "Craft your very own garb to defend yourself in the wasteland. Explore the military base and discover new blueprints to expand your fashionable collection":
+            "制作你自己的盔甲，保卫自己在荒原中的安全。探索军事基地并发现新的蓝图，扩展你的时尚收藏",
+        "Mini Boss NPC": "迷你Boss NPC",
+        "Find a mini boss in the form of the Undead General, a small challenge for newer players to overcome while exploring the new military base":
+            "找到一个迷你Boss，形态为不死将军，对于新手玩家来说，这是一个小挑战，在探索新的军事基地时，你将克服它",
+        "Morale Boost": "士气提升",
+        "Fixes have been made to morale boosting, when your player is over the morale limit you will now see a red timer indicating when your morale will reset":
+            "已修复士气提升的问题，当你的玩家超过士气限制时，你将看到一个红色计时器，指示士气将何时重置",
+        "Layout when consuming boosters has been updated": "消费增益时的布局已更新",
+        "Fixed pagination on stores": "修复了商店中的分页问题",
+        "Fixed issue causing page to reload when consuming items": "修复了消费物品时导致页面重新加载的问题",
+        "Updated the quantity input to make the + and - buttons easier to click": "更新了数量输入，使+和-按钮更容易点击",
+        "Response message will display when adding rations to a role": "添加口粮到角色时将显示响应消息",
+        "An issue stopping members being assigned to roles has been resolved": "已解决阻止成员分配角色的问题",
+        "Fixed a bug where faction leaders were showing as members": "修复了派系领导显示为成员的漏洞",
+        Food: "食物",
+        "Morale gained from fish and other cooked items has been balanced": "从鱼和其他烹饪食物中获得的士气已平衡",
+        "Restock times and max stock have been adjusted for Carp": "已调整鲤鱼的补货时间和最大库存",
+        "Skills page has been split into a seperate page for Stats": "技能页面已拆分为单独的属性页面",
+        "Fixed ammo not working on Handgun & Desert Eagle": "修复了手枪和沙漠之鹰无法使用弹药的问题",
+        "Added level checks when building Kitchen, Ammo Bench & Weapon Bench": "在建造厨房、弹药台和武器台时已添加等级检查",
+        "A bug where the menu would disappear in a fight has been resolved": "已解决在战斗中菜单消失的漏洞",
+        "Embark on thrilling new adventures with the introduction of carefully crafted quests, each accompanied by specialized NPCs that promise a richer and more immersive storyline":
+            "踏上激动人心的新冒险，介绍精心设计的任务，每个任务都伴随着专门的NPC，承诺提供更丰富和更沉浸的故事情节",
+        "NPC Scaling": "NPC等级缩放",
+        "Prepare for a heightened challenge as NPCs now boast levels ranging from 1 to 100. Witness their stats evolve in tandem with their levels, and reap the rewards of superior loot at higher tiers":
+            "准备迎接更高的挑战，因为NPC现在拥有从1到100的等级。见证他们的属性随着等级的提升而变化，并在更高层次获得更好的战利品",
+    };
 
     const dictAll = { ...dictCommon, ...dictGpt, ...dictPending };
     const dictAllLowerCase = {};
@@ -651,6 +964,56 @@
     }
 
     function translateTextNode(node) {
+        // 排除个人资料页中帮派名
+        if (node.parentNode.classList.contains("username")) {
+            return;
+        }
+
+        // 排除右上角菜单中人物ID
+        if (node.parentNode.classList.contains("text-subtitle1") && node.parentNode.parentNode.querySelector(".zed-avatar.non-selectable")) {
+            return;
+        }
+
+        if (window.location.href.includes("www.zed.city/factions/")) {
+            // 排除帮派成员页面中帮派名
+            if (node.parentNode.matches("div.text-center.text-h4.text-uppercase.text-no-bg")) {
+                return;
+            }
+            // 排除帮派成员页面中帮派职位
+            if (
+                node.parentNode.classList.contains("col-shrink") &&
+                (node.parentNode.closest("tr").querySelector(".status-online") || node.parentNode.closest("tr").querySelector(".status-offline"))
+            ) {
+                return;
+            }
+        } else if (window.location.href === "https://www.zed.city/factions") {
+            if (node.parentNode.parentNode.matches("td.q-td.text-left")) {
+                return;
+            }
+        } else if (window.location.href.includes("www.zed.city/forum/")) {
+            // 排除论坛
+            if (node.parentNode.closest(".q-tr.topic-row")) {
+                return;
+            }
+            if (node.parentNode.closest(".title") && node.parentNode.closest(".title").parentNode.querySelector(".forum-text")) {
+                return;
+            }
+            if ((node.parentNode.closest(".markdown-text") && node.parentNode.closest(".forum-text")) || node.parentNode.closest(".forum-username")) {
+                return;
+            }
+            if (node.parentNode.closest(".toastui-editor-main-container")) {
+                return;
+            }
+        } else if (window.location.href.includes("www.zed.city/profile/")) {
+            // 排除个人资料页中人物ID
+            if (
+                node.parentNode.classList.contains("text-h4") &&
+                (node.parentNode.parentNode.querySelector(".status-online") || node.parentNode.parentNode.querySelector(".status-offline"))
+            ) {
+                return;
+            }
+        }
+
         const dictResult = dict(node.textContent);
         if (dictResult !== node.textContent) {
             node.parentNode.setAttribute("script_translated_from", node.textContent);
@@ -660,11 +1023,6 @@
 
     function dict(oriText) {
         let text = oriText;
-
-        // 含emoji的文本
-        if (text === "🏆Purge Event") {
-            return "🏆清洗活动";
-        }
 
         // 排除规则
         for (const exclude of excludes) {
@@ -676,6 +1034,77 @@
             if (excludeReg.test(text)) {
                 return text;
             }
+        }
+
+        // XX时间前在线
+        if (/^Active (\d+) minutes ago$/.test(text)) {
+            let res = /^Active (\d+) minutes ago$/.exec(text);
+            return res[1] + " 分钟前在线";
+        }
+        if (/^Active (\d+) hours ago$/.test(text)) {
+            let res = /^Active (\d+) hours ago$/.exec(text);
+            return res[1] + " 小时前在线";
+        }
+        if (/^Active (\d+) days ago$/.test(text)) {
+            let res = /^Active (\d+) days ago$/.exec(text);
+            return res[1] + " 天前在线";
+        }
+        if (/^Active (\d+) months ago$/.test(text)) {
+            let res = /^Active (\d+) months ago$/.exec(text);
+            return res[1] + " 月前在线";
+        }
+        if (/^Active (\d+) years ago$/.test(text)) {
+            let res = /^Active (\d+) years ago$/.exec(text);
+            return res[1] + " 年前在线";
+        }
+
+        // 帮派日志
+        if (/^([\w\s]+) has joined the faction$/.test(text)) {
+            let res = /^([\w\s]+) has joined the faction$/.exec(text);
+            return res[1] + " 加入了帮派";
+        }
+        if (/^([\w\s]+) has been kicked from the faction$/.test(text)) {
+            let res = /^([\w\s]+) has been kicked from the faction$/.exec(text);
+            return res[1] + " 被踢出了帮派";
+        }
+        if (/^([\w\s]+) upgraded ([\w\s]+) to level (\d+)$/.test(text)) {
+            let res = /^([\w\s]+) upgraded ([\w\s]+) to level (\d+)$/.exec(text);
+            return res[1] + " 将" + dict(res[2]) + " 升级至 " + res[3] + " 级";
+        }
+        if (/^([\w\s]+) deposited (\d+)x ([\w\s-']+)$/.test(text)) {
+            let res = /^([\w\s]+) deposited (\d+)x ([\w\s-']+)$/.exec(text);
+            return res[1] + " 存入了 " + res[2] + "x " + dict(res[3]);
+        }
+        if (/^([\w\s]+) took (\d+)x ([\w\s-']+)$/.test(text)) {
+            let res = /^([\w\s]+) took (\d+)x ([\w\s-']+)$/.exec(text);
+            return res[1] + " 取出了 " + res[2] + "x " + dict(res[3]);
+        }
+        if (/^(\d+)x ([\w\s-']+) added to faction storage$/.test(text)) {
+            let res = /^(\d+)x ([\w\s-']+) added to faction storage$/.exec(text);
+            return res[1] + "x " + dict(res[2]) + " 加入了帮派仓库";
+        }
+        if (/^([\w\s,-]+) completed ([\w\s-]+) gaining (\d+) respect, (.+)$/.test(text)) {
+            let res = /^([\w\s,-]+) completed ([\w\s-]+) gaining (\d+) respect, (.+)$/.exec(text);
+            return res[1].replaceAll(" and", ", ") + " 完成了 " + dict(res[2]) + " 获得了 " + res[3] + " 声望, " + parseReceiveItemsLog(res[4]);
+        }
+        function parseReceiveItemsLog(text) {
+            let input = text;
+            let result = "";
+            if (input.endsWith("!")) {
+                input = input.substring(0, input.length - 1);
+            }
+            for (const s of input.replaceAll(", ", " & ").split(" & ")) {
+                if (/^(\d+)x ([\w\s-']+)$/.test(s)) {
+                    let res = /^(\d+)x ([\w\s-']+)$/.exec(s);
+                    result += res[1] + "x " + dict(res[2]) + " & ";
+                } else {
+                    result += s;
+                }
+            }
+            if (result.endsWith(" & ")) {
+                result = result.substring(0, result.length - 3);
+            }
+            return result + "!";
         }
 
         // 消除后面空格
