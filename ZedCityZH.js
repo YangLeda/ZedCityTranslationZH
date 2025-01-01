@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.7
+// @version      3.8
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -1292,6 +1292,8 @@
         "Please enter a faction name": "请输入帮派名称",
         Lockpicks: "撬锁工具",
         "Cloth Jacket": "布质夹克",
+        "Social Logins": "社交帐号登录",
+        "An unknown error occurred": "发生未知错误",
     };
 
     // 词典：待处理
