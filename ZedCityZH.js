@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      2.4
+// @version      2.6
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -220,7 +220,7 @@
         SUCCESS: "成功",
         FAILS: "失败",
         "Loot Discovered": "发现战利品",
-        Logs: "日志",
+        Logs: "原木",
         Resource: "资源",
         Scrap: "废品",
         Nails: "钉子",
@@ -475,7 +475,7 @@
             "欢迎来到末日，幸存者。如果你还活着，那么你还有机会——尽管微乎其微。但在这里，每个人都有一个起点。你的第一个任务？去旧的街机厅。那地方挤满了僵尸，大部分是缓慢爬行的怪物，但别太放松。即便是最弱的僵尸，如果你不小心，也能将你撕裂。",
         "Consider this your initiation. Clear out a few of those walkers, get a feel for how things are now. Survive this, and we’ll see if you’ve got what it takes to go further. Good luck—you’re gonna need it":
             "把这当作你的入门任务。清理掉一些那些行尸走肉，感受一下现在的局势。坚持下来，我们再看看你是否有能力走得更远。祝你好运——你会需要它的。",
-        "Objective: Hunt a zed in the Arcade (Darkened Restrooms": "目标：在街机厅（昏暗的洗手间）狩猎一只僵尸",
+        "Objective: Hunt a zed in the Arcade (Darkened Restrooms": "目标：在游戏厅（昏暗的洗手间）狩猎一只僵尸",
         Progress: "进度",
         Myena: "迈耶娜",
         "You walk into a dark alley surrounded by street lamps on either side, hanging down from the street lamps is a spaghetti mess of entangled wires attached to powered bug zappers providing little light to the alley along with the faint buzzing noise of the power circulating around. The intrigue of other humans possibly surviving here draws you in, until you notice the hidden shadow of a slender woman sat against the walls of the alleyway. The shadowy figure begins to become clear as she lifts to her to look you up and down":
@@ -551,7 +551,7 @@
         "Kitchen Area": "厨房区",
         "Darkened Restrooms": "昏暗洗手间",
         "Concession Stand": "小吃摊",
-        "Arcade Office": "街机办公室",
+        "Arcade Office": "游戏厅办公室",
         "Hall of Mirrors": "镜厅",
         "Parking Lot": "停车场",
         "Central Atrium": "中央中庭",
@@ -653,6 +653,13 @@
         "Help Guide": "帮助",
         "Zed City": "Zed City",
         "Zed City | The Survival MMORPG": "Zed City | 生存MMORPG",
+        "Loot Found Recently": "最近找到的战利品",
+        "YOU LEVELED UP": "你升级了",
+        Continue: "继续",
+        "Canvas is not supported in your browser": "你的浏览器不支持Canvas",
+        "Unknown Loot": "未知战利品",
+        "Your scavenging skill level needs to be": "你的拾荒技能等级需要达到",
+        Fish: "钓鱼",
     };
 
     // 词典：待优化
@@ -949,6 +956,93 @@
         "Scavanges will not fail now if your morale is": "现在如果你的士气足够，拾荒不会失败",
         "Clicking train in gym too fast would casue an error - this has been fixed": "在健身房点击训练过快会导致错误 - 已修复",
         "Fixed a bug with limits on leaderbord counters": "修复了排行榜计数器限制的错误",
+        "Quest Progress": "任务进度",
+        Fight: "战斗",
+        Crawler: "爬行者",
+        "Weakness: Blunt": "弱点：钝器",
+        "Auto Attack": "自动攻击",
+        "Fight Log": "战斗日志",
+        "started an attack on": "开始攻击",
+        Fists: "拳头",
+        missed: "未击中",
+        "with their": "用他们的",
+        "tried to bite": "试图咬",
+        "but missed": "但未击中",
+        hit: "击中",
+        "and took": "并造成",
+        "used its teeth to bite": "用牙齿咬了",
+        "Stop Auto": "停止自动攻击",
+        "was defeated by": "被击败给",
+        Complete: "完成",
+        "Objective Completed": "目标完成",
+        "So, you made it out in one piece. Not bad—for a beginner. But don’t get cocky; that was just a Crawler, the easiest of the lot. Out here, there are things way nastier waiting to tear into you. If you want to survive, you’re going to need a lot more than luck":
+            "所以，你全身而退了。不算太差——对于一个新手来说。但别得意忘形；那只是爬行者，最简单的一个。在这里，有更可怕的东西等着撕碎你。如果你想生存下来，你需要的不只是运气",
+        "I’d suggest you start training, get those instincts sharp. Strength alone won’t keep you alive in this wasteland. Prove to me you’re serious, and maybe, just maybe, you’ll stand a chance":
+            "我建议你开始训练，磨砺你的本能。仅靠力量无法让你在这片荒原中存活。向我证明你是认真的，也许，仅仅是也许，你会有一线生机",
+        "Objective: Train your skills in the Stronghold (Gym": "目标：在据点（健身房）训练你的技能",
+        Completed: "已完成",
+        "So, you’re starting to find your strength, huh? Good. But strength alone won’t keep you fed, warm, or armed out here. If you want a real chance at survival, you’ll need to gather resources—learn to live off this wasteland, bit by bit":
+            "所以，你开始发现自己的力量了，是吗？很好。但仅靠力量无法让你在这里吃饱、保暖或武装起来。如果你想真正活下去，你需要收集资源——一点一点地学会依赖这片荒原生存",
+        "Head into the Forest and keep an eye out for some logs. They’re scattered around, if you know where to look. Bring back a decent haul, and you’ll be one step closer to surviving another day":
+            "进入森林，寻找一些原木。它们散落在四处，如果你知道该去哪里找。带回足够的收获，你就离再多活一天更近了一步",
+        "Objective: Scavenge the Forest": "目标：搜寻森林",
+        "Items Gained": "获得物品",
+        "You’ve been out there—you know the risks of scavenging. Every time you step into the wasteland, you’re gambling with the radiation, the elements, and who knows what else. So while you’re taking a breather, let’s make sure you’re better prepared for the next run":
+            "你已经在外面——你知道搜寻的风险。每次踏入荒原，你都在与辐射、自然环境以及未知事物赌博。所以在你喘口气的时候，让我们确保你为下一次行动做好更充分的准备",
+        "Head back to your stronghold and set up a crafting bench. With that, you’ll be able to make use of whatever scraps and resources you bring back. It’s a small step, but trust me, it’ll make a big difference in keeping you alive out there":
+            "回到你的据点，建立一个制作台。有了它，你就可以利用你带回的任何碎片和资源。这是一个小步骤，但相信我，它会对你在外面生存有很大的帮助",
+        "Objective: Build crafting bench": "目标：建造制作台",
+        Building: "建造中",
+        Burn: "燃烧",
+        "You’ve seen what you can create on the crafting bench, right? Those weapons and survival tools? Well, to keep making them, you need resources—and that means more scavenging":
+            "你已经看到可以在制作台上制作什么了，对吧？那些武器和生存工具？不过，要继续制作它们，你需要资源——这意味着更多的搜寻",
+        "Head into the Forest and gather some more logs. You’ll need plenty to keep your supplies stocked and your gear in top shape. Stay sharp, and don’t take any chances while you're out there":
+            "进入森林，再收集一些原木。你需要大量的原木来保持物资充足和装备完好。保持警觉，不要冒险",
+        "Scavenging skill level increased": "拾荒技能等级提升",
+        "Upgrade Immunity": "升级免疫力",
+        "Immunity Perk": "免疫力加成",
+        "Max Rad Immunity": "最大辐射免疫",
+        "Great! You’ve got the logs. Now, it’s time to turn them into something useful. Head to your crafting bench and craft yourself a baseball bat. It’s simple, but it’ll be a solid tool when you’re out there facing whatever comes your way":
+            "很好！你已经拿到了原木。现在，是时候把它们变成有用的东西了。前往你的制作台，制作一根棒球棒。这很简单，但在面对外面的危险时，它会是一个可靠的工具",
+        "Gear up, and get ready. You’ll be glad you have it": "装备起来，准备好。你会很庆幸拥有它",
+        "Objective: Craft a baseball bat": "目标：制作棒球棒",
+        Collect: "收集",
+        "Now that you’ve crafted yourself a baseball bat, it’s time to put it to good use. Head back into the Arcade and take out more zeds. They’re still crawling around, but with your new weapon, you’ll have a much better shot at clearing them out":
+            "现在你已经制作了一根棒球棒，是时候好好利用它了。回到游戏厅，清除更多的僵尸。它们仍然四处爬行，但有了你的新武器，你清除它们的机会会大得多",
+        "Just remember: Always go equipped. The more prepared you are, the better your chances of making it out in one piece. Good luck":
+            "记住：永远要做好装备准备。你准备得越充分，全身而退的机会就越大。祝你好运",
+        "Objective: Kill 2 zeds in the Arcade (Darkened Restrooms": "目标：在游戏厅（黑暗洗手间）杀死2个僵尸",
+        INJURED: "受伤",
+        "Fight Outcome": "战斗结果",
+        "You are injured for": "你受伤",
+        DEFEATED: "战败",
+        VS: "VS",
+        WINNER: "胜利",
+        "Hunting skill level increased": "狩猎技能等级提升",
+        "will show a total time if you are crafting more than 1x": "如果你制作超过1个，将显示总时间",
+        "Medical Bay Upgrade": "医疗间升级",
+        "Item added to your inventory": "物品已添加到你的库存",
+        Use: "使用",
+        "Consume Item": "消耗物品",
+        "Are you sure you want to use this": "你确定要使用这个吗",
+        "You have ran out of Bandage": "你已经用完了绷带",
+        "Medical Cooldown": "医疗冷却时间",
+        "Yeah, it's a lot easier to take down zeds with a weapon, but don’t get too caught up in the fighting. I need you to take a break from the hunt and head over to the Scrapyard. There’s scrap scattered around in there—metal, parts, whatever you can find":
+            "是的，用武器击倒僵尸容易多了，但不要太沉迷于战斗。我需要你暂停狩猎，前往废料场。那里散落着废料——金属、零件，以及任何你能找到的东西",
+        "Search the area and bring back any scrap you can collect. It’s all useful, and you’re gonna need it for what’s coming next":
+            "搜索该区域，带回任何你能收集到的废料。这些都很有用，你将需要它们来应对接下来的挑战",
+        "Objective: Scavenge the scrapyard 3x": "目标：在废料场搜寻3次",
+        "Every piece of scrap metal you find can be more than just useful—it can be your ticket to survival and even a way to make a living. Melt it down into nails for building, forge it into weapons, or trade it for cash to get what you need":
+            "你找到的每一块废金属不仅仅是有用——它可以是你生存的关键，甚至是谋生的方式。将它熔炼成建筑用的钉子，锻造成武器，或者用来交易换取你需要的东西",
+        "Head back to your Stronghold and build a Furnace. With it, you’ll be able to refine all that scrap into something valuable, whether you're crafting or trading to keep yourself going":
+            "回到你的据点，建造一个熔炉。有了它，你可以将所有废料精炼成有价值的东西，无论是用于制作还是交易，帮助你继续生存",
+        "Objective: Build the Furnace": "目标：建造熔炉",
+        "Now that you've gathered some scrap, it’s time to smelt it down into nails. These little things are essential for building and crafting, but don’t waste them—resources aren’t exactly easy to come by in this world. What you choose to do with them is up to you":
+            "现在你已经收集了一些废料，是时候将它们熔炼成钉子了。这些小东西对建筑和制作至关重要，但不要浪费它们——在这个世界上资源并不容易获得。你决定如何使用它们",
+        "You’ve learned the basics of survival, but there’s much more ahead. Build, hunt, explore—there’s a whole world out there still waiting to be discovered. Good luck... you're going to need it":
+            "你已经学会了生存的基础知识，但前方还有更多挑战。建造、狩猎、探索——外面还有一个等待被发现的广阔世界。祝你好运……你会需要的",
+        "Objective: Craft Nails": "目标：制作钉子",
+        "Bench Level": "制作台等级",
     };
 
     const dictAll = { ...dictCommon, ...dictGpt, ...dictPending };
@@ -1071,14 +1165,21 @@
             }
         }
 
-        const dictResult = dict(node.textContent);
+        let dictResult = null;
+        // 战斗日志中，可能有人物ID
+        if (node.parentNode.matches(".log-name") || node.parentNode.matches(".player-name")) {
+            dictResult = dict(node.textContent, true);
+        } else {
+            dictResult = dict(node.textContent);
+        }
+
         if (dictResult !== node.textContent) {
             node.parentNode.setAttribute("script_translated_from", node.textContent);
             node.textContent = dictResult;
         }
     }
 
-    function dict(oriText) {
+    function dict(oriText, ignoreUnmatchDueToBeingPossiblePlayerID = false) {
         if (!oriText) {
             return;
         }
@@ -1184,9 +1285,55 @@
             let res = /^Craft ([\w\s-']+)$/.exec(text);
             return "制作" + dict(res[1]);
         }
+        if (text !== "Crafting Bench" && /^Crafting ([\w\s-']+)$/.test(text)) {
+            let res = /^Crafting ([\w\s-']+)$/.exec(text);
+            return "正在制作" + dict(res[1]);
+        }
+        if (/^Forge ([\w\s-']+)$/.test(text)) {
+            let res = /^Forge ([\w\s-']+)$/.exec(text);
+            return "锻造" + dict(res[1]);
+        }
+        if (/^Forging ([\w\s-']+)$/.test(text)) {
+            let res = /^Forging ([\w\s-']+)$/.exec(text);
+            return "正在锻造" + dict(res[1]);
+        }
         if (/^Farm ([\w\s-']+)$/.test(text)) {
             let res = /^Farm ([\w\s-']+)$/.exec(text);
             return "种植" + dict(res[1]);
+        }
+
+        // 拾荒
+        if (/^You scavenged the ([\w\s-']+) but didn't manage to find anything$/.test(text)) {
+            let res = /^You scavenged the ([\w\s-']+) but didn't manage to find anything$/.exec(text);
+            return "你在" + dict(res[1]) + "中搜寻但没有找到任何东西";
+        }
+        if (/^You scavenged the ([\w\s-']+) and found$/.test(text)) {
+            let res = /^You scavenged the ([\w\s-']+) and found$/.exec(text);
+            return "你在" + dict(res[1]) + "中搜寻并发现了";
+        }
+        if (/^x ([\w\s-']+)$/.test(text)) {
+            let res = /^x ([\w\s-']+)$/.exec(text);
+            return "x " + dict(res[1]);
+        }
+        if (/^You do not have a ([\w\s-']+)$/.test(text)) {
+            let res = /^You do not have a ([\w\s-']+)$/.exec(text);
+            return "你没有" + dict(res[1]);
+        }
+        if (/^You gained ([\d+])([\w\s-']+)$/.test(text)) {
+            let res = /^You gained ([\d+])([\w\s-']+)$/.exec(text);
+            return "你获得了 " + res[1] + dict(res[2]);
+        }
+
+        // 战斗
+        if (/^You defeated the ([\w\s-']+) and gained$/.test(text)) {
+            let res = /^You defeated the ([\w\s-']+) and gained$/.exec(text);
+            return "你击败了 " + res[1] + "并获得";
+        }
+
+        // 未分类
+        if (/^Build ([\w\s-']+)$/.test(text)) {
+            let res = /^Build ([\w\s-']+)$/.exec(text);
+            return "建造" + res[1];
         }
 
         // 消除后面空格
@@ -1204,7 +1351,7 @@
         // 消除后面的非字母
         if (/^(.+?)([^a-zA-Z]+)$/.test(text)) {
             let res = /^(.+?)([^a-zA-Z]+)$/.exec(text);
-            const dict1 = dict(res[1]);
+            const dict1 = dict(res[1], ignoreUnmatchDueToBeingPossiblePlayerID);
             if (res[2] === "." && dict1.endsWith("。")) {
                 return dict1;
             } else if (dict1.endsWith("。") && !res[2].endsWith(".")) {
@@ -1233,7 +1380,7 @@
         // 消除前面的非字母
         if (/^([^a-zA-Z]+)(.+)$/.test(text)) {
             let res = /^([^a-zA-Z]+)(.+)$/.exec(text);
-            return res[1] + dict(res[2]);
+            return res[1] + dict(res[2], ignoreUnmatchDueToBeingPossiblePlayerID);
         }
 
         // 结尾复数
@@ -1247,16 +1394,18 @@
         if (dictAllLowerCase[text.toLowerCase()]) {
             return dictAllLowerCase[text.toLowerCase()];
         } else {
-            if (logConfig_printUnmatchedTextToConsole) {
-                console.log(text);
-            }
-            if (logConfig_saveUnmatchedTextToArray) {
-                if (!unmatchedTexts.includes(text)) {
-                    unmatchedTexts.push(text);
+            if (!ignoreUnmatchDueToBeingPossiblePlayerID) {
+                if (logConfig_printUnmatchedTextToConsole) {
+                    console.log(text);
                 }
-            }
-            if (logConfig_printUnmatchedTextArray) {
-                console.log(unmatchedTexts);
+                if (logConfig_saveUnmatchedTextToArray) {
+                    if (!unmatchedTexts.includes(text)) {
+                        unmatchedTexts.push(text);
+                    }
+                }
+                if (logConfig_printUnmatchedTextArray) {
+                    console.log(unmatchedTexts);
+                }
             }
             return oriText;
         }
