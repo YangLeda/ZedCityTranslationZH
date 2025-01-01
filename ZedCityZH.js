@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      2.6
+// @version      2.7
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
+// @match        https://wiki.zed.city/*
 // @icon         https://www.zed.city/favicon.ico
 // @grant        none
 // ==/UserScript==
@@ -660,10 +661,6 @@
         "Unknown Loot": "未知战利品",
         "Your scavenging skill level needs to be": "你的拾荒技能等级需要达到",
         Fish: "钓鱼",
-    };
-
-    // 词典：待优化
-    const dictPending = {
         Seach: "搜索", // 游戏内错别字
         "gained every": "每",
         minutes: "分钟",
@@ -1045,7 +1042,10 @@
         "Bench Level": "制作台等级",
     };
 
-    const dictAll = { ...dictCommon, ...dictGpt, ...dictPending };
+    // 词典：wiki网站专用，请勿混放
+    const dictWiki = {};
+
+    const dictAll = { ...dictCommon, ...dictGpt, ...dictWiki };
     const dictAllLowerCase = {};
     for (const key in dictAll) {
         dictAllLowerCase[key.toLowerCase()] = dictAll[key];
@@ -1394,7 +1394,7 @@
         if (dictAllLowerCase[text.toLowerCase()]) {
             return dictAllLowerCase[text.toLowerCase()];
         } else {
-            if (!ignoreUnmatchDueToBeingPossiblePlayerID) {
+            if (window.location.href.includes("www.zed.city") && !ignoreUnmatchDueToBeingPossiblePlayerID) {
                 if (logConfig_printUnmatchedTextToConsole) {
                     console.log(text);
                 }
