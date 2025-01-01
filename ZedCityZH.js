@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      2.1
+// @version      2.2
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -124,9 +124,9 @@
         "Welcome to the End": "欢迎来到末日",
         "Getting started at the end of the world": "在世界末日时开始你的冒险",
         "A stranger appears": "一个陌生人出现",
-        "Who is this dark figure, quiet and still, under the moonlight": "月光下，这个安静的黑暗身影是谁？",
+        "Who is this dark figure, quiet and still, under the moonlight": "月光下，这个安静的黑暗身影是谁。",
         "The Purge is Upon Us": "大清洗即将来临",
-        "As Ash blankets the city, a raspy chuckle attracts your notice": "当灰烬覆盖城市时，一阵沙哑的笑声引起了你的注意",
+        "As Ash blankets the city, a raspy chuckle attracts your notice": "当灰烬覆盖城市时，一阵沙哑的笑声引起了你的注意。",
         "Select a location to continue": "选择一个地点继续",
         Arcade: "游戏厅",
         Cinema: "电影院",
@@ -305,7 +305,7 @@
         "Desert Eagle": "沙漠之鹰",
         Pistol: "手枪",
         "Pistol Ammo": "手枪子弹",
-        Handmade: "手工制作",
+        Handmade: "手工手枪",
         "Simple Ammo": "简单弹药",
         "Canned Food": "罐装食物",
         "Cooked Fish": "熟鱼",
@@ -430,7 +430,7 @@
         "The Purge is upon you Survivor; do all you can because there is not much time left":
             "大清洗行动即将到来，幸存者们；尽你所能，因为时间所剩无几。",
         "You will find Gray Gary in the alleyways, or rather, he will find you. He will be your quest giver this event, leading you to discover all the unique items introduced for this event only, culminating in the special trophy for this event":
-            "你将会在小巷里找到灰发Gary，或者说，他会找到你。他将是这次活动的任务发布者，带领你发现本次活动专属的独特物品，最终将带来这次活动的特别奖杯。",
+            "你将会在小巷里找到灰袍Gary，或者说，他会找到你。他将是这次活动的任务发布者，带领你发现本次活动专属的独特物品，最终将带来这次活动的特别奖杯。",
         "Event Time (UTC) : 20th December 2024 18:00:00 - 1st January": "活动时间（UTC）：2024年12月20日18:00:00 - 2025年1月1日",
         "Weapons and armour will be destroyed when it reaches 0% condition": "当武器和护甲的耐久度降至0%时，它们将被销毁。",
         "Trophy items have been made not tradable": "奖杯物品已被设置为不可交易。",
@@ -461,7 +461,7 @@
         "Changed order of stronghold buildings (will only apply to new players": "强盗据点建筑的顺序已更改（仅对新玩家有效）。",
         "Adjusted the unlock level of Kitchen, Ammo Bench & Armour Bench": "厨房、弹药台和护甲台的解锁等级已调整。",
         "Fixed a bug where the explore landing page would show in the city": "修复了探索登陆页面在城市中显示的问题。",
-        "Fixed a display bug on the locked message when you dont have a vehicle (inventory": "修复了当你没有车辆时，锁定信息显示的错误。",
+        "Fixed a display bug on the locked message when you dont have a vehicle (inventory": "修复了当你没有车辆时，锁定信息显示的错误(仓库",
         "Added tooltip on locked blueprints to make it more obvious that you need to upgrade the building":
             "为锁定的蓝图添加了提示，以更明显地提醒你需要升级建筑。",
         "Fuel Depot (Explore Location": "燃料站（探索地点）",
@@ -488,7 +488,7 @@
             "那么，想让自己变得有用吗？我需要一些燃料来修理我的摩托车，稍微一点就行。如果你能帮我找到一些，我就会告诉你一些有价值的信息。怎么样？",
         "Objective: Find fuel at Scrapyard": "目标：在废品堆场找到燃料",
         "Making your way through the city, a stray shadow catches your eye": "你穿行在城市中，一道漂浮的阴影吸引了你的注意。",
-        "There, in an alley, stands a very tall man. Clad in all gray, from toe to wide-brimmed hat, he looks very at home in the ash-covered surroundings. Even the sunglasses he's wearing are a slate gray that show no hint of the eyes behind them":
+        "There, in an alley, stands a very tall man. Clad in all gray, from toe to wide-brimmed hat, he  looks very at home in the ash-covered surroundings. Even the sunglasses he's wearing are a slate gray that show no hint of the eyes behind them":
             "在那里，在一条巷子里，站着一个非常高大的男人。全身灰色打扮，从脚到宽边帽，看起来非常适应这片灰烬覆盖的环境。即便是他戴的太阳镜也是石板灰色，完全遮掩了眼睛。",
         "A raspy chuckle escapes him as he notices your attention, followed by the worst smoker's voice you have ever heard":
             "他注意到你的目光，发出沙哑的笑声，接着是你听过的最糟糕的烟民声音。",
@@ -496,12 +496,12 @@
         "The stranger puts a cigarette in his mouth and shields it as he goes to light it, taking a long drag from it right after":
             "那陌生人把烟塞进嘴里，遮住它点燃，随即深吸了一口。",
         "You know what, I like you, I can tell there is a strong fire burning inside you, or at least a stronger one than most of the yellowbellies around here... Call me Gray, Gray Gary. I think we will be good friends":
-            "你知道吗，我喜欢你，我能看出你内心有着强烈的火焰，或者至少比这里大多数胆小鬼要强烈……叫我灰色Gary吧。我觉得我们会是好朋友。",
+            "你知道吗，我喜欢你，我能看出你内心有着强烈的火焰，或者至少比这里大多数胆小鬼要强烈……叫我灰袍Gary吧。我觉得我们会是好朋友。",
         "A shiver runs down your spine but Gray continues right away": "一阵寒意袭过你的脊背，但Gray立刻继续说道。",
         "I have a special little reward that I think you will like. Bring me some Ash and I'll tell you more about it, hmm":
             "我有一个特别的奖励，我想你会喜欢。带些灰烬给我，我会告诉你更多，嗯。",
         "You look around you at all the ash falling from the sky and raise an eyebrow at him": "你四下环顾，看到满天的灰烬落下，不禁扬起一眉。",
-        "Gray gives out another raspy chuckle and then speaks": "Gray再次发出沙哑的笑声，然后说道。",
+        "Gray gives out another raspy chuckle and then speaks": "Gray再次发出沙哑的笑声，然后说道",
         "Not this regular, useless stuff, no. I need something a bit more special, fresh, in a sense. You'll know it when you see it, I assure you":
             "不是这种普通、没用的东西，不。我要的是一些更特别、更新鲜的东西。你看到时会知道的，我敢保证。",
         "Gray takes another long drag of his cigarette, nearly done with it already, and nods his head towards a direction behind you":
@@ -509,7 +509,7 @@
         "In fact, there is a nice new place in the city that should help you out": "实际上，城市里有个新地方，应该能帮到你。",
         "You instinctively glance behind you in the direction he nodded, and when you glance back he's already gone":
             "你本能地回头看向他点头的方向，转身时发现他已经不见了。",
-        "Objective: Find enough ash to satisfy Gray Gary": "目标：找到足够的灰烬满足Gray Gary",
+        "Objective: Find enough ash to satisfy Gray Gary": "目标：找到足够的灰烬满足灰袍Gary",
         "Membership will last 31 days and is": "会员有效期为31天，并且是",
         "FREE in Alpha": "在Alpha阶段免费",
         "Energy Regeneration Speed": "能量恢复速度",
@@ -610,19 +610,56 @@
         Lighter: "打火机",
         "Barracks key": "军营钥匙",
         "Police RFID": "警用射频ID",
+        "A crafting bench is a sturdy table where manual work is done": "制作工作台是一个坚固的桌子，用来进行手工制作",
+        "Complete building to access crafting bench": "完成建筑以访问制作工作台",
+        Kwizine: "烹饪",
+        None: "无",
+        "Steel Fishing Rod": "钢制钓鱼竿",
+        "Pro Fishing Rod": "专业钓鱼竿",
+        "Items Farmed": "耕种的物品",
+        "Items Distilled": "蒸馏的物品",
+        "Raids Completed": "已完成的突袭",
+        Search: "搜索",
+        ID: "ID",
+        "No survivors found": "未找到幸存者",
+        "Top Crafter": "顶级工匠",
+        "Top Forger": "顶级锻造者",
+        "Top Hunter": "顶级猎人",
+        "Top Scavenger": "顶级拾荒者",
+        Offers: "优惠",
+        Carp: "鲤鱼",
+        "Zen Egg": "禅蛋",
+        "ZedBull Egg": "僵尸红牛蛋",
+        "Witch's Brew": "巫师饮品",
+        "Survivor Egg": "幸存者蛋",
+        SMG: "冲锋枪",
+        News: "新闻",
+        "Create Account": "创建账户",
+        "Logging Out": "登出",
+        "Can You Survive": "你能生存吗",
+        "Alpha in progress": "Alpha 测试进行中",
+        "Join the discussion": "加入讨论",
+        "We are currently in a closed alpha stage, you can get an access code from our discord server. We have a growing community on discord and would love for you to join us in creating the best Multiplayer Zombie Survival Simulator":
+            "我们目前处于封闭的 Alpha 测试阶段，您可以通过我们的 Discord 服务器获取访问代码。我们在 Discord 上有一个不断壮大的社区，非常希望您加入我们，一起打造最好的多人僵尸生存模拟游戏",
+        Register: "注册",
+        Password: "密码",
+        "Access Code": "访问代码",
+        "You can request an access code on our discord server": "您可以在我们的 Discord 服务器上请求访问代码",
+        "Display Name": "显示名称",
+        "This field is required": "此字段为必填项",
+        "Forgot password": "忘记密码",
+        "Remember Me": "记住我",
     };
 
     // 词典：待优化
     const dictPending = {
         Seach: "搜索", // 游戏内错别字
         "gained every": "每",
-        minutes: "分钟获得",
+        minutes: "分钟",
         "Booster (Energy Drink": "增强剂（能量饮料）",
         "Booster (Medical": "增强剂（医疗）",
         "Booster (Food": "增强剂（食物）",
         "Booster (Alcohol": "增强剂（酒精）",
-        "Your application for World Of Warcraft has been accepted": "您的《魔兽世界》申请已被接受",
-        "Active 38 minutes ago": "38分钟前活跃",
         "Effect: Increases morale by 20 and booster cooldown by 30 minutes": "效果：增加士气20，增强剂冷却时间30分钟",
         "Effect: Increases morale by 100 and booster cooldown by 30 minutes": "效果：增加士气100，增强剂冷却时间30分钟",
         "Effect: Increases morale by 65 and booster cooldown by 30 minutes": "效果：增加士气65，增强剂冷却时间30分钟",
@@ -635,11 +672,16 @@
         "angela deposited 9x Ash": "angela存入9个灰烬",
         "Your membership will expire in": "您的会员将在",
         "a month": "一个月后到期",
-        "Zen Egg": "禅蛋",
-        "ZedBull Egg": "僵尸红牛蛋",
-        "Witch's Brew": "巫师饮品",
-        "Survivor Egg": "幸存者蛋",
-        SMG: "冲锋枪",
+        "Effect: Increases morale by 50 and booster cooldown by 1 hour": "效果：增加50点士气和1小时的增益冷却时间",
+        "Effect: Increases morale by 50, energy by 10, rad immunity by 5 and booster cooldown by 30 minutes":
+            "效果：增加50点士气、10点能量、5点辐射免疫力和30分钟的增益冷却时间",
+        "A long, thin strand of cotton used in sewing": "一条用于缝纫的长而细的棉线",
+        "Made by carefully crushing the head of Zeds between two rocks": "通过小心地将僵尸的头部夹在两块岩石之间来制作",
+        "Effect: Increases energy by 30 and booster cooldown by 2 hours": "效果：增加30点能量和2小时的增益冷却时间",
+        "Effect: Increases morale by 100, energy by 25 and booster cooldown by 30 minutes": "效果：增加100点士气、25点能量和30分钟的增益冷却时间",
+        "Effect: Increases morale by 500 and booster cooldown by 30 minutes": "效果：增加500点士气和30分钟的增益冷却时间",
+        "Effect: Reduce recovery time by 10 minutes, increases life by 10 and medical cooldown by 5 minutes":
+            "效果：减少10分钟的恢复时间，增加10点生命值和5分钟的医疗冷却时间",
     };
 
     // 词典：ChatGPT生成，未经过人工审核。
@@ -684,7 +726,7 @@
         "Fixed some layout issues on public homepage": "修复了公共主页上的一些布局问题。",
         "Radio tower bugs have been resolved": "已解决无线电塔的错误。",
         "Accepting / declining faction applications has been fixed": "接受/拒绝派系申请的功能已修复。",
-        "Scavenges will not fail now if your morale is": "如果你的士气足够高，垃圾捡拾将不会失败。",
+        "Scavenges will not fail now if your morale is": "拾荒将不会失败，当士气为",
         "Players will be automatically logged in after creating an account": "创建账户后，玩家将自动登录。",
         "Improved number formatting on factions": "已改进派系中的数字格式。",
         "Active page on the menu has been fixed and should now work in most sub-pages": "菜单中的活动页面已修复，现在应在大多数子页面中正常工作。",
@@ -900,6 +942,9 @@
         "NPC Scaling": "NPC等级缩放",
         "Prepare for a heightened challenge as NPCs now boast levels ranging from 1 to 100. Witness their stats evolve in tandem with their levels, and reap the rewards of superior loot at higher tiers":
             "准备迎接更高的挑战，因为NPC现在拥有从1到100的等级。见证他们的属性随着等级的提升而变化，并在更高层次获得更好的战利品",
+        "Scavanges will not fail now if your morale is": "现在如果你的士气足够，拾荒不会失败",
+        "Clicking train in gym too fast would casue an error - this has been fixed": "在健身房点击训练过快会导致错误 - 已修复",
+        "Fixed a bug with limits on leaderbord counters": "修复了排行榜计数器限制的错误",
     };
 
     const dictAll = { ...dictCommon, ...dictGpt, ...dictPending };
@@ -974,7 +1019,7 @@
             return;
         }
 
-        if (window.location.href.includes("www.zed.city/factions/")) {
+        if (window.location.href.includes("www.zed.city/factions/") || window.location.href.includes("www.zed.city/faction/")) {
             // 排除帮派成员页面中帮派名
             if (node.parentNode.matches("div.text-center.text-h4.text-uppercase.text-no-bg")) {
                 return;
@@ -1107,6 +1152,28 @@
             return result + "!";
         }
 
+        // 通知
+        if (/^Your application for ([\w\s]+) has been accepted$/.test(text)) {
+            let res = /^Your application for ([\w\s]+) has been accepted$/.exec(text);
+            return "您的申请 " + res[1] + " 已通过";
+        }
+
+        // 你没有足够的XX
+        if (/^You do not have enough ([\w\s-']+)$/.test(text)) {
+            let res = /^You do not have enough ([\w\s-']+)$/.exec(text);
+            return "你没有足够的" + dict(res[1]);
+        }
+
+        // 制作XX
+        if (/^Craft ([\w\s-']+)$/.test(text)) {
+            let res = /^Craft ([\w\s-']+)$/.exec(text);
+            return "制作" + dict(res[1]);
+        }
+        if (/^Farm ([\w\s-']+)$/.test(text)) {
+            let res = /^Farm ([\w\s-']+)$/.exec(text);
+            return "种植" + dict(res[1]);
+        }
+
         // 消除后面空格
         if (/^(.+?)(\s+)$/.test(text)) {
             let res = /^(.+?)(\s+)$/.exec(text);
@@ -1122,7 +1189,30 @@
         // 消除后面的非字母
         if (/^(.+?)([^a-zA-Z]+)$/.test(text)) {
             let res = /^(.+?)([^a-zA-Z]+)$/.exec(text);
-            return dict(res[1]) + res[2];
+            const dict1 = dict(res[1]);
+            if (res[2] === "." && dict1.endsWith("。")) {
+                return dict1;
+            } else if (dict1.endsWith("。") && !res[2].endsWith(".")) {
+                return dict1;
+            } else if (!dict1.endsWith("。") && res[2].endsWith(".")) {
+                return dict1 + res[2].replaceAll(".", "。");
+            } else if (!dict1.endsWith("。") && res[2].endsWith(")")) {
+                return dict1;
+            } else if (res[2] === '."' && dict1.endsWith("。")) {
+                return dict1 + res[2].charAt(1);
+            } else if (res[2] === '?"' && dict1.endsWith("？")) {
+                return dict1 + res[2].charAt(1);
+            } else if (res[2] === ")" && (dict1.endsWith("）") || dict1.endsWith("）。"))) {
+                return dict1;
+            } else if (res[2] === ")." && dict1.endsWith("）。")) {
+                return dict1;
+            } else if (res[2] === "!" && dict1.endsWith("。")) {
+                return dict1.substring(0, dict1.length - 1) + res[2];
+            } else if (res[2] === ":" && dict1.endsWith("：")) {
+                return dict1;
+            } else {
+                return dict1 + res[2];
+            }
         }
 
         // 消除前面的非字母
