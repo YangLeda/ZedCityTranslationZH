@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.5
+// @version      3.6
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -338,7 +338,6 @@
         "Smelt Scrap": "熔炼废品",
         "Smelt Iron Ore": "熔炼铁矿",
         "Purify Water": "净化水",
-        "Forge Lockpicks": "锻造撬锁工具",
         Discoverable: "可发现物品",
         "Hot enough to cook things": "热度足以烹饪食物",
         "Complete building to access kitchen": "完成建筑以访问厨房",
@@ -1284,6 +1283,15 @@
         "Upgrade Defense": "提升防御",
         "Upgrade Speed": "提升速度",
         "Upgrade Agility": "提升敏捷",
+        "Coming Soon": "即将推出",
+        "Donator House is coming soon": "捐赠者之家即将推出",
+        "Create Faction": "创建帮派",
+        "No factions found": "未找到帮派",
+        "Faction Name": "帮派名称",
+        Create: "创建",
+        "Please enter a faction name": "请输入帮派名称",
+        Lockpicks: "撬锁工具",
+        "Cloth Jacket": "布质夹克",
     };
 
     // 词典：待处理
