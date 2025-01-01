@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      2.9
+// @version      3.0
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -487,7 +487,7 @@
             "你凝视着她，等待着看看自己是否能用什么交换一些有价值的东西。",
         "So, wanna make yourself useful? I need some fuel to help start fixing up my bike. Just a little will do. If you can go find some for me, I'll let you in on some valuable information. So what'ya say":
             "那么，想让自己变得有用吗？我需要一些燃料来修理我的摩托车，稍微一点就行。如果你能帮我找到一些，我就会告诉你一些有价值的信息。怎么样？",
-        "Objective: Find fuel at Scrapyard": "目标：在废品堆场找到燃料",
+        "Objective: Find fuel at Scrapyard": "目标：在废品场找到燃料",
         "Making your way through the city, a stray shadow catches your eye": "你穿行在城市中，一道漂浮的阴影吸引了你的注意。",
         "There, in an alley, stands a very tall man. Clad in all gray, from toe to wide-brimmed hat, he  looks very at home in the ash-covered surroundings. Even the sunglasses he's wearing are a slate gray that show no hint of the eyes behind them":
             "在那里，在一条巷子里，站着一个非常高大的男人。全身灰色打扮，从脚到宽边帽，看起来非常适应这片灰烬覆盖的环境。即便是他戴的太阳镜也是石板灰色，完全遮掩了眼睛。",
