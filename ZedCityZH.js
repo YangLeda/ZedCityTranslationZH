@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      1.6
+// @version      1.7
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -14,84 +14,6 @@
     const unmatchedTexts = [];
     const logConfig_saveUnmatchedTextToArray = true; // 将未匹配文本保存到未匹配列表，去重
     const logConfig_printUnmatchedTextArray = true; // 遇到未匹配文本时打印未匹配列表
-
-    // XMLHttpRequest hook, 用于翻译大段文字
-    const open_prototype = XMLHttpRequest.prototype.open;
-    unsafeWindow.XMLHttpRequest.prototype.open = function () {
-        this.addEventListener("readystatechange", function (event) {
-            if (this.readyState === 4) {
-                let modifiedResponse = this.response;
-                if (this.responseURL.includes("api.zed.city/getNews")) {
-                    modifiedResponse = getModifiedResponseOfGetNewsXML(this);
-                }
-                Object.defineProperty(this, "response", { writable: true });
-                Object.defineProperty(this, "responseText", { writable: true });
-                this.response = modifiedResponse;
-                this.responseText = modifiedResponse;
-            }
-        });
-        return open_prototype.apply(this, arguments);
-    };
-
-    function getModifiedResponseOfGetNewsXML(xml) {
-        let response = JSON.parse(xml.response);
-        if (response.posts) {
-            for (const announcement of response.announcements) {
-                if (XMLDictGetNews[announcement.text]) {
-                    announcement.text = XMLDictGetNews[announcement.text];
-                } else {
-                    if (logConfig_printUnmatchedTextToConsole) {
-                        console.log(announcement.text);
-                    }
-                    if (logConfig_saveUnmatchedTextToArray) {
-                        if (!unmatchedTexts.includes(announcement.text)) {
-                            unmatchedTexts.push(announcement.text);
-                        }
-                    }
-                    if (logConfig_printUnmatchedTextArray) {
-                        console.log(unmatchedTexts);
-                    }
-                }
-            }
-        }
-        if (response.posts) {
-            for (const post of response.posts) {
-                if (XMLDictGetNews[post.text]) {
-                    post.text = XMLDictGetNews[post.text];
-                } else {
-                    if (logConfig_printUnmatchedTextToConsole) {
-                        console.log(post.text);
-                    }
-                    if (logConfig_saveUnmatchedTextToArray) {
-                        if (!unmatchedTexts.includes(post.text)) {
-                            unmatchedTexts.push(post.text);
-                        }
-                    }
-                    if (logConfig_printUnmatchedTextArray) {
-                        console.log(unmatchedTexts);
-                    }
-                }
-            }
-        }
-        return JSON.stringify(response);
-    }
-
-    // XML词典：更新日志中的正文
-    // "":"",
-    const XMLDictGetNews = {
-        "Hello to all the Survivors of Zed City! Be it those who have been with us for years, or those who have joined just recently, we would like to thank every single one of you for participating in the closed alpha stage of Zed City. Despite the frankly inconvenient method of registration, so many have joined us over the years and helped bring the game to the state it is now. <br /><br />Thanks to all of you, we can now move on to the open release stage of the game. <b>This means the server will be reset, and everything will be turned back to zero.</b> Not to worry though, everything you have in the trophy section will be kept, including a little extra you will find post-reset as thanks for being with us in the alpha. <br /><br />With that said, enjoy the Purge for all it's worth, as the server will be closed and reset directly after the event is finished. <br /><br />Once again, thank you all for being with us, and see you on the other side.":
-            "向所有 Zed City 的幸存者们问好！无论是那些多年来一直陪伴我们的人，还是最近才加入的人，我们都想感谢你们每一位参与 Zed City 的封闭 alpha 阶段。尽管注册方式坦率地说不方便，但多年来仍有如此多的人加入我们，帮助将游戏带到现在的状态。<br /><br />感谢大家，我们现在可以进入游戏的公开发布阶段。<b>这意味着服务器将被重置，一切都将恢复原状。</b> 不过不用担心，奖杯部分中的所有内容都将保留，包括重置后您会发现的一些额外内容，以感谢您在 alpha 阶段与我们在一起。<br /><br />话虽如此，尽情享受清洗吧，因为服务器将在活动结束后立即关闭并重置。 <br /><br />再次感谢大家与我们在一起，我们在另一边再见。",
-        "Seemingly out of nowhere, ash plumes cover the sky as a constant ashfall covers the surroundings in a bleak gray color. <br /><br />Fires in the wilderness spread as the few remaining signs of life in the world are snuffed out.<br /><br />The Purge is upon you Survivor; do all you can because there is not much time left.<br /><br />You will find Gray Gary in the alleyways, or rather, he will find you. He will be your quest giver this event, leading you to discover all the unique items introduced for this event only, culminating in the special trophy for this event.<br /><br />Event Time (UTC) : 20th December 2024 18:00:00 - 1st January 2025 18:00:00":
-            "似乎不知从何而来，火山灰覆盖了天空，不断的火山灰使周围环境变得灰暗。<br /><br />荒野中的大火蔓延开来，世界上仅存的生命迹象也被扑灭了。<br /><br />清除行动已在进行中，幸存者们；尽你所能，因为时间不多了。<br /><br />你会在小巷里找到格雷·加里，或者更确切地说，他会找到你。他将是本次活动的任务给予者，带领你发现仅为本次活动引入的所有独特物品，最终获得本次活动的特殊奖杯。<br /><br />活动时间（UTC）：2024 年 12 月 20 日 18:00:00 - 2025 年 1 月 1 日 18:00:00",
-        "<div>- Weapons and armour will be destroyed when it reaches 0% condition<br />- Trophy items have been made not tradable<br />- Messages icon has been removed from top menu until the feature is added</div>":
-            "<div>- 武器和盔甲在耐久度降至 0% 时将被摧毁<br />- 奖杯物品已设置为不可交易<br />- 顶部菜单中的消息图标已被移除，直至该功能添加完成</div>",
-        "<strong>Gym</strong><strong><br /></strong>\r\n<div>Changes have been made to balance your fight stats growth, they will now improve more slowly at first but will accelerate as time goes on.</div>\r\n<div>- The building level will now have less immediate impact but will offer more significant benefits in the long run. <br />- Requirements for each level upgrade have been adjusted<br /><br /></div>\r\n<div><strong>NPC Balancing</strong><br />We have adjusted the stats of each zed to match the changes made to the fight stats growth.</div>\r\n<div><br /><b>Difficulty Rating<br /></b>Each NPC will now have a difficulty rating so you can make a better decision on your ability to defeat them. <br /><br /><strong>Weakness</strong><br />Choose your weapon wisely, zeds will now have a weakness to specific types of weapons. <br /><br /><strong>Wiki<br /></strong>A detailed list of all the items in the game can be found in the wiki.<br /><br />- Crafting will show a total time if you are crafting more than 1x<br />- Explore list has been ordered by travel time & difficulty rating<br />- The help page has been updated to include links to wiki + discord</div>":
-            "<strong>健身房</strong><strong><br /></strong>\r\n<div>我们已经做出改变来平衡你的战斗数据增长，它们现在一开始会提高得比较慢，但随着时间的推移会加速。</div>\r\n<div>- 建筑等级现在产生的直接影响较小，但从长远来看将提供更显著的好处。<br />- 调整了每次升级的要求<br /><br /></div>\r\n<div><strong>NPC平衡</strong><br />我们已经调整了每个zed的属性以匹配战斗数据增长的改变。</div>\r\n<div><br /><b>难度等级<br /></b>每个NPC现在都有一个难度等级，这样你就可以更好地决定你击败他们的能力。<br /><br /><strong>弱点</strong><br />明智地选择你的武器，zeds现在对特定类型的武器有弱点。 <br /><br /><strong>Wiki<br /></strong>在 wiki 中可以找到游戏中所有物品的详细列表。<br /><br />- 如果您制作超过 1 次，制作将显示总时间<br />- 探索列表已按旅行时间和难度等级排序<br />- 帮助页面已更新，包含指向 wiki + discord 的链接</div>",
-        '<strong>XP Balancing</strong><strong><br /></strong>\r\n<div>Balancing changes have been made to xp payouts, gym training has been reduced slightly and more xp is given for hunting. Winning fights will give extra xp. Every quest objective will give at least 25xp.<br /><br />- Tutorial Quest "Welcome to the end" has been re-written. <br />- Difficulty has been reduced for new players in the Forest & Lake.<br />- Changed order of stronghold buildings (will only apply to new players).<br />- Adjusted the unlock level of Kitchen, Ammo Bench & Armour Bench.<br />- Fixed a bug where the explore landing page would show in the city<br />- Fixed a display bug on the locked message when you dont have a vehicle (inventory).<br />- Added tooltip on locked blueprints to make it more obvious that you need to upgrade the building.</div>':
-            "<strong>XP 平衡</strong><strong><br /></strong>\r\n<div>对 xp 支出进行了平衡更改，健身房训练略有减少，狩猎可获得更多 xp。赢得战斗将提供额外的 xp。每个任务目标将提供至少 25 xp。<br /><br />- 教程任务“欢迎来到末日”已被重写。  <br />- 森林和湖泊中新玩家的难度有所降低。<br />- 要塞建筑的顺序已更改（仅适用于新玩家）。<br />- 调整了厨房、弹药台和装甲台的解锁级别。<br />- 修复了探索登陆页面显示在城市中的错误<br />- 修复了当您没有车辆（库存）时锁定消息的显示错误。<br />- 在锁定的蓝图上添加了工具提示，使您更明显地需要升级建筑物。</div>",
-        "<strong>Fuel Depot (Explore Location)</strong><strong><br /></strong>\r\n<div>Discover a new area packed with massive, abandoned fuel tankers, offering a prime opportunity to replenish your fuel reserves!<br /><br />- Fuel weight has been reduced to 0.75kg.<br />- Bug causing tools to be taken with 1 use has been fixed.<br />- Foundation Pit will now cost rad immunity.<br /><br /></div>":
-            "<strong>燃料库（探索位置）</strong><strong><br /></strong>\r\n<div>发现一个挤满了大量废弃油罐车的新区域，为您提供补充燃料储备的绝佳机会！<br /><br />- 燃料重量已减少至 0.75 公斤。<br />- 导致工具使用一次后就被拿走的错误已修复。<br />- 地基坑现在将消耗辐射免疫力。<br /><br /></div>",
-    };
 
     startTranslatePage();
 
@@ -354,7 +276,6 @@
         Recovery: "恢复",
         "Create Bandage": "制作绷带",
         LVL: "等级",
-
         Menu: "菜单",
         Submit: "提交",
         energy: "能量",
@@ -623,6 +544,63 @@
         "Farm Items": "农场物品",
         "Distill Items": "蒸馏物品",
         "Complete Raid": "完成袭击",
+        "st January 2025 6PM": "2025年1月1日 6PM",
+        "Hello to all the Survivors of Zed City! Be it those who have been with us for years, or those who have joined just recently, we would like to thank every single one of you for participating in the closed alpha stage of Zed City. Despite the frankly inconvenient method of registration, so many have joined us over the years and helped bring the game to the state it is now":
+            "致所有Zed City的幸存者们！无论是那些陪伴我们多年的玩家，还是最近加入的玩家，我们都要感谢你们每一位，感谢你们参与Zed City的封闭Alpha测试阶段。尽管注册方式确实不太方便，然而，依然有许多人加入我们，帮助游戏发展至今天的模样。",
+        "Thanks to all of you, we can now move on to the open release stage of the game": "感谢你们，我们现在可以进入游戏的公开发布阶段。",
+        "This means the server will be reset, and everything will be turned back to zero": "这意味着服务器将会重置，所有数据将被清空。",
+        "Not to worry though, everything you have in the trophy section will be kept, including a little extra you will find post-reset as thanks for being with us in the alpha":
+            "不过不必担心，奖杯部分的所有内容将被保留，并且作为对你们在Alpha阶段陪伴我们的感谢，重置后你们还会发现一些额外的奖励。",
+        "With that said, enjoy the Purge for all it's worth, as the server will be closed and reset directly after the event is finished":
+            "话虽如此，尽情享受这次清除活动吧，因为活动结束后，服务器将会关闭并重置。",
+        "Once again, thank you all for being with us, and see you on the other side": "再次感谢你们的陪伴，期待在另一端再见。",
+        "Seemingly out of nowhere, ash plumes cover the sky as a constant ashfall covers the surroundings in a bleak gray color":
+            "似乎是突然之间，灰烬云覆盖了天空，持续的灰尘落下，把周围的环境染成了一片灰色。",
+        "Fires in the wilderness spread as the few remaining signs of life in the world are snuffed out":
+            "荒野中的火灾蔓延，世界上为数不多的生命迹象被扑灭。",
+        "The Purge is upon you Survivor; do all you can because there is not much time left":
+            "清除行动即将到来，幸存者们；尽你所能，因为时间所剩无几。",
+        "You will find Gray Gary in the alleyways, or rather, he will find you. He will be your quest giver this event, leading you to discover all the unique items introduced for this event only, culminating in the special trophy for this event":
+            "你将会在小巷里找到灰色的Gary，或者说，他会找到你。他将是这次活动的任务发布者，带领你发现本次活动专属的独特物品，最终将带来这次活动的特别奖杯。",
+        "Event Time (UTC) : 20th December 2024 18:00:00 - 1st January": "活动时间（UTC）：2024年12月20日18:00:00 - 2025年1月1日",
+        "Weapons and armour will be destroyed when it reaches 0% condition": "当武器和护甲的耐久度降至0%时，它们将被销毁。",
+        "Trophy items have been made not tradable": "奖杯物品已被设置为不可交易。",
+        "Messages icon has been removed from top menu until the feature is added": "顶部菜单中的消息图标已移除，直到该功能加入。",
+        "Changes have been made to balance your fight stats growth, they will now improve more slowly at first but will accelerate as time goes on":
+            "已对战斗数据增长做出平衡性调整，现在初期的战斗数据提升会较慢，但随着时间的推移将加速增长。",
+        "The building level will now have less immediate impact but will offer more significant benefits in the long run":
+            "建筑等级的影响现在不会那么直接，但长期来看将带来更为显著的益处。",
+        "Requirements for each level upgrade have been adjusted": "每个等级升级的要求已做出调整。",
+        "NPC Balancing": "NPC平衡性调整",
+        "We have adjusted the stats of each zed to match the changes made to the fight stats growth":
+            "我们已调整每个僵尸的属性，以适应战斗数据增长的变化。",
+        "Difficulty Rating": "难度等级",
+        "Each NPC will now have a difficulty rating so you can make a better decision on your ability to defeat them":
+            "每个NPC现在都有一个难度等级，帮助你更好地评估自己是否能够击败它们。",
+        Weakness: "弱点",
+        "Choose your weapon wisely, zeds will now have a weakness to specific types of weapons":
+            "选择武器时要谨慎，僵尸现在会对特定类型的武器有弱点。",
+        "A detailed list of all the items in the game can be found in the wiki": "游戏中所有物品的详细列表可以在wiki中找到。",
+        "Crafting will show a total time if you are crafting more than 1x": "如果你制作多个物品，制作时间将会显示总时长。",
+        "Explore list has been ordered by travel time & difficulty rating": "探索列表将按照旅行时间和难度等级排序。",
+        "The help page has been updated to include links to wiki + discord": "帮助页面已更新，包含了指向wiki和Discord的链接。",
+        "XP Balancing": "XP平衡性调整",
+        "Balancing changes have been made to xp payouts, gym training has been reduced slightly and more xp is given for hunting. Winning fights will give extra xp. Every quest objective will give at least 25xp":
+            "XP奖励的平衡性调整已经做出，健身训练的XP稍微减少，而狩猎获得的XP更多。赢得战斗会额外获得XP。每个任务目标至少会奖励25XP。",
+        'Tutorial Quest "Welcome to the end" has been re-written': "教程任务《欢迎来到末日》已重新编写。",
+        "Difficulty has been reduced for new players in the Forest & Lake": "森林和湖泊地区的难度已减少，以帮助新玩家。",
+        "Changed order of stronghold buildings (will only apply to new players": "强盗据点建筑的顺序已更改（仅对新玩家有效）。",
+        "Adjusted the unlock level of Kitchen, Ammo Bench & Armour Bench": "厨房、弹药台和护甲台的解锁等级已调整。",
+        "Fixed a bug where the explore landing page would show in the city": "修复了探索登陆页面在城市中显示的问题。",
+        "Fixed a display bug on the locked message when you dont have a vehicle (inventory": "修复了当你没有车辆时，锁定信息显示的错误。",
+        "Added tooltip on locked blueprints to make it more obvious that you need to upgrade the building":
+            "为锁定的蓝图添加了提示，以更明显地提醒你需要升级建筑。",
+        "Fuel Depot (Explore Location": "燃料站（探索地点）",
+        "Discover a new area packed with massive, abandoned fuel tankers, offering a prime opportunity to replenish your fuel reserves":
+            "发现一个全新的区域，里面堆满了废弃的巨大油罐车，为补充你的燃料储备提供了绝佳的机会。",
+        "Fuel weight has been reduced to 0.75kg": "燃料重量已减少至0.75kg。",
+        "Bug causing tools to be taken with 1 use has been fixed": "修复了工具只可使用一次的问题。",
+        "Foundation Pit will now cost rad immunity": "基础坑现在需要辐射免疫力。",
     };
 
     const dictAll = { ...dictCommon, ...dictStronghold, ...dictReleaseNotes, ...dictGpt };
