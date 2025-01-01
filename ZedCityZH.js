@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      2.3
+// @version      2.4
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -649,6 +649,10 @@
         "This field is required": "此字段为必填项",
         "Forgot password": "忘记密码",
         "Remember Me": "记住我",
+        "Faction Base": "帮派基地",
+        "Help Guide": "帮助",
+        "Zed City": "Zed City",
+        "Zed City | The Survival MMORPG": "Zed City | 生存MMORPG",
     };
 
     // 词典：待优化
@@ -953,6 +957,14 @@
         dictAllLowerCase[key.toLowerCase()] = dictAll[key];
     }
 
+    // 翻译网页标题
+    new MutationObserver(function (mutations) {
+        let string = document.querySelector("title").textContent.replaceAll(" | Zed City", "");
+        string = dict(string);
+        string += " | Zed City";
+        document.querySelector("title").textContent = string;
+    }).observe(document.querySelector("title"), { subtree: true, characterData: true, childList: true });
+
     startTranslatePage();
 
     function startTranslatePage() {
@@ -1067,6 +1079,9 @@
     }
 
     function dict(oriText) {
+        if (!oriText) {
+            return;
+        }
         let text = oriText;
 
         // 排除规则
