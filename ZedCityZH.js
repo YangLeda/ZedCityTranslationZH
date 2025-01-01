@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      1.8
+// @version      1.9
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -10,12 +10,10 @@
 // ==/UserScript==
 
 (() => {
-    const logConfig_printUnmatchedTextToConsole = false; // 遇到未匹配文本时打印到控制台
+    const logConfig_printUnmatchedTextToConsole = false;
     const unmatchedTexts = [];
-    const logConfig_saveUnmatchedTextToArray = true; // 将未匹配文本保存到未匹配列表，去重
-    const logConfig_printUnmatchedTextArray = true; // 遇到未匹配文本时打印未匹配列表
-
-    startTranslatePage();
+    const logConfig_saveUnmatchedTextToArray = true;
+    const logConfig_printUnmatchedTextArray = true;
 
     const excludes = ["K", "M", "B", "D", "H", "S", "Lv", "MAX", "wiki", "discord", "XP", "N/A", "x"];
 
@@ -29,46 +27,25 @@
         /[\u4e00-\u9fff]/,
     ];
 
-    // 词典：通用
+    // 词典：已人工审核过。建议先用ChatGPT翻译，然后人工审核。必须经过人工审核再加入此列表。
     const dictCommon = {
-        purge: "清洗",
+        purge: "大清洗",
         stronghold: "据点",
         "Unlock at level": "解锁等级",
-    };
-
-    // 词典：更新日志
-    const dictReleaseNotes = {
-        "Upcoming Server Reset and Open Release": "即将到来的服务器重置和公开发布",
-        "load more": "加载更多",
-        "Final Reset": "最后重置",
-    };
-
-    // 词典：Stronghold
-    const dictStronghold = {
-        gym: "健身房",
-        "Train your stats to become more effective in combat": "锻炼属性在战斗中变得更强",
-        train: "锻炼",
-        "The damage you make on impact": "命中时造成的伤害",
-        "Your ability to resist damage": "抵抗伤害的能力",
-        "The chance of hitting your target": "命中敌人的几率",
-    };
-
-    // 词典：ChatGPT生成
-    const dictGpt = {
         Version: "版本",
         City: "城市",
         Inventory: "背包",
         Quests: "任务",
         Hunting: "狩猎",
-        Scavenge: "搜寻",
+        Scavenge: "拾荒",
         Explore: "探索",
         Skills: "技能",
         Help: "帮助",
         "Release Notes": "更新日志",
         Forums: "论坛",
         "Report Bug": "报告错误",
-        Faction: "派系",
-        "Medical Bay": "医疗舱",
+        Faction: "帮派",
+        "Medical Bay": "医疗间",
         "Crafting Bench": "制作台",
         Furnace: "熔炉",
         Kitchen: "厨房",
@@ -78,11 +55,24 @@
         "Armour Bench": "盔甲台",
         Garage: "车库",
         Camp: "营地",
-        Storage: "储藏",
+        Storage: "仓库",
         Farm: "农场",
         Distillery: "酒厂",
-        Refinery: "炼油厂",
+        Refinery: "精炼厂",
         Base: "基地",
+        "Upcoming Server Reset and Open Release": "即将到来的服务器重置与公开发布",
+        "load more": "加载更多",
+        "Final Reset": "最终重置",
+        gym: "健身房",
+        "Train your stats to become more effective in combat": "训练你的属性，以在战斗中更有效",
+        train: "训练",
+        "The damage you make on impact": "你命中时造成的伤害",
+        "Your ability to resist damage": "你抵抗伤害的能力",
+        "The chance of hitting your target": "击中目标的概率",
+    };
+
+    // 词典：ChatGPT生成，未经过人工审核。
+    const dictGpt = {
         Raids: "突袭",
         Activity: "活动",
         Rank: "等级",
@@ -812,11 +802,13 @@
         "Active 5 months ago": "5个月前活跃",
     };
 
-    const dictAll = { ...dictCommon, ...dictStronghold, ...dictReleaseNotes, ...dictGpt };
+    const dictAll = { ...dictCommon, ...dictGpt };
     const dictAllLowerCase = {};
     for (const key in dictAll) {
         dictAllLowerCase[key.toLowerCase()] = dictAll[key];
     }
+
+    startTranslatePage();
 
     function startTranslatePage() {
         translateNode(document.body);
