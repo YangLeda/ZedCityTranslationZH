@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      2.2
+// @version      2.3
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -83,7 +83,7 @@
         Survivors: "幸存者",
         Retail: "零售",
         Glockbuster: "Glock杀手",
-        "Junk Store": "垃圾店",
+        "Junk Store": "废品店",
         "Zed Mart": "僵尸商场",
         "Donator Store": "捐赠商店",
         Factions: "帮派",
