@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.3
+// @version      3.4
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -1202,6 +1202,36 @@
         Offline: "离线",
         "Offline for maintenance": "离线维护中",
         Retry: "重试",
+        "Green Lab Games Ltd": "Green Lab Games有限公司",
+        "Privacy Policy": "隐私政策",
+        "Terms of Service": "服务条款",
+        "Play Now": "立即游戏",
+        "Learn More": "了解更多",
+        "Deep Exploration": "深度探索",
+        "Explore dark and infested locations around the map, working through each challenge and unlocking the next rooms until you find the supplies you're in need of to survive":
+            "探索地图上黑暗且感染的地点，完成每个挑战并解锁下一间房间，直到找到你需要的生存物资。",
+        "Develop your stronghold into a fully equipped base, with crafting stations, resources, and everything you need to thrive":
+            "将你的据点发展成一个设施齐全的基地，配备制作站、资源和一切你需要的物资。",
+        Alliances: "联盟",
+        "Join forces with factions, building alliances and growing alongside other survivors": "与帮派联手，建立联盟，与其他幸存者共同成长。",
+        "PvP Dominance": "PvP主宰",
+        "Face off against other players in high-stakes PvP encounters to prove your dominance":
+            "在高风险的PvP对战中与其他玩家对决，证明你的主宰地位。",
+        "Trade and Prosper": "交易与繁荣",
+        "Trade goods and rare items with others to grow your influence and wealth": "与他人交易商品和稀有物品，扩大你的影响力和财富。",
+        "Blueprint Mastery": "蓝图精通",
+        "Discover and craft blueprints to expand your abilities and customize your approach": "发现并制作蓝图，拓展你的能力，定制你的策略。",
+        "Skillful Survival": "熟练的生存",
+        "Shape your path by mastering skills like fishing, hunting, and many others essential for survival":
+            "通过掌握钓鱼、狩猎等多种生存技能，塑造你的生存之路。",
+        "We have a growing community on discord and would love for you to join us in creating the best Multiplayer Zombie Survival Simulator":
+            "我们在Discord上有一个不断壮大的社区，欢迎你加入我们，共同打造最好的多人僵尸生存模拟器。",
+        "Create a Survivor": "创建幸存者",
+        "I agree to the Terms of Service": "我同意服务条款",
+        "You must only register one account per person": "每人只能注册一个账户。",
+        "Sign in with Discord": "通过Discord登录",
+        "Survivor Name": "幸存者名称",
+        "Your Stronghold": "你的据点",
     };
 
     // 词典：待处理
@@ -1512,7 +1542,7 @@
         // 未分类
         if (/^Build ([\w\s-']+)$/.test(text)) {
             let res = /^Build ([\w\s-']+)$/.exec(text);
-            return "建造" + res[1];
+            return "建造" + dict(res[1]);
         }
         if (/^You have ran out of ([\w\s-']+)!$/.test(text)) {
             let res = /^You have ran out of ([\w\s-']+)!$/.exec(text);
