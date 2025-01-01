@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.1
+// @version      3.2
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -591,7 +591,7 @@
         "Active an hour ago": "1 小时前在线",
         leave: "离开",
         "Purge Event": "清洗活动",
-        visit: "访问",
+        visit: "查看",
         "You gained": "你获得了",
         "Your rad is already full": "你的辐射值已经满了",
         "Your energy has been refilled": "你的能量已经重新填充",
@@ -627,7 +627,7 @@
         "Top Forger": "顶级锻造者",
         "Top Hunter": "顶级猎人",
         "Top Scavenger": "顶级拾荒者",
-        Offers: "优惠",
+        Offers: "出售订单",
         Carp: "鲤鱼",
         "Zen Egg": "禅蛋",
         "ZedBull Egg": "僵尸红牛蛋",
@@ -1147,6 +1147,58 @@
         "Unequip Item": "卸下物品",
         "Are you sure you want to unequip this": "你确定要卸下这个吗",
         "Item has been unequipped": "物品已卸下",
+        "Are you sure you want to cancel": "你确定要取消吗",
+        Close: "关闭",
+        "Market Offers": "市场报价",
+        "Market Listings": "市场上架",
+        "Create Listing": "创建上架",
+        Select: "选择",
+        Price: "价格",
+        "fee will be deducted from the sale price": "费用将从销售价格中扣除",
+        "Create Offer": "创建报价",
+        "Your market offer has been created": "你的市场报价已创建",
+        "Are you sure you want to remove this market listing": "你确定要移除这个市场上架吗",
+        "Remove Listing": "移除上架",
+        Points: "点数",
+        "Faction Profile": "帮派资料",
+        "You cannot buy your own item": "你不能购买自己的物品",
+        money: "金钱",
+        "Loaded with a good amount of the weird ash, you walk back to the alleyway you saw Gray": "带着大量奇怪的灰烬，你走回了你见到Gray的巷子",
+        "Not even a few moments into your journey you hear the familiar raspy chuckle coming from a completely different alleyway. Turning your head, you see Gary standing there, staring at you with a grin on his face and lit cigarette in his lips":
+            "刚开始几步，你就听到从完全不同的巷子里传来熟悉的沙哑笑声。你转过头，看到Gary站在那里，脸上带着笑容，嘴里叼着点燃的香烟",
+        "Well look at that, seems you have some ash. Were you going to look for me? Well, then it's a happy coincidence I was in the area, eh":
+            "哟，看起来你有些灰烬。你是来找我的吗？那真是巧了，我正好在附近",
+        "Waving you towards the alley you cautiously follow him in, only going in far enough to be out of the view of the main street":
+            "他向你挥手示意走进巷子，你小心地跟随他进去，只走到足够远以便不被主街看到",
+        "Gary turns around and makes a 'gimme' gesture with a smirk on his face": "Gary转过身，露出一丝得意的笑容，做出“给我”手势",
+        "You give him the ash and watch as he pokes it a bit with his finger before nodding in satisfaction":
+            "你把灰烬递给他，看到他用手指戳了戳，然后满意地点点头",
+        "Not bad, not bad at all. Now, about that reward of yours": "不错，不错。现在，关于你的奖励",
+        "Humming, he takes a small drag of his cigarette before continuing": "他哼着歌，吸了一小口香烟，然后继续说道",
+        "Now, there's a beautiful lil' memorabilia I have to give you, but I'll need you to do a bit more for me to part with it. The old guy in the new place has been working on some fancy new things and I can't get them from him myself. Be a dear and grab me one each of his vials so I can take a looksie at them, hmm":
+            "现在，我有个漂亮的小纪念品要给你，但你得为我做点事才能得到它。那个新地方的老家伙在做一些花哨的新东西，而我自己拿不到。帮我拿一瓶他的新瓶子来，我好看看，怎么样",
+        "Gary punctuates the request with a very long drag of his cigarette, enough to finish all that was left of it, and he blows out a massive cloud of smoke in your face":
+            "Gary在说完请求后长时间吸了一口香烟，足够把它吸完，然后他朝你脸上吐出一大团烟雾",
+        "By the time you wave it away, he's gone": "当你挥手把烟雾赶走时，他已经不见了",
+        "Objective: Find the vials to satisfy Gray Gary": "目标：找到瓶子满足灰袍Gary",
+        "Passing one more alleyway, you are ready to deliver the vials to Gray, and as soon as you have the thought the familiar raspy chuckle rings out from the empty alleyway you just passed. You turn back and there Gray is, leaning on the wall with a lit cigarette in his fingers":
+            "经过另一条巷子，你准备把瓶子交给Gray，就在你有这个念头时，熟悉的沙哑笑声从你刚刚经过的空巷传来。你回头一看，Gray正靠在墙上，手指间夹着点燃的香烟",
+        "Fancy seeing you here, eh? Now about them vials": "真巧在这儿见到你，怎么样，瓶子呢",
+        "You hand them over one by one and watch the interest in his expression grow": "你一瓶一瓶地交给他，看着他脸上兴趣愈发浓厚",
+        "Gray holds one up in the air and looks at it. Some trick in the light made it seem like there is a red glow behind his shades for a moment, but aside from just watching the vial he seems to do nothing":
+            "Gray举起一瓶看着它。光线的某种折射让它看起来像是他的墨镜后面闪烁着红光，但除了看着瓶子，他似乎什么也没做",
+        "Well, Mr Wrinkly-With-An-Attitude has outdone himself this time, this is good stuff":
+            "好吧，这次那个态度十足的皱皮老头真是出乎意料，这可是好东西",
+        "Satisfied with his inspection, Gray pockets all the vials and turns to you with a odd smile and a raised eyebrow":
+            "Gray对他的检查很满意，把所有瓶子收进口袋，然后转身看着你，带着一丝奇怪的微笑和挑起的眉毛",
+        "Now, I know exactly what you can do to earn yourself that nice reward. Get me two dozen of each different vial and a lot more of that ash from before and you'll we well rewarded, hmm":
+            "现在，我知道你可以做什么来获得那份奖励。给我每种瓶子各拿两打，再加上更多的灰烬，你会得到很丰厚的奖励，怎么样",
+        "Gray flicks the spent cigarette past you and walks away casually into the alleyway, his footsteps oddly loud":
+            "Gray把用完的香烟弹过你，随意地走进巷子里，他的脚步声奇怪地响亮",
+        "Don't worry about finding me, just get the stuff and you'll get your reward": "不用担心怎么找到我，只要拿到东西，你就能得到奖励",
+        "You watch him walk away until he turns a corner and finally go back yourself as well, the empty alleyway still echoing with Gray's footsteps":
+            "你看着他走到拐角处，直到他消失，你自己也回去了，空旷的巷子里依然回响着Gray的脚步声",
+        "Objective: Procure a large number of vials and ash for Gray": "目标：为Gray获取大量瓶子和灰烬",
     };
 
     // 词典：待处理
@@ -1389,6 +1441,14 @@
             let res = /^Your application for ([\w\s]+) has been accepted$/.exec(text);
             return "您的申请 " + res[1] + " 已通过";
         }
+        if (/^([\w]+) bought (\d+)x ([\w\s-']+) and you gained \$(\d{1,3}(?:,\d{3})*), your market listing has sold out$/.test(text)) {
+            let res = /^([\w]+) bought (\d+)x ([\w\s-']+) and you gained \$(\d{1,3}(?:,\d{3})*), your market listing has sold out$/.exec(text);
+            return `${res[1]} 购买了 ${res[2]}x ${res[3]}，你获得了 $${res[4]}，你的市场上架已售空`;
+        }
+        if (/^([\w]+) bought (\d+)x ([\w\s-']+) and you gained \$(\d{1,3}(?:,\d{3})*), your market listing has sold$/.test(text)) {
+            let res = /^([\w]+) bought (\d+)x ([\w\s-']+) and you gained \$(\d{1,3}(?:,\d{3})*), your market listing has sold$/.exec(text);
+            return `${res[1]} 购买了 ${res[2]}x ${res[3]}，你获得了 $${res[4]}，你的市场上架已售出`;
+        }
 
         // 你没有足够的XX
         if (/^You do not have enough ([\w\s-']+)$/.test(text)) {
@@ -1454,6 +1514,18 @@
         if (/^You have ran out of ([\w\s-']+)!$/.test(text)) {
             let res = /^You have ran out of ([\w\s-']+)!$/.exec(text);
             return "你已经用完了" + res[1] + "！";
+        }
+        if (/^You bought ([\d+])([\w\s-']+)$/.test(text)) {
+            let res = /^You bought ([\d+])([\w\s-']+)$/.exec(text);
+            return "你购买了 " + res[1] + dict(res[2]);
+        }
+        if (/^Kick ([\w]+)$/.test(text)) {
+            let res = /^Kick ([\w]+)$/.exec(text);
+            return "踢除" + res[1];
+        }
+        if (/^Are you sure you want to kick ([\w]+)$/.test(text)) {
+            let res = /^Are you sure you want to kick ([\w]+)$/.exec(text);
+            return "是否确定踢除" + res[1];
         }
 
         // 消除后面空格
