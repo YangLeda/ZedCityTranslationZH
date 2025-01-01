@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      2.7
+// @version      2.9
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -661,7 +661,6 @@
         "Unknown Loot": "未知战利品",
         "Your scavenging skill level needs to be": "你的拾荒技能等级需要达到",
         Fish: "钓鱼",
-        Seach: "搜索", // 游戏内错别字
         "gained every": "每",
         minutes: "分钟",
         "Booster (Energy Drink": "增强剂（能量饮料）",
@@ -690,10 +689,13 @@
         "Effect: Increases morale by 500 and booster cooldown by 30 minutes": "效果：增加500点士气和30分钟的增益冷却时间",
         "Effect: Reduce recovery time by 10 minutes, increases life by 10 and medical cooldown by 5 minutes":
             "效果：减少10分钟的恢复时间，增加10点生命值和5分钟的医疗冷却时间",
-    };
-
-    // 词典：ChatGPT生成，未经过人工审核。
-    const dictGpt = {
+        "Setup Raid a Farm": "筹备突袭农场",
+        "Are you sure you want to setup Raid a Farm": "你确定要筹备突袭农场吗",
+        "Join Raid": "加入突袭",
+        "Are you sure you want to join this raid": "你确定要加入这次突袭吗",
+        "You are already assigned to another activity": "你已经分配到另一个活动中",
+        "Faction Activity": "帮派活动",
+        "You already have an active membership": "你已经拥有会员资格",
         "You are no longer able to load ammo into your vehicle (all ammo can be fired without loading it into your vehicle":
             "你不再需要将弹药加载到车辆中（所有弹药可以直接发射，而无需先加载到车辆中）",
         "Ranged Weapons": "远程武器",
@@ -935,7 +937,7 @@
         "Fixed pagination on stores": "修复了商店中的分页问题",
         "Fixed issue causing page to reload when consuming items": "修复了消费物品时导致页面重新加载的问题",
         "Updated the quantity input to make the + and - buttons easier to click": "更新了数量输入，使+和-按钮更容易点击",
-        "Response message will display when adding rations to a role": "添加口粮到角色时将显示响应消息",
+        "Response message will display when adding rations to a role": "添加配给到角色时将显示响应消息",
         "An issue stopping members being assigned to roles has been resolved": "已解决阻止成员分配角色的问题",
         "Fixed a bug where faction leaders were showing as members": "修复了派系领导显示为成员的漏洞",
         Food: "食物",
@@ -1040,12 +1042,105 @@
             "你已经学会了生存的基础知识，但前方还有更多挑战。建造、狩猎、探索——外面还有一个等待被发现的广阔世界。祝你好运……你会需要的",
         "Objective: Craft Nails": "目标：制作钉子",
         "Bench Level": "制作台等级",
+        "Are you sure you want to cancel this raid": "你确定要取消这次突袭吗",
+        Abort: "中止",
+        "Setup Raid a Hospital": "筹备突袭医院",
+        "Are you sure you want to setup Raid a Hospital": "你确定要筹备突袭医院吗",
+        "You are already in a raid": "你已经在一次突袭中",
+        "Setup Raid a Store": "筹备突袭商店",
+        "Are you sure you want to setup Raid a Store": "你确定要筹备突袭商店吗",
+        "Add Role": "添加角色",
+        Roles: "角色",
+        Edit: "编辑",
+        "Manage Member": "管理成员",
+        Kick: "踢出",
+        "Camp Upgrade": "营地升级",
+        "Update Role": "更新角色",
+        "Role Name": "角色名称",
+        Permissions: "权限",
+        Management: "管理",
+        "Allows the player to oversee and manage the agricultural activities within the community. They can start new crops and manage workers":
+            "允许玩家监督和管理社区内的农业活动。他们可以种植新作物并管理工人",
+        "Distillery Management": "酿酒厂管理",
+        "Gives the player the authority to oversee and manage the distillery operations. They can produce beverages and manage workers":
+            "赋予玩家监督和管理酿酒厂运作的权限。他们可以生产饮品并管理工人",
+        "Refinery Management": "炼油厂管理",
+        "Allows the player to oversee and manage the refinery activities within the community. They can start new refining processes and manage workers":
+            "允许玩家监督和管理社区内的炼油活动。他们可以启动新的炼油流程并管理工人",
+        "Storage Management": "仓库管理",
+        "Allows the player to take items from the faction storage": "允许玩家从派系仓库取物品",
+        "Manage Raids": "管理突袭",
+        "Gives the player the authority to cancel raids and remove players from pending raids": "赋予玩家取消突袭和移除待处理突袭中玩家的权限",
+        "Manage Applications": "管理申请",
+        "Grants the ability to accept or decline applications": "授予接受或拒绝申请的能力",
+        "Manage Buildings": "管理建筑",
+        "Allows the player to initiate upgrades on any building with resources allocated from the faction storage":
+            "允许玩家使用派系仓库分配的资源启动任何建筑的升级",
+        "Kick Member": "踢出成员",
+        "Grants the ability to kick members from the faction. The leader can not be kicked": "授予踢出派系成员的权限。领导者不能被踢出",
+        Administrator: "管理员",
+        "Gives the player full access to all permissions": "赋予玩家对所有权限的完全访问权限",
+        Rations: "配给",
+        "Add Rations": "添加配给",
+        "Adrenaline Booster": "肾上腺素助推器",
+        "Add Item": "添加物品",
+        Barnaclefish: "藤壶鱼",
+        "Effect: Increases energy by 250 and booster cooldown by 2 hours": "效果：增加250点能量，助推器冷却时间延长2小时",
+        "Shotgun Slug": "霰弹枪弹丸",
+        "Med Booster": "医疗助推器",
+        "Effect: Reduce recovery time by 20 minutes, increases life by 20 and medical cooldown by 15 minutes":
+            "效果：减少20分钟恢复时间，增加20点生命值，医疗冷却时间延长15分钟",
+        "Med Kit": "医疗包",
+        "Effect: Reduce recovery time by 1 hour, increases life by 50 and medical cooldown by 30 minutes":
+            "效果：减少1小时恢复时间，增加50点生命值，医疗冷却时间延长30分钟",
+        Morphine: "吗啡",
+        "Small Med Kit": "小型医疗包",
+        "Effect: Reduce recovery time by 30 minutes, increases life by 20 and medical cooldown by 10 minutes":
+            "效果：减少30分钟恢复时间，增加20点生命值，医疗冷却时间延长10分钟",
+        Coffee: "咖啡",
+        "Effect: Increases morale by 75 and booster cooldown by 30 minutes": "效果：增加75点士气，助推器冷却时间延长30分钟",
+        "Effect: Increases morale by 300 and booster cooldown by 30 minutes": "效果：增加300点士气，助推器冷却时间延长30分钟",
+        "Effect: Increases morale by 125 and booster cooldown by 30 minutes": "效果：增加125点士气，助推器冷却时间延长30分钟",
+        Vodka: "伏特加",
+        "Effect: Increases rad immunity by 2 and booster cooldown by 1 hour": "效果：增加2点辐射免疫，助推器冷却时间延长1小时",
+        Whiskey: "威士忌",
+        "Effect: Increases rad immunity by 3 and booster cooldown by 1 hour": "效果：增加3点辐射免疫，助推器冷却时间延长1小时",
+        Oil: "油",
+        Rock: "岩石",
+        Rockfish: "石鱼",
+        Sandfish: "沙鱼",
+        Tape: "胶带",
+        Barricade: "路障",
+        Bass: "鲈鱼",
+        "Fishing Reel": "鱼线轮",
+        "An essential item to make your rod work": "使鱼竿运作的必需品",
+        High: "高",
+        Binoculars: "双筒望远镜",
+        "Helps you see": "帮助你看得更清楚",
+        "Bronze Key": "青铜钥匙",
+        Compass: "指南针",
+        Crowbar: "撬棍",
+        Flashlight: "手电筒",
+        "Fuel Injector": "燃料喷射器",
+        Lockpick: "开锁器",
+        "Lucky coin": "幸运硬币",
+        Map: "地图",
+        Shovel: "铲子",
+        Transceiver: "无线电收发器",
+        "Donator Pack": "捐赠者礼包",
+        "Role Updated": "角色已更新",
+    };
+
+    // 词典：待处理
+    const dictPending = {
+        Seach: "搜索",
+        consumable_special: "consumable_special",
     };
 
     // 词典：wiki网站专用，请勿混放
     const dictWiki = {};
 
-    const dictAll = { ...dictCommon, ...dictGpt, ...dictWiki };
+    const dictAll = { ...dictCommon, ...dictPending, ...dictWiki };
     const dictAllLowerCase = {};
     for (const key in dictAll) {
         dictAllLowerCase[key.toLowerCase()] = dictAll[key];
@@ -1125,7 +1220,10 @@
             return;
         }
 
-        if (window.location.href.includes("www.zed.city/factions/") || window.location.href.includes("www.zed.city/faction/")) {
+        if (
+            window.location.href.includes("www.zed.city/factions/") ||
+            (window.location.href.includes("www.zed.city/faction/") && !window.location.href.includes("/activity"))
+        ) {
             // 排除帮派成员页面中帮派名
             if (node.parentNode.matches("div.text-center.text-h4.text-uppercase.text-no-bg")) {
                 return;
@@ -1133,7 +1231,7 @@
             // 排除帮派成员页面中帮派职位
             if (
                 node.parentNode.classList.contains("col-shrink") &&
-                (node.parentNode.closest("tr").querySelector(".status-online") || node.parentNode.closest("tr").querySelector(".status-offline"))
+                (node.parentNode.closest("tr")?.querySelector(".status-online") || node.parentNode.closest("tr")?.querySelector(".status-offline"))
             ) {
                 return;
             }
