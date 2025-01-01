@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      3.9
+// @version      4.0
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -1291,6 +1291,48 @@
         "Cloth Jacket": "布质夹克",
         "Social Logins": "社交帐号登录",
         "An unknown error occurred": "发生未知错误",
+        Chainsaw: "电锯",
+        Drill: "钻机",
+        "Fire Axe": "消防斧",
+        Machete: "砍刀",
+        "Meat Cleaver": "剁肉刀",
+        "Magazine Size": "弹匣容量",
+        "Chain Shotgun": "链式霰弹枪",
+        "Camo Hat": "迷彩帽",
+        "Cowboy Hat": "牛仔帽",
+        "Gas Mask": "防毒面具",
+        "Riot Helmet": "防暴头盔",
+        Sunglasses: "太阳镜",
+        "Barrel Vest": "桶形背心",
+        "Body Vest": "防护背心",
+        "Camo Vest": "迷彩背心",
+        "Hazmat Jacket": "防护服夹克",
+        "Leather Jacket": "皮夹克",
+        "Padded Vest": "衬垫背心",
+        "Armoured Pants": "装甲裤",
+        "Army Pants": "军裤",
+        "Camo Pants": "迷彩裤",
+        "Cargo Pants": "工装裤",
+        "Cargo Shorts": "工装短裤",
+        "Heavily Armoured Pants": "重装甲裤",
+        Jeans: "牛仔裤",
+        "Jogging Bottoms": "跑步裤",
+        "Knee Pads": "护膝",
+        "Padded Pants": "衬垫裤",
+        "Sweat Pants": "运动裤",
+        "Swim Shorts": "游泳短裤",
+        "Army Boots": "军靴",
+        "Camo Boots": "迷彩靴",
+        "Hazmat Boots": "防护靴",
+        Sandals: "凉鞋",
+        "Soldier Boots": "士兵靴",
+        "Trekking Boots": "徒步靴",
+        "Work Boots": "工作靴",
+        "Giant Pufferfish": "巨型河豚",
+        "Golden Egg": "金蛋",
+        "Golden Skull": "金色头骨",
+        "Monster Catfish": "怪物鲶鱼",
+        "Viper Barnaclefish": "毒蛇藤壶鱼",
     };
 
     // 词典：待处理
