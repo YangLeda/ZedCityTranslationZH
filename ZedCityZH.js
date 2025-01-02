@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      5.2
+// @version      5.3
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -19,6 +19,9 @@
     let playerXP_new = 0;
     let currentLevelMaxXP = 0;
 
+    let skills_previous = null;
+    let skills_new = null;
+
     // XMLHttpRequest hook
     const open_prototype = XMLHttpRequest.prototype.open;
     unsafeWindow.XMLHttpRequest.prototype.open = function () {
@@ -26,6 +29,8 @@
             if (this.readyState === 4) {
                 if (this.responseURL.includes("api.zed.city/getStats")) {
                     handleGetStats(this.response);
+                } else if (this.responseURL.includes("api.zed.city/skills")) {
+                    handleSkills(this.response);
                 }
                 // Object.defineProperty(this, "response", { writable: true });
                 // Object.defineProperty(this, "responseText", { writable: true });
@@ -42,29 +47,69 @@
         currentLevelMaxXP = response.xp_end;
     }
 
+    function handleSkills(r) {
+        const response = JSON.parse(r);
+        skills_new = [...response.player_skills];
+    }
+
     function updateLevelDisplay() {
         const levelElem = document.body.querySelectorAll(".level-up-cont")[1];
         const insertElem = document.body.querySelector("#script_player_level");
         if (levelElem && !insertElem) {
             levelElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_player_level"><span id="script_player_level_inner"><strong>${playerXP_new} / ${currentLevelMaxXP} </strong></span></div>`
+                `<div id="script_player_level"><span id="script_player_level_inner"><strong>${playerXP_new} / ${currentLevelMaxXP}</strong></span></div>`
             );
         } else if (levelElem && insertElem) {
-            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${playerXP_new} / ${currentLevelMaxXP} </strong>`;
+            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${playerXP_new} / ${currentLevelMaxXP}</strong>`;
         }
-        if (playerXP_previous !== 0 && playerXP_previous !== playerXP_new && insertElem) {
-            // 显示经验增加
-            const increase = playerXP_new - playerXP_previous;
-            const div = document.createElement("span");
-            div.style.backgroundColor = "#2e7d32";
-            div.textContent = `  +${increase}`;
-            insertElem.appendChild(div);
-            setTimeout(() => {
-                div.remove();
-            }, 5000);
+        if (insertElem) {
+            if (playerXP_previous !== 0 && playerXP_previous !== playerXP_new) {
+                const increase = playerXP_new - playerXP_previous;
+                const div = document.createElement("span");
+                div.style.backgroundColor = "#2e7d32";
+                div.style.marginLeft = "10px";
+                div.textContent = `XP+${increase}`;
+                insertElem.appendChild(div);
+                setTimeout(() => {
+                    div.remove();
+                }, 5000);
+            }
+            if (skills_previous && skills_new) {
+                for (const s of skills_new) {
+                    for (const i of skills_previous) {
+                        if (i.name === s.name && s.xp !== i.xp) {
+                            const increase = s.xp - i.xp;
+                            let name = i.name;
+                            const translation = {
+                                hunting: "狩猎",
+                                scavenge: "拾荒",
+                                forging: "锻造",
+                                farming: "耕作",
+                                distilling: "蒸馏",
+                                crafting: "制作",
+                                fishing: "钓鱼",
+                                refining: "精炼",
+                            };
+                            if (translation[name.toLowerCase()]) {
+                                name = translation[name.toLowerCase()];
+                            }
+                            const div = document.createElement("span");
+                            div.style.backgroundColor = "#0A748F";
+                            div.style.marginLeft = "10px";
+                            div.textContent = `${name}+${increase}`;
+                            insertElem.appendChild(div);
+                            setTimeout(() => {
+                                div.remove();
+                            }, 5000);
+                            break;
+                        }
+                    }
+                }
+            }
+            playerXP_previous = playerXP_new;
+            skills_previous = skills_new ? [...skills_new] : null;
         }
-        playerXP_previous = playerXP_new;
     }
     setInterval(updateLevelDisplay, 500);
 
