@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      4.6
+// @version      4.7
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -116,7 +116,8 @@
         }
         if (dialogBuyButton) {
             const input = dialogBuyButton.parentElement.parentElement.parentElement.querySelector(`input`);
-            if (input) {
+            if (input && !input.classList.contains("script_set")) {
+                input.classList.add("script_set");
                 // React hack
                 let lastValue = input.value;
                 input.value = buyItemNumber;
@@ -1588,6 +1589,7 @@
         "You nod in understanding": "你点头表示理解。",
         "Bring me some gunpowder and I'll show you how we go about crafting more complex bullet types": "带点火药来，我会教你如何制作更复杂的子弹。",
         "Objective: Bring gunpowder": "目标：带来火药",
+        "Not enough items in stock": "库存不足",
     };
 
     // 词典：待处理
