@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      5.1
+// @version      5.2
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -15,8 +15,8 @@
     /* ZedTools START */
 
     /* 1. 显示人物等级经验 */
-    let playerXP = 0;
-    let currentLevelMinXP = 0;
+    let playerXP_previous = 0;
+    let playerXP_new = 0;
     let currentLevelMaxXP = 0;
 
     // XMLHttpRequest hook
@@ -38,8 +38,7 @@
 
     function handleGetStats(r) {
         const response = JSON.parse(r);
-        playerXP = response.experience;
-        currentLevelMinXP = response.xp_start;
+        playerXP_new = response.experience;
         currentLevelMaxXP = response.xp_end;
     }
 
@@ -47,12 +46,27 @@
         const levelElem = document.body.querySelectorAll(".level-up-cont")[1];
         const insertElem = document.body.querySelector("#script_player_level");
         if (levelElem && !insertElem) {
-            levelElem.insertAdjacentHTML("beforeend", `<div id="script_player_level"><strong>${playerXP} / ${currentLevelMaxXP}</strong></div>`);
+            levelElem.insertAdjacentHTML(
+                "beforeend",
+                `<div id="script_player_level"><span id="script_player_level_inner"><strong>${playerXP_new} / ${currentLevelMaxXP} </strong></span></div>`
+            );
         } else if (levelElem && insertElem) {
-            insertElem.innerHTML = `<strong>${playerXP}/${currentLevelMaxXP}</strong>`;
+            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${playerXP_new} / ${currentLevelMaxXP} </strong>`;
         }
+        if (playerXP_previous !== 0 && playerXP_previous !== playerXP_new && insertElem) {
+            // 显示经验增加
+            const increase = playerXP_new - playerXP_previous;
+            const div = document.createElement("span");
+            div.style.backgroundColor = "#2e7d32";
+            div.textContent = `  +${increase}`;
+            insertElem.appendChild(div);
+            setTimeout(() => {
+                div.remove();
+            }, 5000);
+        }
+        playerXP_previous = playerXP_new;
     }
-    setInterval(updateLevelDisplay, 1000);
+    setInterval(updateLevelDisplay, 500);
 
     /* 2. 抢购 */
     // if (!localStorage.getItem("script_buyItemName")) {
