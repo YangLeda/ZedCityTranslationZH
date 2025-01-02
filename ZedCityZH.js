@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      4.9
+// @version      5.0
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -27,7 +27,6 @@
                 if (this.responseURL.includes("api.zed.city/getStats")) {
                     handleGetStats(this.response);
                 }
-                // 修改response内容
                 // Object.defineProperty(this, "response", { writable: true });
                 // Object.defineProperty(this, "responseText", { writable: true });
                 // this.response = modifiedResponse;
@@ -1604,8 +1603,6 @@
             "嗯，这根本行不通，你可能会被卡在围栏上，或者我被困在紧急出口，这风险太大了。",
         "She looks at you with calculating eyes, weighing up the odds on your survival in the wrong situation":
             "她用带有评估意味的眼神看着你，似乎在衡量你在糟糕情况下的生存几率。",
-        "Tell you what, I know who you should go and see. Buddy... yeah... Maddest guy I know but sure knows how to handle any situation thrown at him. Heck he'd already barricaded up half his neighbourhood before the first zed his his part of town. Just look out for the search lights at night. You won't be able to miss it":
-            "我告诉你，我知道你应该去找谁。Buddy……对，就是他……我认识的最疯狂的家伙，但他确实知道如何应对任何情况。他在第一只丧尸袭击他的社区之前，就已经在半个街区设置了路障。晚上留意探照灯，你绝对不会错过。",
         "You go to walk out the door": "你正准备走出门。",
         "And hey, if you can get a snack while you're out there, I sure would see that as a friendly gesture worth more information":
             "对了，如果你能带些零食回来，我会把这看作一个友好的姿态，再告诉你更多信息。",
@@ -1625,10 +1622,10 @@
             "伙计，这一切的兴奋让我饿了！空着肚子我们可不能训练，对吧？去帮我找点蛋白质来再开始吧。",
         "Limit Reset": "限购重置",
         "There is now an hourly buying limit of 120 items at the city stores": "城市商店现在每小时购买限制为120件商品。",
-        "Log, scrap and iron bar junkstore restocks adjusted": "调整了木材、废料和铁棒的废品店补货。",
-        "Log and scrap drops increased when scavenging": "搜寻时木材和废料掉落量增加。",
+        "Log, scrap and iron bar junkstore restocks adjusted": "调整了原木、废料和铁锭的废品店补货。",
+        "Log and scrap drops increased when scavenging": "拾荒时木材和废料掉落量增加。",
         "Some item price adjustments": "一些物品价格调整。",
-        "More stronghold building upgrade price adjustments": "更多要塞建筑升级价格调整。",
+        "More stronghold building upgrade price adjustments": "更多要据点筑升级价格调整。",
         "Fixed search bar typo": "修复了搜索栏拼写错误。",
         "Focus error bug fixed": "修复了焦点错误的bug。",
         "Fixed bug causing homepage not to display correctly": "修复了导致主页无法正确显示的bug。",
@@ -1639,6 +1636,8 @@
     const dictPending = {
         Seach: "搜索",
         consumable_special: "consumable_special",
+        "Tell you what, I know who you should go and see. Buddy... yeah... Maddest guy I know but sure knows how to handle any situation thrown at him. Heck he'd already barricaded up half his neighbourhood before the first zed his his part of town. Just look out for the search lights at light. You won't be able to miss it":
+            "我告诉你，我知道你应该去找谁。Buddy……对，就是他……我认识的最疯狂的家伙，但他确实知道如何应对任何情况。他在第一只丧尸袭击他的社区之前，就已经在半个街区设置了路障。晚上留意探照灯，你绝对不会错过。", // 错别字light
     };
 
     // 词典：wiki网站专用，请勿混放
@@ -1910,7 +1909,7 @@
             let res = /^Forge ([\w\s-']+)$/.exec(text);
             return "锻造" + dict(res[1]);
         }
-        if (/^Forging ([\w-']+)$/.test(text)) {
+        if (/^Forging ([\w\s-']+)$/.test(text)) {
             let res = /^Forging ([\w\s-']+)$/.exec(text);
             return "正在锻造" + dict(res[1]);
         }
