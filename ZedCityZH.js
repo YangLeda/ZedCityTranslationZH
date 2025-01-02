@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      5.3
+// @version      5.4
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -2039,6 +2039,10 @@
         if (/^([\w\s-']+) Level$/.test(text)) {
             let res = /^([\w\s-']+) Level$/.exec(text);
             return dict(res[1]) + "等级";
+        }
+        if (/^You can only buy\s+(\d+)\s+more\s+items this hour$/.test(text)) {
+            let res = /^You can only buy\s+(\d+)\s+more\s+items this hour$/.exec(text);
+            return "当前小时内只能买 " + res[1] + " 件物品";
         }
 
         // 消除后面空格
