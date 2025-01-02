@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      4.2
+// @version      4.3
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -220,9 +220,9 @@
         "Loot Discovered": "发现战利品",
         Logs: "原木",
         Resource: "资源",
-        Scrap: "废品",
+        Scrap: "废铁",
         Nails: "钉子",
-        "Iron Bar": "铁条",
+        "Iron Bar": "铁锭",
         "Advanced Tools": "高级工具",
         Take: "拿取",
         "AK-74u": "AK-74u",
@@ -332,7 +332,7 @@
         "Hot enough to melt things": "热度足以融化物品",
         "Complete building to access furnace": "完成建筑以访问炉子",
         "Forge Nails": "锻造钉子",
-        "Smelt Scrap": "熔炼废品",
+        "Smelt Scrap": "熔炼废铁",
         "Smelt Iron Ore": "熔炼铁矿",
         "Purify Water": "净化水",
         Discoverable: "可发现物品",
@@ -1335,6 +1335,20 @@
         "Item not found": "未找到物品",
         "Invalid price": "价格无效",
         "Offer not found": "未找到出售订单",
+        "This website uses cookies": "本网站使用 Cookie",
+        "We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services":
+            "我们使用 Cookie 来个性化内容和广告，提供社交媒体功能并分析我们的流量。我们还会与社交媒体、广告和分析合作伙伴分享您对我们网站的使用信息，这些信息可能与您提供给他们的信息或他们从您使用其服务中收集的信息相结合。",
+        "Allow All": "全部允许",
+        Deny: "拒绝",
+        min: "最低",
+        "hours ago": "小时前",
+        "Those iron bars sure came in handy kid. Crafted this pickaxe to go get me a nice supply of coal from the nearby mines":
+            "那些铁锭真是派上了大用场，小子。我用它们打造了这把镐子，准备去附近的矿井采一批煤。",
+        "You look around the workshop": "你环顾了一下车间。",
+        "Hey y'know what maybe you could get me some coal, call it a favour for a favour. Just head over there and look out for the dark veins on the cave walls. Hammer away and bring back what you find":
+            "嘿，你知道吗，也许你可以帮我挖点煤，算是人情换人情。去那边看看洞壁上的黑色矿脉，挥动锤子，带回你找到的东西。",
+        "Objective: Mine coal": "目标：煤炭",
+        "Level Experience": "等级经验",
     };
 
     // 词典：待处理
@@ -1638,6 +1652,10 @@
             let res = /^You do not have a ([\w\s-']+)$/.exec(text);
             return "你没有" + dict(res[1]);
         }
+        if (/^You do not have an ([\w\s-']+)$/.test(text)) {
+            let res = /^You do not have an ([\w\s-']+)$/.exec(text);
+            return "你没有" + dict(res[1]);
+        }
         if (/^You gained ([\d+])([\w\s-']+)$/.test(text)) {
             let res = /^You gained ([\d+])([\w\s-']+)$/.exec(text);
             return "你获得了 " + res[1] + dict(res[2]);
@@ -1673,6 +1691,10 @@
         if (/^([\w\s-']+) Upgrade$/.test(text)) {
             let res = /^([\w\s-']+) Upgrade$/.exec(text);
             return dict(res[1]) + "升级";
+        }
+        if (/^([\w\s-']+) Level$/.test(text)) {
+            let res = /^([\w\s-']+) Level$/.exec(text);
+            return dict(res[1]) + "等级";
         }
 
         // 消除后面空格
