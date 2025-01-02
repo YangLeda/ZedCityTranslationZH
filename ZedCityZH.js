@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      4.8
+// @version      4.9
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -56,184 +56,189 @@
     setInterval(updateLevelDisplay, 1000);
 
     /* 2. 抢购 */
-    if (!localStorage.getItem("script_buyItemName")) {
-        localStorage.setItem("script_buyItemName", "Scrap");
-    }
-    if (!localStorage.getItem("script_buyItemNumber")) {
-        localStorage.setItem("script_buyItemNumber", "2");
-    }
+    // if (!localStorage.getItem("script_buyItemName")) {
+    //     localStorage.setItem("script_buyItemName", "Scrap");
+    // }
+    // if (!localStorage.getItem("script_buyItemNumber")) {
+    //     localStorage.setItem("script_buyItemNumber", "2");
+    // }
 
-    const SCRIPT_MOVE_CLASSNAME = "script-moved";
+    // const SCRIPT_MOVE_CLASSNAME = "script-moved";
 
-    GM_addStyle(`
-        .script-moved {
-            position: fixed !important;
-            top: 15% !important;
-            left: 1% !important;
-            width: 200px !important;
-            height: 100px !important;
-            margin: 0px !important;
-            border: 5px solid red !important;
-            z-index: 1000 !important;
-        }
-        .script-controls {
-            position: fixed !important;
-            top: 15% !important;
-            left: 30% !important;
-            margin: 0px !important;
-            z-index: 1000 !important;
-        }`);
+    // GM_addStyle(`
+    //     .script-moved {
+    //         position: fixed !important;
+    //         top: 15% !important;
+    //         left: 1% !important;
+    //         width: 200px !important;
+    //         height: 100px !important;
+    //         margin: 0px !important;
+    //         border: 5px solid red !important;
+    //         z-index: 1000 !important;
+    //     }
+    //     .script-controls {
+    //         position: fixed !important;
+    //         top: 15% !important;
+    //         left: 30% !important;
+    //         margin: 0px !important;
+    //         z-index: 1000 !important;
+    //     }`);
 
-    handleBodyChange();
-    const bodyObserverConfig = { attributes: false, childList: true, subtree: true };
-    const bodyObserver = new MutationObserver(() => {
-        handleBodyChange();
-    });
-    bodyObserver.observe(document.body, bodyObserverConfig);
+    // handleBodyChange();
+    // const bodyObserverConfig = { attributes: false, childList: true, subtree: true };
+    // const bodyObserver = new MutationObserver(() => {
+    //     handleBodyChange();
+    // });
+    // bodyObserver.observe(document.body, bodyObserverConfig);
 
-    function handleBodyChange() {
-        if (!window.location.href.includes("zed.city/store/junk")) {
-            document.querySelector(`#scripted-top-div`)?.remove();
-            document.querySelector(`.script-controls`)?.remove();
-            document.querySelector("button#scripted-refresh-btn")?.remove();
-            return;
-        } else {
-            addElements();
-        }
+    // function handleBodyChange() {
+    //     if (!window.location.href.includes("zed.city/store/junk")) {
+    //         document.querySelector(`#scripted-top-div`)?.remove();
+    //         document.querySelector(`.script-controls`)?.remove();
+    //         document.querySelector("button#scripted-refresh-btn")?.remove();
+    //         return;
+    //     } else {
+    //         addElements();
+    //     }
 
-        let buyItemName = localStorage.getItem("script_buyItemName");
-        let buyItemNumber = localStorage.getItem("script_buyItemNumber");
+    //     let buyItemName = localStorage.getItem("script_buyItemName");
+    //     let buyItemNumber = localStorage.getItem("script_buyItemNumber");
 
-        let listingBuyButton = document
-            .querySelector(`div.q-item__label[script_translated_from="${buyItemName}"]`)
-            ?.parentElement.parentElement.querySelector(`button`);
-        if (listingBuyButton && !listingBuyButton.querySelector(`span[script_translated_from="Buy"]`)) {
-            listingBuyButton = null;
-        }
-        let dialogBuyButton = document.querySelector(`div.small-modal button.bg-positive`);
-        if (dialogBuyButton && !dialogBuyButton.querySelector(`span[script_translated_from="Buy"]`)) {
-            dialogBuyButton = null;
-        }
-        if (dialogBuyButton) {
-            const input = dialogBuyButton.parentElement.parentElement.parentElement.querySelector(`input`);
-            if (input && !input.classList.contains("script_set")) {
-                input.classList.add("script_set");
-                // React hack
-                let lastValue = input.value;
-                input.value = buyItemNumber;
-                let event = new Event("input", { bubbles: true });
-                event.simulated = true;
-                let tracker = input._valueTracker;
-                if (tracker) {
-                    tracker.setValue(lastValue);
-                }
-                input.dispatchEvent(event);
-            }
-        }
+    //     let listingBuyButton = document
+    //         .querySelector(`div.q-item__label[script_translated_from="${buyItemName}"]`)
+    //         ?.parentElement.parentElement.querySelector(`button`);
+    //     if (listingBuyButton && !listingBuyButton.querySelector(`span[script_translated_from="Buy"]`)) {
+    //         listingBuyButton = null;
+    //     }
+    //     let dialogBuyButton = document.querySelector(`div.small-modal button.bg-positive`);
+    //     if (
+    //         dialogBuyButton &&
+    //         (!dialogBuyButton.querySelector(`span[script_translated_from="Buy"]`) ||
+    //             !dialogBuyButton.closest(`div.small-modal`).querySelector(`.text-h6.text-center.q-mb-xs[script_translated_from="${buyItemName}"]`))
+    //     ) {
+    //         dialogBuyButton = null;
+    //     }
+    //     if (dialogBuyButton) {
+    //         const input = dialogBuyButton.parentElement.parentElement.parentElement.querySelector(`input`);
+    //         if (input && !input.classList.contains("script_set")) {
+    //             input.classList.add("script_set");
+    //             // React hack
+    //             let lastValue = input.value;
+    //             input.value = buyItemNumber;
+    //             let event = new Event("input", { bubbles: true });
+    //             event.simulated = true;
+    //             let tracker = input._valueTracker;
+    //             if (tracker) {
+    //                 tracker.setValue(lastValue);
+    //             }
+    //             input.dispatchEvent(event);
+    //         }
+    //     }
 
-        if (dialogBuyButton) {
-            if (!dialogBuyButton.classList.contains(SCRIPT_MOVE_CLASSNAME)) {
-                dialogBuyButton.classList.add(SCRIPT_MOVE_CLASSNAME);
-            }
-            if (listingBuyButton && listingBuyButton.classList.contains(SCRIPT_MOVE_CLASSNAME)) {
-                listingBuyButton.classList.remove(SCRIPT_MOVE_CLASSNAME);
-            }
-        } else if (listingBuyButton) {
-            if (!listingBuyButton.classList.contains(SCRIPT_MOVE_CLASSNAME)) {
-                listingBuyButton.classList.add(SCRIPT_MOVE_CLASSNAME);
-            }
-        } else if (
-            !listingBuyButton &&
-            !dialogBuyButton &&
-            !document.querySelector("button#scripted-refresh-btn") &&
-            document.querySelector(".item-row")
-        ) {
-            const btn = document.createElement("button");
-            btn.id = "scripted-refresh-btn";
-            btn.innerText = "刷新";
-            btn.classList.add(SCRIPT_MOVE_CLASSNAME);
-            btn.style.fontSize = "30px";
-            btn.style.background = "#5dbea3";
-            btn.onclick = () => {
-                const selectedElement = document.querySelector("button#scripted-refresh-btn");
-                if (selectedElement) {
-                    selectedElement.disabled = true;
-                    btn.innerText = "刷新中";
-                    selectedElement.style.background = "#c30";
-                    location.reload();
-                }
-            };
-            document.body.insertBefore(btn, document.body.firstChild);
-        }
-    }
+    //     if (dialogBuyButton) {
+    //         if (!dialogBuyButton.classList.contains(SCRIPT_MOVE_CLASSNAME)) {
+    //             dialogBuyButton.classList.add(SCRIPT_MOVE_CLASSNAME);
+    //         }
+    //         if (listingBuyButton && listingBuyButton.classList.contains(SCRIPT_MOVE_CLASSNAME)) {
+    //             listingBuyButton.classList.remove(SCRIPT_MOVE_CLASSNAME);
+    //         }
+    //     } else if (listingBuyButton) {
+    //         if (!listingBuyButton.classList.contains(SCRIPT_MOVE_CLASSNAME)) {
+    //             listingBuyButton.classList.add(SCRIPT_MOVE_CLASSNAME);
+    //         }
+    //     } else if (
+    //         !listingBuyButton &&
+    //         !dialogBuyButton &&
+    //         !document.querySelector("button#scripted-refresh-btn") &&
+    //         document.querySelector(".item-row")
+    //     ) {
+    //         const btn = document.createElement("button");
+    //         btn.id = "scripted-refresh-btn";
+    //         btn.innerText = "刷新";
+    //         btn.classList.add(SCRIPT_MOVE_CLASSNAME);
+    //         btn.style.fontSize = "30px";
+    //         btn.style.background = "#5dbea3";
+    //         btn.onclick = () => {
+    //             const selectedElement = document.querySelector("button#scripted-refresh-btn");
+    //             if (selectedElement) {
+    //                 selectedElement.disabled = true;
+    //                 btn.innerText = "刷新中";
+    //                 selectedElement.style.background = "#c30";
+    //                 // location.reload();
+    //                 history.go(0);
+    //             }
+    //         };
+    //         document.body.insertBefore(btn, document.body.firstChild);
+    //     }
+    // }
 
-    function addElements() {
-        if (document.querySelector(`#scripted-top-div`) || document.querySelector(`.script-controls`)) {
-            return;
-        }
+    // function addElements() {
+    //     if (document.querySelector(`#scripted-top-div`) || document.querySelector(`.script-controls`)) {
+    //         return;
+    //     }
 
-        // Create placeholder div at top.
-        const div = document.createElement("div");
-        div.id = "scripted-top-div";
-        div.style.width = "800px";
-        div.style.height = "100px";
-        document.body.insertBefore(div, document.body.firstChild);
+    //     // Create placeholder div at top.
+    //     const div = document.createElement("div");
+    //     div.id = "scripted-top-div";
+    //     div.style.width = "800px";
+    //     div.style.height = "100px";
+    //     document.body.insertBefore(div, document.body.firstChild);
 
-        // Create control pannel
-        const controlDiv = document.createElement("div");
-        controlDiv.classList.add("script-controls");
-        document.body.insertBefore(controlDiv, document.body.firstChild);
+    //     // Create control pannel
+    //     const controlDiv = document.createElement("div");
+    //     controlDiv.classList.add("script-controls");
+    //     document.body.insertBefore(controlDiv, document.body.firstChild);
 
-        const inputField = document.createElement("input");
-        inputField.type = "text";
-        inputField.placeholder = "购买数量";
-        inputField.id = "script_userInputNumber";
-        inputField.value = localStorage.getItem("script_buyItemNumber");
+    //     const inputField = document.createElement("input");
+    //     inputField.type = "text";
+    //     inputField.placeholder = "购买数量";
+    //     inputField.id = "script_userInputNumber";
+    //     inputField.value = localStorage.getItem("script_buyItemNumber");
 
-        const saveButton = document.createElement("button");
-        saveButton.textContent = "保存";
+    //     const saveButton = document.createElement("button");
+    //     saveButton.textContent = "保存";
 
-        const selector = document.createElement("select");
-        selector.id = "script_userSelectItem";
-        const option1 = document.createElement("option");
-        option1.value = "Scrap";
-        option1.textContent = "废铁";
-        const option2 = document.createElement("option");
-        option2.value = "Iron Bar";
-        option2.textContent = "铁锭";
-        const option3 = document.createElement("option");
-        option3.value = "Logs";
-        option3.textContent = "原木";
-        const option4 = document.createElement("option");
-        option4.value = "Nails";
-        option4.textContent = "钉子";
-        selector.appendChild(option1);
-        selector.appendChild(option2);
-        selector.appendChild(option3);
-        selector.appendChild(option4);
-        for (const s of selector.children) {
-            if (s.value === localStorage.getItem("script_buyItemName")) {
-                s.selected = "selected";
-                break;
-            }
-        }
+    //     const selector = document.createElement("select");
+    //     selector.id = "script_userSelectItem";
+    //     const option1 = document.createElement("option");
+    //     option1.value = "Scrap";
+    //     option1.textContent = "废铁";
+    //     const option2 = document.createElement("option");
+    //     option2.value = "Iron Bar";
+    //     option2.textContent = "铁锭";
+    //     const option3 = document.createElement("option");
+    //     option3.value = "Logs";
+    //     option3.textContent = "原木";
+    //     const option4 = document.createElement("option");
+    //     option4.value = "Nails";
+    //     option4.textContent = "钉子";
+    //     selector.appendChild(option1);
+    //     selector.appendChild(option2);
+    //     selector.appendChild(option3);
+    //     selector.appendChild(option4);
+    //     for (const s of selector.children) {
+    //         if (s.value === localStorage.getItem("script_buyItemName")) {
+    //             s.selected = "selected";
+    //             break;
+    //         }
+    //     }
 
-        controlDiv.appendChild(inputField);
-        controlDiv.appendChild(selector);
-        controlDiv.appendChild(saveButton);
+    //     controlDiv.appendChild(inputField);
+    //     controlDiv.appendChild(selector);
+    //     controlDiv.appendChild(saveButton);
 
-        saveButton.addEventListener("click", () => {
-            const userInput = document.getElementById("script_userInputNumber").value;
-            const userSelection = document.getElementById("script_userSelectItem").value;
-            if (userInput) {
-                localStorage.setItem("script_buyItemNumber", userInput);
-                localStorage.setItem("script_buyItemName", userSelection);
-            } else {
-                console.error("invalid input");
-            }
-            location.reload();
-        });
-    }
+    //     saveButton.addEventListener("click", () => {
+    //         const userInput = document.getElementById("script_userInputNumber").value;
+    //         const userSelection = document.getElementById("script_userSelectItem").value;
+    //         if (userInput) {
+    //             localStorage.setItem("script_buyItemNumber", userInput);
+    //             localStorage.setItem("script_buyItemName", userSelection);
+    //         } else {
+    //             console.error("invalid input");
+    //         }
+    //         location.reload();
+    //     });
+    // }
 
     /* ZedTools END */
 
@@ -1618,6 +1623,16 @@
             "Buddy关于成为超级英雄的长篇大论持续了大约30分钟，直到他最终平静下来。",
         "Man all this excitements got me hungry! Can't train on an empty stomach now can we? Try and find me some protein before we get stuck in":
             "伙计，这一切的兴奋让我饿了！空着肚子我们可不能训练，对吧？去帮我找点蛋白质来再开始吧。",
+        "Limit Reset": "限购重置",
+        "There is now an hourly buying limit of 120 items at the city stores": "城市商店现在每小时购买限制为120件商品。",
+        "Log, scrap and iron bar junkstore restocks adjusted": "调整了木材、废料和铁棒的废品店补货。",
+        "Log and scrap drops increased when scavenging": "搜寻时木材和废料掉落量增加。",
+        "Some item price adjustments": "一些物品价格调整。",
+        "More stronghold building upgrade price adjustments": "更多要塞建筑升级价格调整。",
+        "Fixed search bar typo": "修复了搜索栏拼写错误。",
+        "Focus error bug fixed": "修复了焦点错误的bug。",
+        "Fixed bug causing homepage not to display correctly": "修复了导致主页无法正确显示的bug。",
+        "Fixed homepage not redirecting to game when already logged in": "修复了已登录情况下主页未跳转到游戏的问题。",
     };
 
     // 词典：待处理
