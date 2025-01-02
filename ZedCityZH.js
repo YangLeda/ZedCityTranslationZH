@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      5.0
+// @version      5.1
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -382,8 +382,8 @@
         Crafting: "制作",
         Fishing: "钓鱼",
         Refining: "精炼",
-        "Active Perks": "生效技能",
-        Perks: "技能",
+        "Active Perks": "当前特技",
+        Perks: "特技",
         "Skill Points": "技能点",
         Immunity: "免疫",
         "Increase Max Rad Immunity by": "增加最大辐射免疫力",
@@ -1033,7 +1033,7 @@
             "技能已添加到垃圾捡拾、狩猎、制作和锻造行动中。每次完成行动时，你将获得技能经验。",
         "Upgrade & progress bars should run smoothly now": "升级和进度条现在应该运行顺畅。",
         "Perks will allow you to upgrade your max rad immunity, max morale, max life, luck and all fight stats. Skill Points are gained for each level up, there will be more ways to gain them in the future. Your game stats will be available with your current hall of fame rank and a list of your active perks":
-            "特权将允许你提升最大辐射免疫、最大士气、最大生命、幸运以及所有战斗统计数据。每次升级都会获得技能点，未来将有更多获得技能点的方法。你的游戏统计数据将与当前名人堂排名和活跃特权列表一起显示。",
+            "特技将允许你提升最大辐射免疫、最大士气、最大生命、幸运以及所有战斗统计数据。每次升级都会获得技能点，未来将有更多获得技能点的方法。你的游戏统计数据将与当前名人堂排名和活跃特权列表一起显示。",
         "News is available on the homepage": "新闻将在首页上显示。",
         "Updated homepage layout": "更新了首页布局。",
         "Added discord invite link to homepage": "在首页添加了Discord邀请链接。",
@@ -1224,8 +1224,8 @@
         "Head into the Forest and gather some more logs. You’ll need plenty to keep your supplies stocked and your gear in top shape. Stay sharp, and don’t take any chances while you're out there":
             "进入森林，再收集一些原木。你需要大量的原木来保持物资充足和装备完好。保持警觉，不要冒险",
         "Upgrade Immunity": "升级免疫力",
-        "Immunity Perk": "免疫力加成",
-        "Max Rad Immunity": "最大辐射免疫",
+        "Immunity Perk": "免疫力特技",
+        "Max Rad Immunity": "最大辐射免疫力",
         "Great! You’ve got the logs. Now, it’s time to turn them into something useful. Head to your crafting bench and craft yourself a baseball bat. It’s simple, but it’ll be a solid tool when you’re out there facing whatever comes your way":
             "很好！你已经拿到了原木。现在，是时候把它们变成有用的东西了。前往你的制作台，制作一根棒球棒。这很简单，但在面对外面的危险时，它会是一个可靠的工具",
         "Gear up, and get ready. You’ll be glad you have it": "装备起来，准备好。你会很庆幸拥有它",
@@ -1491,7 +1491,7 @@
         "Garbo's Junkyard": "Garbo的垃圾场",
         "Shady part of the City where we might find a blacksmith": "城市里一个阴暗的角落，我们可能会在那里找到一个铁匠。",
         "Upgrade Luck": "提升幸运值",
-        "Luck Perk": "幸运技能",
+        "Luck Perk": "幸运特技",
         Garbo: "Garbo",
         "A large man stands by a hand made metal forge and an anvil. He looks over his tools and equipment, handling different objects, picking them up inspecting quickly and then placing them back down again, fiddling with a random assort of items while speaking to himself in confused muddled sentences":
             "一个大块头男人站在手工打造的金属炉和铁砧旁。他查看着自己的工具和设备，拿起不同的物品快速检查后再放回原位，一边摆弄着各种乱七八糟的物件，一边自言自语着一些混乱不清的句子。",
@@ -1630,6 +1630,8 @@
         "Focus error bug fixed": "修复了焦点错误的bug。",
         "Fixed bug causing homepage not to display correctly": "修复了导致主页无法正确显示的bug。",
         "Fixed homepage not redirecting to game when already logged in": "修复了已登录情况下主页未跳转到游戏的问题。",
+        "Morale Perk": "士气特技",
+        "Max Morale": "最大士气",
     };
 
     // 词典：待处理
