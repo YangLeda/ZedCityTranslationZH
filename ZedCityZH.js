@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      4.1
+// @version      4.2
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -993,7 +993,6 @@
             "你已经看到可以在制作台上制作什么了，对吧？那些武器和生存工具？不过，要继续制作它们，你需要资源——这意味着更多的搜寻",
         "Head into the Forest and gather some more logs. You’ll need plenty to keep your supplies stocked and your gear in top shape. Stay sharp, and don’t take any chances while you're out there":
             "进入森林，再收集一些原木。你需要大量的原木来保持物资充足和装备完好。保持警觉，不要冒险",
-        "Scavenging skill level increased": "拾荒技能等级提升",
         "Upgrade Immunity": "升级免疫力",
         "Immunity Perk": "免疫力加成",
         "Max Rad Immunity": "最大辐射免疫",
@@ -1013,7 +1012,6 @@
         DEFEATED: "战败",
         VS: "VS",
         WINNER: "胜利",
-        "Hunting skill level increased": "狩猎技能等级提升",
         "will show a total time if you are crafting more than 1x": "如果你制作超过1个，将显示总时间",
         "Medical Bay Upgrade": "医疗间升级",
         "Item added to your inventory": "物品已添加到你的库存",
@@ -1333,6 +1331,10 @@
         "Golden Skull": "金色头骨",
         "Monster Catfish": "怪物鲶鱼",
         "Viper Barnaclefish": "毒蛇藤壶鱼",
+        "Unlock with membership": "会员解锁",
+        "Item not found": "未找到物品",
+        "Invalid price": "价格无效",
+        "Offer not found": "未找到出售订单",
     };
 
     // 词典：待处理
@@ -1351,12 +1353,7 @@
     }
 
     // 翻译网页标题
-    // new MutationObserver(function (mutations) {
-    //     let string = document.querySelector("title").textContent.replaceAll(" | Zed City", "");
-    //     string = dict(string);
-    //     string += " | Zed City";
-    //     document.querySelector("title").textContent = string;
-    // }).observe(document.querySelector("title"), { subtree: true, characterData: true, childList: true });
+    // document.querySelector("title").textContent
 
     startTranslatePage();
 
@@ -1414,6 +1411,10 @@
     }
 
     function translateTextNode(node) {
+        if (!node.parentNode) {
+            return;
+        }
+
         // 排除个人资料页中帮派名
         if (node.parentNode.classList.contains("username")) {
             return;
@@ -1577,11 +1578,15 @@
         }
         if (/^([\w]+) bought (\d+)x ([\w\s-']+) and you gained \$(\d{1,3}(?:,\d{3})*), your market listing has sold out$/.test(text)) {
             let res = /^([\w]+) bought (\d+)x ([\w\s-']+) and you gained \$(\d{1,3}(?:,\d{3})*), your market listing has sold out$/.exec(text);
-            return `${res[1]} 购买了 ${res[2]}x ${res[3]}，你获得了 $${res[4]}，你的市场上架已售空`;
+            return `${res[1]} 购买了 ${res[2]}x ${dict(res[3])}，你获得了 $${res[4]}，你的市场上架已售空`;
         }
         if (/^([\w]+) bought (\d+)x ([\w\s-']+) and you gained \$(\d{1,3}(?:,\d{3})*), your market listing has sold$/.test(text)) {
             let res = /^([\w]+) bought (\d+)x ([\w\s-']+) and you gained \$(\d{1,3}(?:,\d{3})*), your market listing has sold$/.exec(text);
-            return `${res[1]} 购买了 ${res[2]}x ${res[3]}，你获得了 $${res[4]}，你的市场上架已售出`;
+            return `${res[1]} 购买了 ${res[2]}x ${dict(res[3])}，你获得了 $${res[4]}，你的市场上架已售出`;
+        }
+        if (/^([\w\s]+) skill level increased$/.test(text)) {
+            let res = /^([\w\s]+) skill level increased$/.exec(text);
+            return dict(res[1]) + "技能等级提升";
         }
 
         // 你没有足够的XX
@@ -1595,7 +1600,11 @@
             let res = /^Craft ([\w\s-']+)$/.exec(text);
             return "制作" + dict(res[1]);
         }
-        if (text !== "Crafting Bench" && /^Crafting ([\w\s-']+)$/.test(text)) {
+        if (
+            !text.toLowerCase().startsWith("crafting bench") &&
+            !text.toLowerCase().startsWith("crafting bench upgrade") &&
+            /^Crafting ([\w\s-']+)$/.test(text)
+        ) {
             let res = /^Crafting ([\w\s-']+)$/.exec(text);
             return "正在制作" + dict(res[1]);
         }
@@ -1603,7 +1612,7 @@
             let res = /^Forge ([\w\s-']+)$/.exec(text);
             return "锻造" + dict(res[1]);
         }
-        if (/^Forging ([\w\s-']+)$/.test(text)) {
+        if (/^Forging ([\w-']+)$/.test(text)) {
             let res = /^Forging ([\w\s-']+)$/.exec(text);
             return "正在锻造" + dict(res[1]);
         }
@@ -1660,6 +1669,10 @@
         if (/^Are you sure you want to kick ([\w]+)$/.test(text)) {
             let res = /^Are you sure you want to kick ([\w]+)$/.exec(text);
             return "是否确定踢除" + res[1];
+        }
+        if (/^([\w\s-']+) Upgrade$/.test(text)) {
+            let res = /^([\w\s-']+) Upgrade$/.exec(text);
+            return dict(res[1]) + "升级";
         }
 
         // 消除后面空格
