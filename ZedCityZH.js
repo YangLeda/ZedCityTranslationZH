@@ -1,16 +1,60 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      4.3
+// @version      4.4
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
 // @match        https://wiki.zed.city/*
 // @icon         https://www.zed.city/favicon.ico
-// @grant        none
+// @grant        unsafeWindow
 // ==/UserScript==
 
 (() => {
+    /* ZedTools START */
+
+    let playerXP = 0;
+    let currentLevelMinXP = 0;
+    let currentLevelMaxXP = 0;
+
+    // XMLHttpRequest hook
+    const open_prototype = XMLHttpRequest.prototype.open;
+    unsafeWindow.XMLHttpRequest.prototype.open = function () {
+        this.addEventListener("readystatechange", function (event) {
+            if (this.readyState === 4) {
+                if (this.responseURL.includes("api.zed.city/getStats")) {
+                    handleGetStats(this.response);
+                }
+                // 修改response内容
+                // Object.defineProperty(this, "response", { writable: true });
+                // Object.defineProperty(this, "responseText", { writable: true });
+                // this.response = modifiedResponse;
+                // this.responseText = modifiedResponse;
+            }
+        });
+        return open_prototype.apply(this, arguments);
+    };
+
+    function handleGetStats(r) {
+        const response = JSON.parse(r);
+        playerXP = response.experience;
+        currentLevelMinXP = response.xp_start;
+        currentLevelMaxXP = response.xp_end;
+    }
+
+    function updateLevelDisplay() {
+        const levelElem = document.body.querySelectorAll(".level-up-cont")[1];
+        const insertElem = document.body.querySelector("#script_player_level");
+        if (levelElem && !insertElem) {
+            levelElem.insertAdjacentHTML("beforeend", `<div id="script_player_level"><strong>${playerXP} / ${currentLevelMaxXP}</strong></div>`);
+        } else if (levelElem && insertElem) {
+            insertElem.innerHTML = `<strong>${playerXP}/${currentLevelMaxXP}</strong>`;
+        }
+    }
+    setInterval(updateLevelDisplay, 1000);
+
+    /* ZedTools END */
+
     const unmatchedTexts = [];
 
     const excludes = ["K", "M", "B", "D", "H", "S", "Lv", "MAX", "wiki", "discord", "XP", "N/A", "x"];
