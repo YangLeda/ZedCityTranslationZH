@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      4.7
+// @version      4.8
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
-// @author       bot740
+// @author       bot7420
 // @match        https://www.zed.city/*
 // @match        https://wiki.zed.city/*
 // @icon         https://www.zed.city/favicon.ico
@@ -1483,7 +1483,7 @@
         "Myena gives the bike a once over and tries the ignition": "Myena检查了一遍摩托车并尝试启动引擎。",
         "Things still not working, guess I'll be looking at the sparkies next then. Alright listen, Garbo is just around the corner from here. Has a workshop setup on top of the bridge. And hey, when you get back here, maybe could you bring me a water? I'm melting from all this work on the bike and that sure would wet my lips, if you know what I mean":
             "东西还是不能用，看来我接下来要检查火花塞了。好了听着，Garbo就在这附近。他在桥顶上建了一个作坊。对了，当你回来时，能不能给我带瓶水？修这辆摩托车让我快热化了，喝点水就能解渴了，你懂我的意思吧。",
-        "Objective: Visit Garbo and Get Water": "目标：拜访Garbo并带回水",
+        "Objective: Visit Garbo and Get Water": "目标：拜访Garbo并提交水",
         "Garbo's Junkyard": "Garbo的垃圾场",
         "Shady part of the City where we might find a blacksmith": "城市里一个阴暗的角落，我们可能会在那里找到一个铁匠。",
         "Upgrade Luck": "提升幸运值",
@@ -1590,6 +1590,34 @@
         "Bring me some gunpowder and I'll show you how we go about crafting more complex bullet types": "带点火药来，我会教你如何制作更复杂的子弹。",
         "Objective: Bring gunpowder": "目标：带来火药",
         "Not enough items in stock": "库存不足",
+        "Myena takes your water and drinks it quickly, followed by wiping away her sweaty brow with her oily hands":
+            "Myena接过你的水，快速喝完，然后用沾满油污的手擦去了额头上的汗水。",
+        "Oof thanks a lot. Life saver. ... I swear this Bike just doesn't want to live again. I've tried pretty much everything. Re-seated the pistons, replaced the sparkies. No matter what I try it just don't go. I know where I can get some new parts but it's just too dangerous, even for the both of us":
+            "哎呀，非常感谢。真是救命恩人。我发誓这辆摩托车就是不想重新动起来。我几乎什么都试过了，重新安装了活塞，更换了火花塞。不管怎么试，它就是不行。我知道哪里能找到一些新零件，但那地方太危险了，即使是我们俩也难以应付。",
+        "Myena paces around for a moment thinking to herself as if hatching a plan": "Myena在原地踱步，似乎在思索着某个计划。",
+        "Well it'll never work, likely you get caught up on the fence or I get stuck in the fire exit, it's just too risky":
+            "嗯，这根本行不通，你可能会被卡在围栏上，或者我被困在紧急出口，这风险太大了。",
+        "She looks at you with calculating eyes, weighing up the odds on your survival in the wrong situation":
+            "她用带有评估意味的眼神看着你，似乎在衡量你在糟糕情况下的生存几率。",
+        "Tell you what, I know who you should go and see. Buddy... yeah... Maddest guy I know but sure knows how to handle any situation thrown at him. Heck he'd already barricaded up half his neighbourhood before the first zed his his part of town. Just look out for the search lights at night. You won't be able to miss it":
+            "我告诉你，我知道你应该去找谁。Buddy……对，就是他……我认识的最疯狂的家伙，但他确实知道如何应对任何情况。他在第一只丧尸袭击他的社区之前，就已经在半个街区设置了路障。晚上留意探照灯，你绝对不会错过。",
+        "You go to walk out the door": "你正准备走出门。",
+        "And hey, if you can get a snack while you're out there, I sure would see that as a friendly gesture worth more information":
+            "对了，如果你能带些零食回来，我会把这看作一个友好的姿态，再告诉你更多信息。",
+        "Objective: Visit Buddy and Bring Snacks": "目标：拜访Buddy并提交零食",
+        "Good ol' Buddy": "好伙伴Buddy",
+        "A fortress against zombies heavily guarded": "一座对抗丧尸的严密防御堡垒。",
+        Buddy: "Buddy",
+        "You hop over a tall fence in a large courtyard surrounded by an old library building. You begin walking inwards, the area is completely concealed with the fence being the only exit. You begin to feel uneasy and the area almost feels like a deathtrap. At that moment two doors open on either side of the courtyard as floods of zombies begin to pour out. With no option but forward or back, you begin to run forward until you crash through the front door of the library and up the stairs. At the top of the stairs a young well muscled man beckons you behind a large door while excitedly laughing, jumping and egging you on":
+            "你跳过一座高高的围栏，进入了一个被旧图书馆建筑包围的大庭院。你开始往里走，这片区域完全被封闭，围栏是唯一的出口。你开始感到不安，这地方几乎像个死亡陷阱。就在这时，庭院两侧的两扇门打开，大批丧尸开始涌出。无路可退，你只能往前跑，直到撞开图书馆的前门并冲上楼梯。在楼梯顶端，一个年轻的肌肉发达的男人站在一扇大门后，兴奋地笑着跳跃，鼓励你继续前进。",
+        "Woooooh! You made it! Unbelievable! You won’t believe how many people don’t": "哇哦！你成功了！难以置信！你不会相信有多少人没能做到。",
+        "You take a moment and look at the man as if he’s crazed": "你稍作停顿，盯着这个男人，仿佛他是个疯子。",
+        "What? Can you blame me? You’d have to be crazy to try to raid my place so I already know you’re not here to steal from me, there’s much easier pickings out there. So.. it can only be that Myena told you I was hiding out here… Well, looks like you made it. I’m here and I guess you want to know all my secrets to survival. Well listen here newbie, through hard sweat, blood and tears - we’ll get you to being a top fit survivor. Hell, might even make you like some sort of super hero or something. All it takes is just super focus. Hard training everyday and you can forget about joy and relaxation, we’re gonna be super heroes baby!. Yea super heroes. I can feel it already":
+            "什么？你能怪我吗？只有疯子才会试图突袭我的地方，所以我已经知道你不是来偷东西的，外面有更容易的目标。所以……这只能说明Myena告诉你我躲在这里……好吧，看起来你成功了。我在这儿，我猜你是想知道我所有的生存秘密。听好了，新手，通过艰苦的汗水、鲜血和泪水——我们会让你成为顶尖的幸存者。天啊，甚至可能让你变成某种超级英雄或其他什么。只需要超级专注。每天艰苦训练，忘掉快乐和放松，我们要成为超级英雄，宝贝！对，超级英雄。我已经能感觉到了。",
+        "Buddy’s tirade about becoming super heroes continues for around 30 minutes until he eventually calms down":
+            "Buddy关于成为超级英雄的长篇大论持续了大约30分钟，直到他最终平静下来。",
+        "Man all this excitements got me hungry! Can't train on an empty stomach now can we? Try and find me some protein before we get stuck in":
+            "伙计，这一切的兴奋让我饿了！空着肚子我们可不能训练，对吧？去帮我找点蛋白质来再开始吧。",
     };
 
     // 词典：待处理
