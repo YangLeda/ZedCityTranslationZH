@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      4.4
+// @version      4.5
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot740
 // @match        https://www.zed.city/*
@@ -1393,6 +1393,20 @@
             "嘿，你知道吗，也许你可以帮我挖点煤，算是人情换人情。去那边看看洞壁上的黑色矿脉，挥动锤子，带回你找到的东西。",
         "Objective: Mine coal": "目标：煤炭",
         "Level Experience": "等级经验",
+        Upgrading: "升级中",
+        "Yeah! This is some quick quality coal you know how to extract the perfect gems. Tell you what I'll give you the iron bars I had left from making the Pickaxe":
+            "是啊！这是些优质煤，你真知道如何提取完美的宝石。这样吧，我把做镐子剩下的铁条给你。",
+        "Have you seen those 'handmades' everyones using to take out zeds? It's like a makeshift gun thats easy to fabricate, if you can give me 1000 cash I'll give you some bullets for training practice":
+            "你见过大家用来对付丧尸的那些“手工枪”吗？那是一种易于制作的简易枪，如果你能给我1000现金，我就给你一些子弹用来练习。",
+        "Objective: Give cash": "目标：提供现金",
+        "Yeaaa kid! I hope you tried out some of those simple bullets on some deserving zeds":
+            "太棒了，小子！我希望你已经用那些简易子弹对付过一些该死的丧尸了。",
+        "You give him a reassuring look with a smirk": "你带着一丝微笑，给了他一个让人安心的眼神。",
+        "Now those are okay for getting rid of the smaller zeds and the easier to kill things, but to get the job done in harder areas you'll need a bit more fire power":
+            "那些子弹对付小型丧尸和容易杀死的目标还可以，但在更困难的区域完成任务，你需要更强大的火力。",
+        "You nod in understanding": "你点头表示理解。",
+        "Bring me some gunpowder and I'll show you how we go about crafting more complex bullet types": "带点火药来，我会教你如何制作更复杂的子弹。",
+        "Objective: Bring gunpowder": "目标：带来火药",
     };
 
     // 词典：待处理
