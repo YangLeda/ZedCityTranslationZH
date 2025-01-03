@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      6.7
+// @version      6.8
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -29,6 +29,8 @@
                     handleStartJob(this.response);
                 } else if (this.responseURL.includes("api.zed.city/getStronghold")) {
                     handleGetStronghold(this.response);
+                } else if (this.responseURL.includes("api.zed.city/getRadioTower")) {
+                    handleGetRadioTower(this.response);
                 }
                 // Object.defineProperty(this, "response", { writable: true });
                 // Object.defineProperty(this, "responseText", { writable: true });
@@ -143,21 +145,21 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "afterend",
-                    `<div id="script_junk_store_limit_logo" style="order: 101;"><span class="script_do_not_translate" style="font-size: 12px;">限购 ${timeReadable(
+                    `<div id="script_junk_store_limit_logo" style="order: 102;"><span class="script_do_not_translate" style="font-size: 12px;">商店 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
                     "afterend",
-                    `<div id="script_junk_store_limit_logo" style="order: 101;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">限购已重置</span></div>`
+                    `<div id="script_junk_store_limit_logo" style="order: 102;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">商店已刷新</span></div>`
                 );
             }
         } else {
             if (timeLeftSec > 0) {
-                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">限购 ${timeReadable(timeLeftSec)}</span>`;
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">商店 ${timeReadable(timeLeftSec)}</span>`;
             } else {
-                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">限购已重置</span>`;
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">商店已刷新</span>`;
             }
         }
     }
@@ -250,6 +252,50 @@
         }
     }
     setInterval(updateForgeDisplay, 500);
+
+    // 状态栏显示无线电塔交易刷新
+    if (!localStorage.getItem("script_radioTowerTradeTimestamp")) {
+        localStorage.setItem("script_radioTowerTradeTimestamp", Date.now());
+    }
+
+    function handleGetRadioTower(r) {
+        const response = JSON.parse(r);
+        const expire = response?.expire;
+        if (expire) {
+            localStorage.setItem("script_radioTowerTradeTimestamp", Date.now() + expire * 1000);
+        }
+    }
+
+    function updateRadioTowerDisplay() {
+        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        if (!insertToElem) {
+            return;
+        }
+        const logoElem = document.body.querySelector("#script_radio_tower_logo");
+        const timeLeftSec = Math.floor((localStorage.getItem("script_radioTowerTradeTimestamp") - Date.now()) / 1000);
+        if (!logoElem) {
+            if (timeLeftSec > 0) {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_radio_tower_logo" style="order: 103;"><span class="script_do_not_translate" style="font-size: 12px;">电塔 ${timeReadable(
+                        timeLeftSec
+                    )}</span></div>`
+                );
+            } else {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_radio_tower_logo" style="order: 103;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">电塔已刷新</span></div>`
+                );
+            }
+        } else {
+            if (timeLeftSec > 0) {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">电塔 ${timeReadable(timeLeftSec)}</span>`;
+            } else {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">电塔已刷新</span>`;
+            }
+        }
+    }
+    setInterval(updateRadioTowerDisplay, 500);
 
     /* 抢购 */
     // if (!localStorage.getItem("script_buyItemName")) {
@@ -1877,7 +1923,7 @@
         "Garbo drops to his knees": "Garbo 跪了下来。",
         "Please survivor, find my poor Geoffrey": "请，幸存者，找到我可怜的 Geoffrey。",
         "Objective: Scout the police foyer": "目标：侦查警察局大厅",
-        "Trades expire in": "交易将到期于",
+        "Trades expire in": "交易刷新于",
         "Trade Completed": "交易完成",
         Trade: "交易",
         "Upgrade Radio Tower": "升级无线电塔",
