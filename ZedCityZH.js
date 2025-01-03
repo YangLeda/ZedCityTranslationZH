@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      6.4
+// @version      6.5
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1860,6 +1860,23 @@
         "Now I've shown you how to make your own pistol ammo, prove your adept and fashion me some high quality bullets. Go back to your ammo bench and craft enough for me to go do some target practice":
             "现在我已经教你如何制作自己的手枪弹药，证明你的熟练程度，给我打造一些高质量的子弹。回到你的弹药台，为我制作足够的子弹用于练习射击。",
         "Objective: Craft pistol ammo": "目标：制作手枪弹药。",
+        "Hey! It's you! You cleared the concession stands recently, I really appreciate it now I can go collect all the chopped up bodies and bring them back for dissection! Perfectly safe":
+            "嘿！是你！你最近清理了小吃摊，真是太感谢了，现在我可以去收集所有被切碎的尸体带回来解剖了！完全安全。",
+        "Meat hums a nice song while continuing cutting away at his cadavers": "Meat 一边哼着轻快的曲子，一边继续切割他的尸体。",
+        "Y'know, I was thinking recently about the Hall of Mirrors in the Arcade, I've seen some real freaky things in there and heck I'd love to go check 'em out. Whadya say? Wanna go clear it for me":
+            "你知道吗，我最近在想游乐场的镜子大厅，我在那里看到了一些非常怪异的东西，天哪，我真想去看看。你觉得怎么样？愿意帮我清理一下吗？",
+        "Objective: Clear Hall of Mirrors": "目标：清理镜厅",
+        "Garbo can be seen sitting quietly in thought staring into the embers of a coldly lit fire": "Garbo 坐在那里静静地沉思，盯着一堆冷火的余烬。",
+        "Aw what's the use": "唉，这又有什么用呢。",
+        "You walk over and place a hand on his shoulder": "你走过去，把手放在他的肩膀上。",
+        "You wouldn't believe it... My kitten Geoffrey went missing, heading towards the old Police HQ":
+            "你不会相信的……我的小猫 Geoffrey 失踪了，跑向了旧警察总部。",
+        "His eyes start to tear up": "他的眼中开始噙满泪水。",
+        "I know it's suicide I know, I know it's stupid... But listen, kid... If you can do this for me, I'll be in your debt":
+            "我知道这无异于自杀，我知道，这很愚蠢……但是听着，孩子……如果你能为我做到这一点，我会感激不尽。",
+        "Garbo drops to his knees": "Garbo 跪了下来。",
+        "Please survivor, find my poor Geoffrey": "请，幸存者，找到我可怜的 Geoffrey。",
+        "Objective: Scout the police foyer": "目标：侦查警察局大厅",
     };
 
     // 词典：待处理
