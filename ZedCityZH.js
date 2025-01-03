@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      5.9
+// @version      6.0
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -121,7 +121,7 @@
 
     // 状态栏显示商店重置倒计时
     if (!localStorage.getItem("script_junkStoreResetTimestamp")) {
-        localStorage.setItem("script_junkStoreResetTimestamp", 0);
+        localStorage.setItem("script_junkStoreResetTimestamp", Date.now());
     }
 
     function handleGetStoreJunkLimit(r) {
@@ -144,19 +144,19 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "afterend",
-                    `<div id="script_junk_store_limit_logo"><span class="script_do_not_translate" style="font-size: 12px;">限购重置 ${timeReadable(
+                    `<div id="script_junk_store_limit_logo" style="order: 101;"><span class="script_do_not_translate" style="font-size: 12px;">限购 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
                     "afterend",
-                    `<div id="script_junk_store_limit_logo"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">限购已重置</span></div>`
+                    `<div id="script_junk_store_limit_logo" style="order: 101;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">限购已重置</span></div>`
                 );
             }
         } else {
             if (timeLeftSec > 0) {
-                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">限购重置 ${timeReadable(timeLeftSec)}</span>`;
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">限购 ${timeReadable(timeLeftSec)}</span>`;
             } else {
                 logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">限购已重置</span>`;
             }
@@ -179,7 +179,7 @@
 
     // 状态栏显示熔炉工作
     if (!localStorage.getItem("script_forgeTimestamp")) {
-        localStorage.setItem("script_forgeTimestamp", 0);
+        localStorage.setItem("script_forgeTimestamp", Date.now());
     }
 
     function handleStartJob(r) {
@@ -248,14 +248,14 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "afterend",
-                    `<div id="script_forge_logo"><span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(
+                    `<div id="script_forge_logo" style="order: 101;"><span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
                     "afterend",
-                    `<div id="script_forge_logo"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span></div>`
+                    `<div id="script_forge_logo" style="order: 101;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span></div>`
                 );
             }
         } else {
