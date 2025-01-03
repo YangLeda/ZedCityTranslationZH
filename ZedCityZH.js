@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      6.1
+// @version      6.2
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -129,7 +129,6 @@
         const secLeft = response?.limits?.reset_time;
         if (secLeft) {
             localStorage.setItem("script_junkStoreResetTimestamp", Date.now() + secLeft * 1000);
-            console.log("localStorage script_junkStoreResetTimestamp set");
         }
     }
 
@@ -194,13 +193,6 @@
         if (perActionTime && perActionConsumeItemNumber && consumeItemNumber) {
             const secLeft = perActionTime * (consumeItemNumber / perActionConsumeItemNumber);
             localStorage.setItem("script_forgeTimestamp", Date.now() + secLeft * 1000);
-            console.log("localStorage script_forgeTimestamp set");
-        } else {
-            console.log(response);
-            console.error(jobName);
-            console.error(perActionTime);
-            console.error(perActionConsumeItemNumber);
-            console.error(consumeItemNumber);
         }
     }
 
@@ -225,14 +217,6 @@
                 localStorage.setItem("script_forgeTimestamp", Date.now() + secLeft * 1000);
                 console.log("localStorage script_forgeTimestamp set");
                 break;
-            } else {
-                console.log(response);
-                console.error(jobName);
-                console.error(perActionTime);
-                console.error(perActionConsumeItemNumber);
-                console.error(consumeItemNumber);
-                console.error(iterationsPassed);
-                console.error(timeLeft);
             }
         }
     }
