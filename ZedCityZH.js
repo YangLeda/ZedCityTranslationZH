@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed City 汉化
 // @namespace    http://tampermonkey.net/
-// @version      5.4
+// @version      5.5
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -895,7 +895,7 @@
         Tarp: "防水布",
         Lighter: "打火机",
         "Barracks key": "军营钥匙",
-        "Police RFID": "警用射频ID",
+        "Police RFID": "警察射频ID",
         "A crafting bench is a sturdy table where manual work is done": "制作工作台是一个坚固的桌子，用来进行手工制作",
         "Complete building to access crafting bench": "完成建筑以访问制作工作台",
         Kwizine: "烹饪",
@@ -1691,6 +1691,37 @@
         "Fixed homepage not redirecting to game when already logged in": "修复了已登录情况下主页未跳转到游戏的问题。",
         "Morale Perk": "士气特技",
         "Max Morale": "最大士气",
+        "You have reached your hourly buy limit": "您已达到每小时购买限制。",
+        "Oh you brought a snack": "哦，你带了零食。",
+        "Myena springs up from working on the bike": "Myena从修理自行车的工作中跳了起来。",
+        "Oh it looks fresh too! Wow thanks a lot... Jeez, I almost feel bad for sending you to see Buddy now, heh surprised you even made it back. Well jokes aside I appreciate the food... It looks delicious":
+            "哦，它看起来也很新鲜！哇，非常感谢……天哪，我几乎对让你去见Buddy感到抱歉，呵呵，惊讶你居然回来了。好吧，玩笑归玩笑，我很感激这份食物……它看起来很美味。",
+        "Myena takes a bite into the snack and begins savouring the taste while swaying her head side to side in thought":
+            "Myena咬了一口零食，开始品味其味道，同时一边思考一边摇头晃脑。",
+        "Meat... Hmmmmm": "肉……嗯嗯。",
+        "Myena continues to bite into the snack, chewing and swaying": "Myena继续咬着零食，咀嚼着并摇晃着。",
+        "Yeah sure, Meat... You'll like Meat, he's a really likeable guy\" *Myena chuckles* \"Yup. Meat, he's an expert in all things Zed related. If you go meet with him in the butchers shed at the market you will likely learn a thing or two. I'm hoping he might still have that Police RFID he found a while back, if you do a few hunts for him - I'm sure he'll hand it over no problems. Meat is a nice guy, don't forget that":
+            '是啊，肉……你会喜欢他的，他是个非常讨人喜欢的人" *Myena笑着说* "没错。Meat是个关于丧尸的一切的专家。如果你去市场的屠夫棚见他，你可能会学到一些东西。我希望他还保留着前段时间找到的那个警察射频ID，如果你为他猎杀一些东西——我确信他会毫无问题地交给你。Meat是个好人，别忘了。',
+        "Objective: Get Police RFID from Meat": "目标：从Meat那里获得警察射频ID。",
+        "The Butchers Shed": "屠夫棚",
+        "A large butchers warehouse with metallic interior": "一个内部金属结构的大型屠夫仓库。",
+        Meat: "Meat",
+        "Using the back alley of the market you walk towards the area marked with wooden signs saying “Meat”. You begin to follow the smell of rotting flesh and blood until you happen upon a white door covered in bloody handprints. You go inside the darkly lit warehouse, chains can be heard rustling around and within the room all sorts of different zed types can be seen hanging from any form of implement that would support the body. Some bodies strewn in half left laying where the detachment occurred. You hear the noise of a knife being sharpened as you enter further in, eventually gaining sight of a large figure chiselled adorning advanced military uniform beginning to cut away the jaw of his captured zed. He finishes his cut, drops it onto the table then turns to you as if you’d interrupted some important work":
+            "沿着市场的后巷，你走向标有“Meat”木牌的区域。你开始追踪腐肉和血液的气味，直到你来到一扇满是血手印的白色门前。你走进这间灯光昏暗的仓库，能听到铁链的沙沙声，房间里各种不同的类型的丧尸悬挂在任何可以支撑尸体的器具上。有些身体被拦腰截断，躺在分离的地方。随着你深入，听到刀子磨砺的声音，最终看见一个穿着高级军装的巨大身影开始切割他抓获的丧尸的下巴。他完成切割，把它扔到桌子上，然后转向你，仿佛你打断了什么重要的工作。",
+        "What? You gonna fuckin’ stare all day? Come here and hold it’s legs that always makes this next bit easier":
+            "什么？你打算整天就这么盯着？过来抓住它的腿，这总会让接下来的部分更容易。",
+        "You go over and hold both the zeds legs as the man begins cutting across the creature's torso for tearing into its rotting flesh":
+            "你走过去抓住了丧尸的双腿，这个男人开始横切生物的躯干，剥开其腐烂的肉体。",
+        "So another of Myenas lost puppy dogs huh, well… I guess you do seem a bit different, you haven’t vomited from the smell yet":
+            "所以又是一个Myena的小跟班，对吧？嗯……不过我觉得你有点不同，你还没因为这味道呕吐。",
+        "You continue cutting up the zed until nothing remains in the original place of the creature, each part of the zed now laid out on the table in front of you":
+            "你继续切割丧尸，直到生物的原貌不复存在，丧尸的每一部分现在都被整齐地放在你面前的桌子上。",
+        "I guess that's it then. Thanks for the help. Listen, I always need a little help clearing a few of these guys out of nearby areas, to keep it safe for me to collect samples and the like. If you could start clearing out the Concession Stand at the Arcade I could head there next":
+            "我想就这样吧，谢谢你的帮助。听着，我总是需要一点帮助来清理附近区域的这些家伙，以便我可以安全地收集样本之类的东西。如果你能开始清理街机的特许摊位，我就可以接着去那里。",
+        "Objective: Clear Concession Stand": "目标：清理小吃摊。",
+        "Now I've shown you how to make your own pistol ammo, prove your adept and fashion me some high quality bullets. Go back to your ammo bench and craft enough for me to go do some target practice":
+            "现在我已经教你如何制作自己的手枪弹药，证明你的熟练程度，给我打造一些高质量的子弹。回到你的弹药台，为我制作足够的子弹用于练习射击。",
+        "Objective: Craft pistol ammo": "目标：制作手枪弹药。",
     };
 
     // 词典：待处理
@@ -2043,6 +2074,10 @@
         if (/^You can only buy\s+(\d+)\s+more\s+items this hour$/.test(text)) {
             let res = /^You can only buy\s+(\d+)\s+more\s+items this hour$/.exec(text);
             return "当前小时内只能买 " + res[1] + " 件物品";
+        }
+        if (/^([\w\s-']+) Blueprint$/.test(text)) {
+            let res = /^([\w\s-']+) Blueprint$/.exec(text);
+            return dict(res[1]) + "蓝图";
         }
 
         // 消除后面空格
