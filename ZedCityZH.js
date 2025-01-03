@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      5.7
+// @version      5.8
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -14,13 +14,6 @@
 (() => {
     /* ZedTools START */
 
-    let playerXP_previous = 0;
-    let playerXP_new = 0;
-    let currentLevelMaxXP = 0;
-
-    let skills_previous = null;
-    let skills_new = null;
-
     // XMLHttpRequest hook
     const open_prototype = XMLHttpRequest.prototype.open;
     unsafeWindow.XMLHttpRequest.prototype.open = function () {
@@ -32,6 +25,10 @@
                     handleSkills(this.response);
                 } else if (this.responseURL.includes("api.zed.city/getStore?store_id=junk")) {
                     handleGetStoreJunkLimit(this.response);
+                } else if (this.responseURL.includes("api.zed.city/startJob")) {
+                    handleStartJob(this.response);
+                } else if (this.responseURL.includes("api.zed.city/getStronghold")) {
+                    handleGetStronghold(this.response);
                 }
                 // Object.defineProperty(this, "response", { writable: true });
                 // Object.defineProperty(this, "responseText", { writable: true });
@@ -42,6 +39,14 @@
         return open_prototype.apply(this, arguments);
     };
 
+    // 状态栏显示经验值
+    let playerXP_previous = 0;
+    let playerXP_new = 0;
+    let currentLevelMaxXP = 0;
+
+    let skills_previous = null;
+    let skills_new = null;
+
     function handleGetStats(r) {
         const response = JSON.parse(r);
         playerXP_new = response.experience;
@@ -51,61 +56,6 @@
     function handleSkills(r) {
         const response = JSON.parse(r);
         skills_new = [...response.player_skills];
-    }
-
-    // 商店重置倒计时
-    if (!localStorage.getItem("script_junkStoreResetTimestamp")) {
-        localStorage.setItem("script_junkStoreResetTimestamp", 0);
-    }
-
-    function handleGetStoreJunkLimit(r) {
-        const response = JSON.parse(r);
-        const secLeft = response?.limits?.reset_time;
-        if (secLeft) {
-            localStorage.setItem("script_junkStoreResetTimestamp", Date.now() + secLeft * 1000);
-        }
-    }
-
-    function updateStoreResetDisplay() {
-        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
-        if (!insertToElem) {
-            return;
-        }
-        const logoElem = document.body.querySelector("#script_junk_store_limit_logo");
-        const timeLeftSec = Math.floor((localStorage.getItem("script_junkStoreResetTimestamp") - Date.now()) / 1000);
-        if (!logoElem) {
-            if (timeLeftSec > 0) {
-                insertToElem.insertAdjacentHTML(
-                    "afterend",
-                    `<div id="script_junk_store_limit_logo"><span class="script_do_not_translate">限购重置 ${timeReadable(timeLeftSec)}</span></div>`
-                );
-            } else {
-                insertToElem.insertAdjacentHTML(
-                    "afterend",
-                    `<div id="script_junk_store_limit_logo"><span class="script_do_not_translate" style="background-color: #ef5350;">限购已重置</span></div>`
-                );
-            }
-        } else {
-            if (timeLeftSec > 0) {
-                logoElem.innerHTML = `<span class="script_do_not_translate">限购重置 ${timeReadable(timeLeftSec)}</span>`;
-            } else {
-                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350;">限购已重置</span>`;
-            }
-        }
-    }
-    setInterval(updateStoreResetDisplay, 500);
-
-    function timeReadable(sec) {
-        if (sec >= 86400) {
-            return Number(sec / 86400).toFixed(1) + " days";
-        }
-        const d = new Date(Math.round(sec * 1000));
-        function pad(i) {
-            return ("0" + i).slice(-2);
-        }
-        let hours = d.getUTCHours() ? d.getUTCHours() + ":" : "";
-        let str = hours + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
-        return str;
     }
 
     function updateLevelDisplay() {
@@ -168,6 +118,155 @@
         }
     }
     setInterval(updateLevelDisplay, 500);
+
+    // 状态栏显示商店重置倒计时
+    if (!localStorage.getItem("script_junkStoreResetTimestamp")) {
+        localStorage.setItem("script_junkStoreResetTimestamp", 0);
+    }
+
+    function handleGetStoreJunkLimit(r) {
+        const response = JSON.parse(r);
+        const secLeft = response?.limits?.reset_time;
+        if (secLeft) {
+            localStorage.setItem("script_junkStoreResetTimestamp", Date.now() + secLeft * 1000);
+            console.log("localStorage script_junkStoreResetTimestamp set");
+        }
+    }
+
+    function updateStoreResetDisplay() {
+        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        if (!insertToElem) {
+            return;
+        }
+        const logoElem = document.body.querySelector("#script_junk_store_limit_logo");
+        const timeLeftSec = Math.floor((localStorage.getItem("script_junkStoreResetTimestamp") - Date.now()) / 1000);
+        if (!logoElem) {
+            if (timeLeftSec > 0) {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_junk_store_limit_logo"><span class="script_do_not_translate" style="font-size: 12px;">限购重置 ${timeReadable(
+                        timeLeftSec
+                    )}</span></div>`
+                );
+            } else {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_junk_store_limit_logo"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">限购已重置</span></div>`
+                );
+            }
+        } else {
+            if (timeLeftSec > 0) {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">限购重置 ${timeReadable(timeLeftSec)}</span>`;
+            } else {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">限购已重置</span>`;
+            }
+        }
+    }
+    setInterval(updateStoreResetDisplay, 500);
+
+    function timeReadable(sec) {
+        if (sec >= 86400) {
+            return Number(sec / 86400).toFixed(1) + " days";
+        }
+        const d = new Date(Math.round(sec * 1000));
+        function pad(i) {
+            return ("0" + i).slice(-2);
+        }
+        let hours = d.getUTCHours() ? d.getUTCHours() + ":" : "";
+        let str = hours + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
+        return str;
+    }
+
+    // 状态栏显示熔炉工作
+    if (!localStorage.getItem("script_forgeTimestamp")) {
+        localStorage.setItem("script_forgeTimestamp", 0);
+    }
+
+    function handleStartJob(r) {
+        const response = JSON.parse(r);
+        const jobName = response?.job.codename;
+        const perActionTime = response?.job?.items?.["item_requirement-bp"]?.vars?.wait_time;
+        const perActionConsumeItemNumber = response?.job?.items?.["item_requirement-bp"]?.vars?.items?.["item_requirement-1"]?.qty;
+        const consumeItemNumber = response?.job?.items?.["item_requirement-1"]?.quantity;
+        if (jobName !== "furnace") {
+            return;
+        }
+        if (perActionTime && perActionConsumeItemNumber && consumeItemNumber) {
+            const secLeft = perActionTime * (consumeItemNumber / perActionConsumeItemNumber);
+            localStorage.setItem("script_forgeTimestamp", Date.now() + secLeft * 1000);
+            console.log("localStorage script_forgeTimestamp set");
+        } else {
+            console.log(response);
+            console.error(jobName);
+            console.error(perActionTime);
+            console.error(perActionConsumeItemNumber);
+            console.error(consumeItemNumber);
+        }
+    }
+
+    function handleGetStronghold(r) {
+        const response = JSON.parse(r);
+        if (!response.stronghold) {
+            return;
+        }
+        for (const key in response.stronghold) {
+            const area = response.stronghold[key];
+            const jobName = area.codename;
+            if (jobName !== "furnace") {
+                continue;
+            }
+            const perActionTime = area?.items?.["item_requirement-bp"]?.vars?.wait_time;
+            const perActionConsumeItemNumber = area?.items?.["item_requirement-bp"]?.vars?.items?.["item_requirement-1"]?.qty;
+            const consumeItemNumber = area?.items?.["item_requirement-1"]?.quantity;
+            const iterationsPassed = area?.iterationsPassed;
+            const timeLeft = area?.timeLeft;
+            if (perActionTime && perActionConsumeItemNumber && consumeItemNumber && iterationsPassed && timeLeft) {
+                const secLeft = perActionTime * (consumeItemNumber / perActionConsumeItemNumber - iterationsPassed) - (perActionTime - timeLeft);
+                localStorage.setItem("script_forgeTimestamp", Date.now() + secLeft * 1000);
+                console.log("localStorage script_forgeTimestamp set");
+                break;
+            } else {
+                console.log(response);
+                console.error(jobName);
+                console.error(perActionTime);
+                console.error(perActionConsumeItemNumber);
+                console.error(consumeItemNumber);
+                console.error(iterationsPassed);
+                console.error(timeLeft);
+            }
+        }
+    }
+
+    function updateForgeDisplay() {
+        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        if (!insertToElem) {
+            return;
+        }
+        const logoElem = document.body.querySelector("#script_forge_logo");
+        const timeLeftSec = Math.floor((localStorage.getItem("script_forgeTimestamp") - Date.now()) / 1000);
+        if (!logoElem) {
+            if (timeLeftSec > 0) {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_forge_logo"><span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(
+                        timeLeftSec
+                    )}</span></div>`
+                );
+            } else {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_forge_logo"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span></div>`
+                );
+            }
+        } else {
+            if (timeLeftSec > 0) {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(timeLeftSec)}</span>`;
+            } else {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span>`;
+            }
+        }
+    }
+    setInterval(updateForgeDisplay, 500);
 
     /* 抢购 */
     // if (!localStorage.getItem("script_buyItemName")) {
