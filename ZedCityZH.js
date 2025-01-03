@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      6.5
+// @version      6.6
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -474,7 +474,7 @@
         "Crafting Bench": "制作台",
         Furnace: "熔炉",
         Kitchen: "厨房",
-        "Radio Tower": "广播塔",
+        "Radio Tower": "无线电塔",
         "Weapon Bench": "武器台",
         "Ammo Bench": "弹药台",
         "Armour Bench": "盔甲台",
@@ -773,7 +773,7 @@
         "Cooked Meat": "熟肉",
         "Fish Kebab": "鱼肉串",
         Sandwich: "三明治",
-        "Complete building to access radio tower": "完成建筑以访问广播塔",
+        "Complete building to access radio tower": "完成建筑以访问无线电塔",
         "Fabricate firearms": "制造枪械",
         "Complete building to access weapon bench": "完成建筑以访问武器台",
         Handgun: "手枪",
@@ -1877,6 +1877,10 @@
         "Garbo drops to his knees": "Garbo 跪了下来。",
         "Please survivor, find my poor Geoffrey": "请，幸存者，找到我可怜的 Geoffrey。",
         "Objective: Scout the police foyer": "目标：侦查警察局大厅",
+        "Trades expire in": "交易将到期于",
+        "Trade Completed": "交易完成",
+        Trade: "交易",
+        "Upgrade Radio Tower": "升级无线电塔",
     };
 
     // 词典：待处理
