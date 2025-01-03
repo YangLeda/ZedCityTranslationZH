@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      5.8
+// @version      5.9
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1899,7 +1899,12 @@
     // 翻译网页标题
     // document.querySelector("title").textContent
 
-    startTranslatePage();
+    if (!localStorage.getItem("script_translate")) {
+        localStorage.setItem("script_translate", "enabled");
+    }
+    if (localStorage.getItem("script_translate") === "enabled") {
+        startTranslatePage();
+    }
 
     function startTranslatePage() {
         translateNode(document.body);
