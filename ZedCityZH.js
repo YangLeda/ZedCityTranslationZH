@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      6.6
+// @version      6.7
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1881,6 +1881,20 @@
         "Trade Completed": "交易完成",
         Trade: "交易",
         "Upgrade Radio Tower": "升级无线电塔",
+        "Something went wrong": "出错了",
+        "Chop chop chop, strip strip strip": "咔嚓咔嚓咔嚓，剥剥剥",
+        "Meat chops happily away at a large collection of body parts assorted into groups on the table laid out before him":
+            "丧尸屠夫开心地切割着桌上按类别分组的大量尸体部件",
+        "Business is gooood my chum! You really do clear out the zones with extra special care. Bravo! I'm gonna keep chopping and hacking away enjoying my merry little self":
+            "生意兴隆啊，我的朋友！你清理区域真的非常细致。好样的！我会继续高高兴兴地切切砍砍。",
+        "Meat continues chopping away while you stand awaiting more information about the Police RFID you came for":
+            "丧尸屠夫继续切割着，你站在那里等待关于你来找的警察射频ID的更多信息。",
+        "Mhm *grumble*, did you ever see 'Day of the Zed' back in the day? That's my favourite film... Sure was a good movie":
+            "嗯哼，*嘟囔*，你以前看过《丧尸之日》吗？那是我最喜欢的电影……真是一部好电影。",
+        "Meat chuckles to himself": "丧尸屠夫自顾自地轻笑起来。",
+        "Sure would be nice if the Maintenance Room in the Cinema were clear. Then someone could go secure a copy of that movie... For historical purposes obviously":
+            "如果能清理一下电影院的维修室就太好了。然后就能找到那部电影的拷贝……当然是为了历史研究用途。",
+        "Objective: Clear Maintenance Room": "目标：清理维修室",
     };
 
     // 词典：待处理
