@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.0
+// @version      7.1
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -255,7 +255,7 @@
 
     // 状态栏显示无线电塔交易刷新
     if (!localStorage.getItem("script_radioTowerTradeTimestamp")) {
-        localStorage.setItem("script_radioTowerTradeTimestamp", Date.now());
+        localStorage.setItem("script_radioTowerTradeTimestamp", 0);
     }
 
     function handleGetRadioTower(r) {
@@ -267,6 +267,9 @@
     }
 
     function updateRadioTowerDisplay() {
+        if (localStorage.getItem("script_radioTowerTradeTimestamp") === "0") {
+            return;
+        }
         const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
         if (!insertToElem) {
             return;
