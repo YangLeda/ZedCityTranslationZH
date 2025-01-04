@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.1
+// @version      7.2
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -558,7 +558,7 @@
         Retail: "零售",
         Glockbuster: "Glock杀手",
         "Junk Store": "废品店",
-        "Zed Mart": "僵尸商场",
+        "Zed Mart": "丧尸商场",
         "Donator Store": "捐赠商店",
         Factions: "帮派",
         Incinerator: "焚烧炉",
@@ -652,9 +652,9 @@
         FAQ: "常见问题",
         Forum: "论坛",
         "Welcome to Zed City, a thrilling zombie apocalypse survival game. Navigate through the city to gather resources, fend off zombies, and fortify your stronghold. Your initial goal is to enhance your character and strengthen your base":
-            "欢迎来到Zed City，一款刺激的末日求生游戏。穿越城市，收集资源，抵御僵尸，并加固你的据点。你的初步目标是提升角色并强化基地",
+            "欢迎来到Zed City，一款刺激的末日求生游戏。穿越城市，收集资源，抵御丧尸，并加固你的据点。你的初步目标是提升角色并强化基地",
         "Scavenging and hunting will be the best way for you to thrive in the wasteland, gathering all the scraps and valuables you can lay your hands on. With some work you can turn them into valuable resources and epic weapons to take down even the biggest of zeds":
-            "拾荒和狩猎将是你在荒原中生存下去的最佳方法，收集所有你能找到的垃圾和宝贵物品。通过一些努力，你可以将这些转化为宝贵的资源和史诗级武器，打倒最大的僵尸",
+            "拾荒和狩猎将是你在荒原中生存下去的最佳方法，收集所有你能找到的垃圾和宝贵物品。通过一些努力，你可以将这些转化为宝贵的资源和史诗级武器，打倒最大的丧尸",
         "Start your journey by diving into the": "开始你的旅程，进入",
         quest: "任务",
         "For a more detailed guide, check out the wiki": "欲了解更详细的指南，请查看wiki",
@@ -915,13 +915,13 @@
         "Requirements for each level upgrade have been adjusted": "每个等级升级的要求已做出调整。",
         "NPC Balancing": "NPC平衡性调整",
         "We have adjusted the stats of each zed to match the changes made to the fight stats growth":
-            "我们已调整每个僵尸的属性，以适应战斗数据增长的变化。",
+            "我们已调整每个丧尸的属性，以适应战斗数据增长的变化。",
         "Difficulty Rating": "难度等级",
         "Each NPC will now have a difficulty rating so you can make a better decision on your ability to defeat them":
             "每个NPC现在都有一个难度等级，帮助你更好地评估自己是否能够击败它们。",
         Weakness: "弱点",
         "Choose your weapon wisely, zeds will now have a weakness to specific types of weapons":
-            "选择武器时要谨慎，僵尸现在会对特定类型的武器有弱点。",
+            "选择武器时要谨慎，丧尸现在会对特定类型的武器有弱点。",
         "A detailed list of all the items in the game can be found in the wiki": "游戏中所有物品的详细列表可以在wiki中找到。",
         "Crafting will show a total time if you are crafting more than 1x": "如果你制作多个物品，制作时间将会显示总时长。",
         "Explore list has been ordered by travel time & difficulty rating": "探索列表将按照旅行时间和难度等级排序。",
@@ -945,10 +945,10 @@
         "Foundation Pit will now cost rad immunity": "基础坑现在需要辐射免疫力。",
         Mission: "任务",
         "Welcome to the end, survivor. If you're still breathing, then you've got a chance—slim as it may be. But out here, everyone starts somewhere. Your first task? Head down to the old arcade. The place is crawling with zeds, mostly slow-moving crawlers, but don't get too comfortable. Even the weakest can tear you apart if you’re not careful":
-            "欢迎来到末日，幸存者。如果你还活着，那么你还有机会——尽管微乎其微。但在这里，每个人都有一个起点。你的第一个任务？去旧的街机厅。那地方挤满了僵尸，大部分是缓慢爬行的怪物，但别太放松。即便是最弱的僵尸，如果你不小心，也能将你撕裂。",
+            "欢迎来到末日，幸存者。如果你还活着，那么你还有机会——尽管微乎其微。但在这里，每个人都有一个起点。你的第一个任务？去旧的街机厅。那地方挤满了丧尸，大部分是缓慢爬行的怪物，但别太放松。即便是最弱的丧尸，如果你不小心，也能将你撕裂。",
         "Consider this your initiation. Clear out a few of those walkers, get a feel for how things are now. Survive this, and we’ll see if you’ve got what it takes to go further. Good luck—you’re gonna need it":
             "把这当作你的入门任务。清理掉一些那些行尸走肉，感受一下现在的局势。坚持下来，我们再看看你是否有能力走得更远。祝你好运——你会需要它的。",
-        "Objective: Hunt a zed in the Arcade (Darkened Restrooms": "目标：在游戏厅（昏暗的洗手间）狩猎一只僵尸",
+        "Objective: Hunt a zed in the Arcade (Darkened Restrooms": "目标：在游戏厅（昏暗的洗手间）狩猎一只丧尸",
         Progress: "进度",
         Myena: "Myena",
         "You walk into a dark alley surrounded by street lamps on either side, hanging down from the street lamps is a spaghetti mess of entangled wires attached to powered bug zappers providing little light to the alley along with the faint buzzing noise of the power circulating around. The intrigue of other humans possibly surviving here draws you in, until you notice the hidden shadow of a slender woman sat against the walls of the alleyway. The shadowy figure begins to become clear as she lifts to her to look you up and down":
@@ -1075,9 +1075,9 @@
         "Iron Ore": "铁矿石",
         Explosives: "爆炸物",
         Thread: "线",
-        "Zed Juice": "僵尸汁",
+        "Zed Juice": "丧尸汁",
         Water: "水",
-        ZedBull: "僵尸红牛",
+        ZedBull: "丧尸红牛",
         Perch: "栖木",
         Tarp: "防水布",
         Lighter: "打火机",
@@ -1102,7 +1102,7 @@
         Offers: "在售订单",
         Carp: "鲤鱼",
         "Zen Egg": "禅蛋",
-        "ZedBull Egg": "僵尸红牛蛋",
+        "ZedBull Egg": "丧尸红牛蛋",
         "Witch's Brew": "巫师饮品",
         "Survivor Egg": "幸存者蛋",
         SMG: "冲锋枪",
@@ -1113,7 +1113,7 @@
         "Alpha in progress": "Alpha 测试进行中",
         "Join the discussion": "加入讨论",
         "We are currently in a closed alpha stage, you can get an access code from our discord server. We have a growing community on discord and would love for you to join us in creating the best Multiplayer Zombie Survival Simulator":
-            "我们目前处于封闭的 Alpha 测试阶段，您可以通过我们的 Discord 服务器获取访问代码。我们在 Discord 上有一个不断壮大的社区，非常希望您加入我们，一起打造最好的多人僵尸生存模拟游戏",
+            "我们目前处于封闭的 Alpha 测试阶段，您可以通过我们的 Discord 服务器获取访问代码。我们在 Discord 上有一个不断壮大的社区，非常希望您加入我们，一起打造最好的多人丧尸生存模拟游戏",
         Register: "注册",
         Password: "密码",
         "Access Code": "访问代码",
@@ -1155,7 +1155,7 @@
         "Effect: Increases morale by 50, energy by 10, rad immunity by 5 and booster cooldown by 30 minutes":
             "效果：增加50点士气、10点能量、5点辐射免疫力和30分钟的增益冷却时间",
         "A long, thin strand of cotton used in sewing": "一条用于缝纫的长而细的棉线",
-        "Made by carefully crushing the head of Zeds between two rocks": "通过小心地将僵尸的头部夹在两块岩石之间来制作",
+        "Made by carefully crushing the head of Zeds between two rocks": "通过小心地将丧尸的头部夹在两块岩石之间来制作",
         "Effect: Increases energy by 30 and booster cooldown by 2 hours": "效果：增加30点能量和2小时的增益冷却时间",
         "Effect: Increases morale by 100, energy by 25 and booster cooldown by 30 minutes": "效果：增加100点士气、25点能量和30分钟的增益冷却时间",
         "Effect: Increases morale by 500 and booster cooldown by 30 minutes": "效果：增加500点士气和30分钟的增益冷却时间",
@@ -1308,9 +1308,9 @@
             "通过制造炸药成为战争的贡献者，或者通过建造防御设施成为和平的捍卫者",
         "Explore Zones": "探索区域",
         "Visit the Demolition Site and Construction Yard to clear hoards of zombies and use new craftable picklocks to open locked gates. Explore through multiple zones to access increasingly rare loot drops":
-            "前往拆除场和建筑工地，清除成群的僵尸，使用新的可制作开锁器打开锁住的门。通过多个区域探索，获取越来越稀有的战利品掉落",
+            "前往拆除场和建筑工地，清除成群的丧尸，使用新的可制作开锁器打开锁住的门。通过多个区域探索，获取越来越稀有的战利品掉落",
         "New multi-zone environments, get lost and explore new lands": "新的多区域环境，迷失其中，探索新土地",
-        "Key mechanics and respawning zeds in unique locations": "关键机制和在独特位置重生的僵尸",
+        "Key mechanics and respawning zeds in unique locations": "关键机制和在独特位置重生的丧尸",
         "Some blueprints will now require a minimum skill level": "一些蓝图现在需要最低技能等级",
         "Layout improvement has been made to fill in empty spaces on some pages": "已对一些页面进行了布局改进，以填补空白区域",
         "The order of permissions has been fixed when creating a faction role": "创建派系角色时，权限顺序已修复",
@@ -1325,9 +1325,9 @@
         "A new building has been added to factions. Team up with faction members to produce new materials and train up your refinery skills":
             "派系中添加了一座新建筑。与派系成员组队，生产新材料并训练你的炼油技能",
         "Explore the reserve and try to catch some fish at the new spots, you may need to defeat some zeds before you are safe to explore":
-            "探索保护区，并尝试在新地点捕捉一些鱼，在你安全探索之前，可能需要击败一些僵尸",
+            "探索保护区，并尝试在新地点捕捉一些鱼，在你安全探索之前，可能需要击败一些丧尸",
         "A new location to explore, gain access to new materials after you defeat the zeds lingering around the place":
-            "一个新的探索地点，击败周围徘徊的僵尸后，你将能够获得新材料",
+            "一个新的探索地点，击败周围徘徊的丧尸后，你将能够获得新材料",
         "Various new trades have been made available in the radio tower": "无线电塔提供了各种新的交易",
         "Removed extra message when destroying / unloading items to reduce clicks": "删除了销毁/卸载物品时的额外信息，减少点击次数",
         "Health will no longer regenerate while you are in a fight": "在战斗中，健康将不再恢复",
@@ -1478,10 +1478,10 @@
         "Objective: Craft a baseball bat": "目标：制作棒球棒",
         Collect: "收集",
         "Now that you’ve crafted yourself a baseball bat, it’s time to put it to good use. Head back into the Arcade and take out more zeds. They’re still crawling around, but with your new weapon, you’ll have a much better shot at clearing them out":
-            "现在你已经制作了一根棒球棒，是时候好好利用它了。回到游戏厅，清除更多的僵尸。它们仍然四处爬行，但有了你的新武器，你清除它们的机会会大得多",
+            "现在你已经制作了一根棒球棒，是时候好好利用它了。回到游戏厅，清除更多的丧尸。它们仍然四处爬行，但有了你的新武器，你清除它们的机会会大得多",
         "Just remember: Always go equipped. The more prepared you are, the better your chances of making it out in one piece. Good luck":
             "记住：永远要做好装备准备。你准备得越充分，全身而退的机会就越大。祝你好运",
-        "Objective: Kill 2 zeds in the Arcade (Darkened Restrooms": "目标：在游戏厅（昏暗的洗手间）杀死2个僵尸",
+        "Objective: Kill 2 zeds in the Arcade (Darkened Restrooms": "目标：在游戏厅（昏暗的洗手间）杀死2个丧尸",
         INJURED: "受伤",
         "Fight Outcome": "战斗结果",
         "You are injured for": "你受伤",
@@ -1496,7 +1496,7 @@
         "Are you sure you want to use this": "你确定要使用这个吗",
         "Medical Cooldown": "医疗冷却时间",
         "Yeah, it's a lot easier to take down zeds with a weapon, but don’t get too caught up in the fighting. I need you to take a break from the hunt and head over to the Scrapyard. There’s scrap scattered around in there—metal, parts, whatever you can find":
-            "是的，用武器击倒僵尸容易多了，但不要太沉迷于战斗。我需要你暂停狩猎，前往废料场。那里散落着废料——金属、零件，以及任何你能找到的东西",
+            "是的，用武器击倒丧尸容易多了，但不要太沉迷于战斗。我需要你暂停狩猎，前往废料场。那里散落着废料——金属、零件，以及任何你能找到的东西",
         "Search the area and bring back any scrap you can collect. It’s all useful, and you’re gonna need it for what’s coming next":
             "搜索该区域，带回任何你能收集到的废料。这些都很有用，你将需要它们来应对接下来的挑战",
         "Objective: Scavenge the scrapyard 3x": "目标：在废品场搜寻3次",
@@ -1605,10 +1605,10 @@
         "Are you sure you want to equip this": "你确定要装备这个吗",
         "Item has been equipped": "物品已装备",
         Unequip: "卸下",
-        Zombie: "僵尸",
+        Zombie: "丧尸",
         Drink: "饮用",
         "Raging Crawler": "狂怒爬行者",
-        "Frenzied Zombie": "狂暴僵尸",
+        "Frenzied Zombie": "狂暴丧尸",
         "Weakness: Pistol": "弱点：手枪",
         "Frenzied Spitter": "狂暴喷吐者",
         "Weakness: Piercing": "弱点：穿刺",
@@ -1695,7 +1695,7 @@
         "Shape your path by mastering skills like fishing, hunting, and many others essential for survival":
             "通过掌握钓鱼、狩猎等多种生存技能，塑造你的生存之路。",
         "We have a growing community on discord and would love for you to join us in creating the best Multiplayer Zombie Survival Simulator":
-            "我们在Discord上有一个不断壮大的社区，欢迎你加入我们，共同打造最好的多人僵尸生存模拟器。",
+            "我们在Discord上有一个不断壮大的社区，欢迎你加入我们，共同打造最好的多人丧尸生存模拟器。",
         "Create a Survivor": "创建幸存者",
         "I agree to the Terms of Service": "我同意服务条款",
         "You must only register one account per person": "每人只能注册一个账户。",
@@ -1955,6 +1955,28 @@
         "You think to yourself... What have you gotten yourself into this time": "你心里想……这次自己又惹上了什么麻烦。",
         "Objective: Clear Food Court": "目标：清理美食广场",
         "Raging Zombie": "狂怒丧尸",
+        "Police HQ": "警察总部",
+        "Haha heck yes! I enjoyed the the mall so much it was fantastic! Just like in the films, I even shot a zed or two myself":
+            "哈哈，当然！我太喜欢逛那个商场了，太棒了！就像电影里一样，我甚至亲手射杀了一个丧尸。",
+        "Meat excitedly fidgets in his chair licking his lips and rubbing his hands as if to eat seconds at an all you can eat buffet":
+            "Meat兴奋地在椅子上坐立不安，舔了舔嘴唇，搓着双手，仿佛在自助餐厅准备吃第二轮。",
+        "You knooow, there was also a scene in the film where they visited a police station. I'll leave you with my Police RFID I found, maybe you can make some use of it and be just like the heroes in the film... Just don't end up dead like they did":
+            "你知道吗，电影里还有一段是他们去了警察局。我把我找到的警用射频识别卡留给你，也许你能用上，像电影里的英雄一样……但千万别像他们那样死掉了。",
+        "You squint and wait for the next ridiculous request": "你眯起眼睛，等待他接下来的荒唐请求。",
+        "Y'know I just don't got it in me this time to get up and go. Maybe you could just collect some zed juice for me to work on my latest pieces? I'll give you a good reward. Promise this time":
+            "你知道吗，这次我实在提不起劲去做了。也许你可以帮我收集一些丧尸汁，我好继续研究我的最新作品？这次我保证会给你个好报酬。",
+        "Objective: Collect Zed Juice": "目标：收集丧尸汁",
+        "Meat actually gave your the Police RFID huh? I knew he'd be just the most helpful. Alright that's step one I guess":
+            "Meat真的把警用射频ID给你了？我就知道他最乐于助人。好吧，这算是第一步了。",
+        "Myena uses her wrench to tighten a bolt on her bike then stands up to face you": "Myena用扳手拧紧了她摩托车上的一个螺栓，然后站起来面对你。",
+        "So this is what I'm thinking... The armoury in the Police HQ has all sorts of high value goods, if you can get me in there, I'm sure there'll be something I can use to get this bike started. All I need is the key to open the armoury door":
+            "所以我的想法是……警察总部的军械库里有各种高价值物品，如果你能带我进去，我肯定能找到点东西让这辆摩托车重新启动。我需要的只是打开军械库门的钥匙。",
+        "Myena holds her chin and begins to think a bit": "Myena托着下巴，开始思考。",
+        "There has to be a key in the building somewhere right? I mean every other office bound police officer probably carried one right? Maybe we could go hunting in the Foyer of the Police HQ to find a silver key":
+            "大楼里应该有一把钥匙，对吧？我是说，每个坐办公室的警察可能都会带一把，对吧？也许我们可以去警察总部的大堂找一把银色钥匙。",
+        "Objective: Find silver key": "目标：找到银色钥匙",
+        Armory: "军械库",
+        Foyer: "大堂",
     };
 
     // 词典：待处理
