@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.2
+// @version      7.3
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1925,7 +1925,7 @@
             "我知道这无异于自杀，我知道，这很愚蠢……但是听着，孩子……如果你能为我做到这一点，我会感激不尽。",
         "Garbo drops to his knees": "Garbo 跪了下来。",
         "Please survivor, find my poor Geoffrey": "请，幸存者，找到我可怜的 Geoffrey。",
-        "Objective: Scout the police foyer": "目标：侦查警察局大厅",
+        "Objective: Scout the police foyer": "目标：侦查警察局大堂",
         "Trades expire in": "交易刷新于",
         "Trade Completed": "交易完成",
         Trade: "交易",
@@ -1977,6 +1977,18 @@
         "Objective: Find silver key": "目标：找到银色钥匙",
         Armory: "军械库",
         Foyer: "大堂",
+        "You walk in seeing a battered and bruised Myena weeping quiet tears next to her bike with her head in her crossed arms, she throws her wrench to the floor and elbows her precious project in anger":
+            "你走进房间，看见满身伤痕的Myena趴在她的自行车旁，轻声抽泣着，把头埋在交叉的手臂间，她愤怒地将扳手扔到地上，还用肘部撞了撞她心爱的项目。",
+        "Stupid fucking thing! I fucked it all up": "该死的东西！我把一切都搞砸了。",
+        "Meyna sulks her head deeper into her crossed arms": "Myena将头更深地埋进交叉的手臂中。",
+        "I lost the key, I couldn't even get in the armoury. I was completely swamped in the foyer and never even managed to see the armoury door. I've no idea how you survived it":
+            "我把钥匙弄丢了，我连军械库都没进去。在大厅我被完全压制，甚至连军械库的门都没看到。我真不知道你是怎么活下来的。",
+        "Myena wipes away her tears with her wrist and looks up to you": "Myena用手腕擦了擦眼泪，抬头看着你。",
+        "Augh.. I dunno, I thought I could handle it but maybe I was still under prepared": "唉……我不知道，我以为我能应付，但可能我还是准备不足。",
+        "Myena stands up and begins to dust herself off and fix her hair": "Myena站起来，开始拍去身上的灰尘，并整理头发。",
+        "Maybe you could check it out for me? Just go in and tell me what you find. Maybe it's just a bust after all":
+            "或许你可以替我去看看？进去之后告诉我你发现了什么。或许那根本没什么价值。",
+        "Objective: Investigate armoury": "目标：调查军械库",
     };
 
     // 词典：待处理
@@ -2303,7 +2315,7 @@
         // 战斗
         if (/^You defeated the ([\w\s-']+) and gained$/.test(text)) {
             let res = /^You defeated the ([\w\s-']+) and gained$/.exec(text);
-            return "你击败了 " + res[1] + "并获得";
+            return "你击败了 " + dict(res[1]) + "并获得";
         }
 
         // 未分类
