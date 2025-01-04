@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      6.8
+// @version      6.9
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1941,6 +1941,16 @@
         "Sure would be nice if the Maintenance Room in the Cinema were clear. Then someone could go secure a copy of that movie... For historical purposes obviously":
             "如果能清理一下电影院的维修室就太好了。然后就能找到那部电影的拷贝……当然是为了历史研究用途。",
         "Objective: Clear Maintenance Room": "目标：清理维修室",
+        Bloater: "鼓胀者",
+        "Ahhh good ol' 'Day of the Zed' I sure get a kick out of that movie": "啊，经典的《丧尸之日》，我真的很喜欢那部电影。",
+        "Meat sits back in his chair with 'Day of the Zed' paused on the TV in the background":
+            "丧尸屠夫靠在椅子上，背景的电视上暂停着《丧尸之日》。",
+        "You know what'd be funny right? We have the same situation here if you look around. We even have a mall not too far from here, just like in the film. I sure would love to see what that feels like walking around a mall full of zeds":
+            "你知道什么有趣吗？看看周围，我们这里的情况跟电影里一模一样。我们甚至有一个离这里不远的购物中心，就像电影里那样。我真想感受一下在满是丧尸的购物中心里走来走去的感觉。",
+        "Meat takes his eyes away from the film for the first time since you arrived to look over at you with an expecting smirk":
+            "自你到来后，丧尸屠夫第一次将目光从电影中移开，带着期待的微笑看向你。",
+        "You think to yourself... What have you gotten yourself into this time": "你心里想……这次自己又惹上了什么麻烦。",
+        "Objective: Clear Food Court": "目标：清理美食广场",
     };
 
     // 词典：待处理
