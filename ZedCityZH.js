@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.3
+// @version      7.4
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1989,6 +1989,14 @@
         "Maybe you could check it out for me? Just go in and tell me what you find. Maybe it's just a bust after all":
             "或许你可以替我去看看？进去之后告诉我你发现了什么。或许那根本没什么价值。",
         "Objective: Investigate armoury": "目标：调查军械库",
+        "Smelt Steel": "熔炼钢铁",
+        "So you saw Geoffrey? Meowing from the Armoury? Jesus how'd he get in there that little shit":
+            "你看到了Geoffrey？从军械库里喵喵叫？天啊，那小家伙是怎么进去的。",
+        "Garbo fumbles his glasses while wiping them down before placing them back onto his noise":
+            "Garbo一边擦拭眼镜一边笨手笨脚地把它们重新戴回鼻梁上。",
+        "Well I guess there's nothing else for it then. You survived the foyer maybe you can survive the Armoury. After all you could just open the door and run away, that'd do the trick":
+            "好吧，那看来别无选择了。你活着从大厅出来了，或许你也能从军械库活着出来。毕竟，你可以开门然后立刻跑掉，这也能解决问题。",
+        "Objective: Open Armoury door": "目标：打开军械库的门",
     };
 
     // 词典：待处理
