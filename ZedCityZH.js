@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      6.9
+// @version      7.0
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1096,7 +1096,7 @@
         "Top Forger": "顶级锻造者",
         "Top Hunter": "顶级猎人",
         "Top Scavenger": "顶级拾荒者",
-        Offers: "出售订单",
+        Offers: "在售订单",
         Carp: "鲤鱼",
         "Zen Egg": "禅蛋",
         "ZedBull Egg": "僵尸红牛蛋",
@@ -1595,7 +1595,7 @@
         Transceiver: "无线电收发器",
         "Donator Pack": "捐赠者礼包",
         "Role Updated": "角色已更新",
-        "Raging Bloater": "狂怒膨胀者",
+        "Raging Bloater": "狂怒鼓胀者",
         "Weakness: Rifle": "弱点：步枪",
         Equip: "装备",
         "Equip Item": "装备物品",
@@ -1807,7 +1807,7 @@
         "Unlock with membership": "会员解锁",
         "Item not found": "未找到物品",
         "Invalid price": "价格无效",
-        "Offer not found": "未找到出售订单",
+        "Offer not found": "未找到在售订单",
         "This website uses cookies": "本网站使用 Cookie",
         "We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services":
             "我们使用 Cookie 来个性化内容和广告，提供社交媒体功能并分析我们的流量。我们还会与社交媒体、广告和分析合作伙伴分享您对我们网站的使用信息，这些信息可能与您提供给他们的信息或他们从您使用其服务中收集的信息相结合。",
@@ -1951,6 +1951,7 @@
             "自你到来后，丧尸屠夫第一次将目光从电影中移开，带着期待的微笑看向你。",
         "You think to yourself... What have you gotten yourself into this time": "你心里想……这次自己又惹上了什么麻烦。",
         "Objective: Clear Food Court": "目标：清理美食广场",
+        "Raging Zombie": "狂怒丧尸",
     };
 
     // 词典：待处理
