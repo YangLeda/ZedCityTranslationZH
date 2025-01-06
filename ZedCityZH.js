@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.6
+// @version      7.7
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -2116,6 +2116,8 @@
         "You can raid again in": "你可以在以下时间后再次突袭",
         "You do not have access": "你没有权限",
         "You need to wait before starting a raid": "你需要等待一段时间才能开始突袭",
+        Ready: "准备好",
+        "Start Raid": "开始突袭",
     };
 
     // 词典：待处理
