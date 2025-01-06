@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.4
+// @version      7.5
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -66,10 +66,14 @@
         if (levelElem && !insertElem) {
             levelElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_player_level"><span id="script_player_level_inner"><strong>${playerXP_new} / ${currentLevelMaxXP}</strong></span></div>`
+                `<div id="script_player_level"><span id="script_player_level_inner"><strong>${Math.floor(playerXP_new)} / ${Math.floor(
+                    currentLevelMaxXP
+                )}</strong></span></div>`
             );
         } else if (levelElem && insertElem) {
-            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${playerXP_new} / ${currentLevelMaxXP}</strong>`;
+            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${Math.floor(playerXP_new)} / ${Math.floor(
+                currentLevelMaxXP
+            )}</strong>`;
         }
         if (insertElem) {
             if (playerXP_previous !== 0 && playerXP_previous !== playerXP_new) {
@@ -299,6 +303,40 @@
         }
     }
     setInterval(updateRadioTowerDisplay, 500);
+
+    // 设置里汉化开关
+    function addTranslationSwitch() {
+        if (!window.location.href.includes("zed.city/settings") || !document.body.querySelector("h1.page-title")) {
+            return;
+        }
+
+        const insertToElem = document.body.querySelector("h1.page-title");
+        const switchElem = document.body.querySelector(".script_translation_switch");
+        if (!switchElem) {
+            const container = document.createElement("div");
+            container.classList.add("script_translation_switch");
+            container.style.margin = "30px";
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("script_translation_switch");
+            const label = document.createElement("label");
+            label.textContent = "The checkbox is OFF";
+            label.style.fontSize = "20px";
+            const savedState = localStorage.getItem("script_translate") === "enabled";
+            checkbox.checked = savedState;
+            label.textContent = savedState ? "汉化已开启" : "汉化已关闭";
+            checkbox.addEventListener("change", () => {
+                const isChecked = checkbox.checked;
+                label.textContent = isChecked ? "汉化已开启" : "汉化已关闭";
+                localStorage.setItem("script_translate", isChecked ? "enabled" : "disabled");
+                location.reload();
+            });
+            container.appendChild(checkbox);
+            container.appendChild(label);
+            insertToElem.appendChild(container);
+        }
+    }
+    setInterval(addTranslationSwitch, 500);
 
     /* 抢购 */
     // if (!localStorage.getItem("script_buyItemName")) {
@@ -1997,6 +2035,36 @@
         "Well I guess there's nothing else for it then. You survived the foyer maybe you can survive the Armoury. After all you could just open the door and run away, that'd do the trick":
             "好吧，那看来别无选择了。你活着从大厅出来了，或许你也能从军械库活着出来。毕竟，你可以开门然后立刻跑掉，这也能解决问题。",
         "Objective: Open Armoury door": "目标：打开军械库的门",
+        "You did it! You did it!, Geoffrey is back! He was terrified and ran straight up into my arms":
+            "你成功了！你成功了！Geoffrey回来了！他吓坏了，直接跑到我怀里。",
+        "Garbo coughs and collects himself": "Garbo咳嗽了一下，整理了下情绪。",
+        "Well... Ooph. Now that everything is back to normal maybe I can get back to some good old smithin":
+            "嗯……呼。一切都恢复正常了，也许我可以重新开始做一些老本行的打铁活了。",
+        "Garbo pets his cat and walks up to a draw opening it while staring deeply into it's contents":
+            "Garbo抚摸着他的猫，走到一个抽屉旁打开它，深深地凝视着里面的东西。",
+        "So, what else could I give you for opening the armoury door? Money and resources mean nothing. I've had this coin since before even the zeds were around. My lucky coin. Trust me, one day... You'll find yourself in a dead end, or in some dark situation... And this coin, well it'll help you find a way out. Just give me one coin to replace it":
+            "那么，为了你打开军械库的门我还能给你什么？金钱和资源都没有意义。这枚硬币我在丧尸出现之前就有了。这是我的幸运币。相信我，总有一天……你会陷入绝境，或者某个黑暗的情况……这枚硬币，它会帮你找到出路。只需要给我一枚硬币来替换它。",
+        "Thanks again survivor": "再次感谢你，幸存者。",
+        "Objective: Give a coin": "目标：交出一枚硬币",
+        "Hey kid, wanna see what I've been working on": "嘿，孩子，想看看我在搞什么吗？",
+        "You walk over as Garbo lifts a sheet off a glorious looking classic motor": "你走过去时，Garbo掀开了一块布，露出了一辆华丽的经典摩托车。",
+        "She's a beauty ain't she": "她真漂亮，不是吗？",
+        "You stare for a while with a little bit of envy": "你盯着看了一会儿，有点嫉妒。",
+        "Yep, found her while searching through the scrapheap. Maybe we could get her runnin' wha'dya think? Just need a bit fuel is all":
+            "是啊，我在翻废品堆时找到的。也许我们可以让她重新跑起来，你觉得呢？只需要一点燃料。",
+        "Objective: Bring fuel": "目标：带来燃料",
+        "Hey you actually found some fuel!? Fantastic": "嘿，你真的找到了一些燃料！？太棒了。",
+        "Garbo looks around at his workshop, piles of junk up to the ceiling every place he looks":
+            "Garbo环顾他的工作间，每个角落都堆满了堆到天花板的垃圾。",
+        "Sigh... Maybe it was just a pipe dream I've no idea where I could start working on this thing":
+            "唉……也许这只是个幻想，我不知道从哪里开始修理这东西。",
+        "Garbo places a hand on the car leaning in with a big sigh": "Garbo把手放在车上，深深地叹了口气。",
+        "Wait, y'know what... If you've got the room maybe you could start working on it? Only thing is you'll need a big enough garage to work on it. I'll give you the blueprints to make advanced tools which should help you to get started":
+            "等等，你知道吗……如果你有地方，也许你可以开始修理它？唯一的问题是你需要一个足够大的车库。我会给你制作高级工具的蓝图，这应该能帮助你开始。",
+        "Objective: Build garage": "目标：建造车库",
+        Eat: "吃",
+        "Are you sure you want to eat this": "你确定要吃这个吗？",
+        "Your booster cooldown is too high": "你的强化剂冷却时间太高了",
     };
 
     // 词典：待处理
