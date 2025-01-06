@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.5
+// @version      7.6
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -32,11 +32,11 @@
                 } else if (this.responseURL.includes("api.zed.city/getRadioTower")) {
                     handleGetRadioTower(this.response);
                 }
-                // Object.defineProperty(this, "response", { writable: true });
-                // Object.defineProperty(this, "responseText", { writable: true });
-                // this.response = modifiedResponse;
-                // this.responseText = modifiedResponse;
             }
+            // Object.defineProperty(this, "response", { writable: true });
+            // Object.defineProperty(this, "responseText", { writable: true });
+            // this.response = modifiedResponse;
+            // this.responseText = modifiedResponse;
         });
         return open_prototype.apply(this, arguments);
     };
@@ -53,6 +53,11 @@
         const response = JSON.parse(r);
         playerXP_new = response.experience;
         currentLevelMaxXP = response.xp_end;
+
+        const expire = response?.raid_cooldown;
+        if (expire) {
+            localStorage.setItem("script_raidCooldown", Date.now() + expire * 1000);
+        }
     }
 
     function handleSkills(r) {
@@ -303,6 +308,45 @@
         }
     }
     setInterval(updateRadioTowerDisplay, 500);
+
+    // 状态栏显示帮派突袭冷却计时
+    if (!localStorage.getItem("script_raidCooldown")) {
+        localStorage.setItem("script_raidCooldown", 0);
+    }
+
+    function updateRaidDisplay() {
+        if (localStorage.getItem("script_raidCooldown") === "0") {
+            return;
+        }
+        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        if (!insertToElem) {
+            return;
+        }
+        const logoElem = document.body.querySelector("#script_raidCooldown_logo");
+        const timeLeftSec = Math.floor((localStorage.getItem("script_raidCooldown") - Date.now()) / 1000);
+        if (!logoElem) {
+            if (timeLeftSec > 0) {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_raidCooldown_logo" style="order: 104;"><span class="script_do_not_translate" style="font-size: 12px;">突袭 ${timeReadable(
+                        timeLeftSec
+                    )}</span></div>`
+                );
+            } else {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_raidCooldown_logo" style="order: 104;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">突袭已冷却</span></div>`
+                );
+            }
+        } else {
+            if (timeLeftSec > 0) {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">突袭 ${timeReadable(timeLeftSec)}</span>`;
+            } else {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">突袭已冷却</span>`;
+            }
+        }
+    }
+    setInterval(updateRaidDisplay, 500);
 
     // 设置里汉化开关
     function addTranslationSwitch() {
@@ -2065,6 +2109,13 @@
         Eat: "吃",
         "Are you sure you want to eat this": "你确定要吃这个吗？",
         "Your booster cooldown is too high": "你的强化剂冷却时间太高了",
+        "Join Faction": "加入帮派",
+        Apply: "申请",
+        "You have a pending application": "你有一个待处理的申请",
+        "You need to wait before joining a raid": "你需要等待一段时间才能加入突袭",
+        "You can raid again in": "你可以在以下时间后再次突袭",
+        "You do not have access": "你没有权限",
+        "You need to wait before starting a raid": "你需要等待一段时间才能开始突袭",
     };
 
     // 词典：待处理
@@ -2292,6 +2343,10 @@
             let res = /^([\w\s,-]+) completed ([\w\s-]+) gaining (\d+) respect, (.+)$/.exec(text);
             return res[1].replaceAll(" and", ", ") + " 完成了 " + dict(res[2]) + " 获得了 " + res[3] + " 声望, " + parseReceiveItemsLog(res[4]);
         }
+        if (/^You completed ([\w\s-]+) and found (.+)$/.test(text)) {
+            let res = /^You completed ([\w\s-]+) and found (.+)$/.exec(text);
+            return "你完成了 " + dict(res[1]) + " 获得了 " + parseReceiveItemsLog(res[2]);
+        }
         function parseReceiveItemsLog(text) {
             let input = text;
             let result = "";
@@ -2434,6 +2489,20 @@
         if (/^Your ([\w\s-']+) broke$/.test(text)) {
             let res = /^Your ([\w\s-']+) broke$/.exec(text);
             return "你的" + dict(res[1]) + "损坏了";
+        }
+
+        // 帮派
+        if (/^Are you sure you want to join this raid$/.test(text)) {
+            let res = /^Are you sure you want to join this raid$/.exec(text);
+            return "是否确定加入此突袭";
+        }
+        if (/^Are you sure you want to join ([\w\s-']+)$/.test(text)) {
+            let res = /^Are you sure you want to join ([\w\s-']+)$/.exec(text);
+            return "是否确定加入" + dict(res[1]);
+        }
+        if (/^Brew ([\w\s-']+)$/.test(text)) {
+            let res = /^Brew ([\w\s-']+)$/.exec(text);
+            return "酿造" + dict(res[1]);
         }
 
         // 消除后面空格
