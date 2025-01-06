@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.7
+// @version      7.8
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -19,18 +19,24 @@
     unsafeWindow.XMLHttpRequest.prototype.open = function () {
         this.addEventListener("readystatechange", function (event) {
             if (this.readyState === 4) {
-                if (this.responseURL.includes("api.zed.city/getStats")) {
-                    handleGetStats(this.response);
-                } else if (this.responseURL.includes("api.zed.city/skills")) {
-                    handleSkills(this.response);
-                } else if (this.responseURL.includes("api.zed.city/getStore?store_id=junk")) {
-                    handleGetStoreJunkLimit(this.response);
-                } else if (this.responseURL.includes("api.zed.city/startJob")) {
-                    handleStartJob(this.response);
-                } else if (this.responseURL.includes("api.zed.city/getStronghold")) {
-                    handleGetStronghold(this.response);
-                } else if (this.responseURL.includes("api.zed.city/getRadioTower")) {
-                    handleGetRadioTower(this.response);
+                try {
+                    if (this.responseURL.includes("api.zed.city/getStats")) {
+                        handleGetStats(this.response);
+                    } else if (this.responseURL.includes("api.zed.city/skills")) {
+                        handleSkills(this.response);
+                    } else if (this.responseURL.includes("api.zed.city/getStore?store_id=junk")) {
+                        handleGetStoreJunkLimit(this.response);
+                    } else if (this.responseURL.includes("api.zed.city/startJob")) {
+                        handleStartJob(this.response);
+                    } else if (this.responseURL.includes("api.zed.city/getStronghold")) {
+                        handleGetStronghold(this.response);
+                    } else if (this.responseURL.includes("api.zed.city/getRadioTower")) {
+                        handleGetRadioTower(this.response);
+                    } else if (this.responseURL.includes("api.zed.city/getFactionNotifications")) {
+                        handleGetFactionNotifications(this.response);
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
             }
             // Object.defineProperty(this, "response", { writable: true });
@@ -40,6 +46,32 @@
         });
         return open_prototype.apply(this, arguments);
     };
+
+    // 帮派log记账
+    if (!localStorage.getItem("script_faction_logs")) {
+        localStorage.setItem("script_faction_logs", JSON.stringify({}));
+    }
+
+    function handleGetFactionNotifications(r) {
+        const response = JSON.parse(r);
+        if (!response?.notify) {
+            return;
+        }
+        const logMapByDate = JSON.parse(localStorage.getItem("script_faction_logs"));
+
+        for (const log of response.notify) {
+            if (log.type === "faction_take_item" || log.type === "faction_add_item") {
+                if (logMapByDate.hasOwnProperty(log.date)) {
+                    // 已存在此日期的log
+                } else {
+                    logMapByDate[log.date] = log;
+                }
+            }
+        }
+
+        console.log(Object.keys(logMapByDate).length);
+        localStorage.setItem("script_faction_logs", JSON.stringify(logMapByDate));
+    }
 
     // 状态栏显示经验值
     let playerXP_previous = 0;
@@ -2320,6 +2352,10 @@
         if (/^([\w\s]+) has joined the faction$/.test(text)) {
             let res = /^([\w\s]+) has joined the faction$/.exec(text);
             return res[1] + " 加入了帮派";
+        }
+        if (/^([\w\s]+) has left the faction$/.test(text)) {
+            let res = /^([\w\s]+) has left the faction$/.exec(text);
+            return res[1] + " 退出了帮派";
         }
         if (/^([\w\s]+) has been kicked from the faction$/.test(text)) {
             let res = /^([\w\s]+) has been kicked from the faction$/.exec(text);
