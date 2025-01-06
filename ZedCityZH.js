@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.8
+// @version      7.9
 // @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -72,6 +72,76 @@
         console.log(Object.keys(logMapByDate).length);
         localStorage.setItem("script_faction_logs", JSON.stringify(logMapByDate));
     }
+
+    function checkFactionBalanceByPlayerId(playerId) {
+        const logMapByDate = JSON.parse(localStorage.getItem("script_faction_logs"));
+        let result = "";
+        for (const key in logMapByDate) {
+            if (Number(logMapByDate[key]?.data?.user_id) !== Number(playerId)) {
+                continue;
+            }
+            if (logMapByDate[key].type === "faction_take_item") {
+                result += `${logMapByDate[key].data.username} 取走了 ${logMapByDate[key].data.qty}x ${dict(logMapByDate[key].data.name)}\n`;
+            }
+            if (logMapByDate[key].type === "faction_add_item") {
+                result += `${logMapByDate[key].data.username} 存入了 ${logMapByDate[key].data.qty}x ${dict(logMapByDate[key].data.name)}\n`;
+            }
+        }
+        console.log(result);
+        return result;
+    }
+
+    function addFactionLogSearch() {
+        if (!window.location.href.includes("zed.city/faction/activity") || !document.body.querySelector("div.q-infinite-scroll")) {
+            return;
+        }
+
+        const insertToElem = document.body.querySelector("div.q-infinite-scroll");
+        const searchElem = document.body.querySelector(".script_search_log");
+        if (!searchElem) {
+            const container = document.createElement("div");
+            container.classList.add("script_search_log");
+            container.style.margin = "30px";
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.id = "script_search_input";
+            input.placeholder = "输入玩家数字ID";
+            container.appendChild(input);
+
+            const searchButton = document.createElement("button");
+            searchButton.innerText = "查询";
+            searchButton.onclick = function () {
+                const inputValue = document.getElementById("script_search_input").value;
+                searchButtonOnClick(inputValue);
+            };
+            container.appendChild(searchButton);
+
+            const clearButton = document.createElement("button");
+            clearButton.innerText = "重置历史记录";
+            clearButton.onclick = function () {
+                console.log("Faction log cleared.");
+                localStorage.setItem("script_faction_logs", JSON.stringify({}));
+            };
+            container.appendChild(clearButton);
+
+            const textArea = document.createElement("textarea");
+            textArea.id = "script_textArea";
+            textArea.placeholder = "";
+            textArea.rows = 10;
+            textArea.cols = 1000;
+            textArea.style.overflowY = "auto";
+            container.appendChild(textArea);
+
+            function searchButtonOnClick(playerId) {
+                console.log("Search faction log for player ID: " + playerId);
+                document.getElementById("script_textArea").value = checkFactionBalanceByPlayerId(playerId);
+            }
+
+            insertToElem.parentNode.insertBefore(container, insertToElem);
+        }
+    }
+    setInterval(addFactionLogSearch, 500);
 
     // 状态栏显示经验值
     let playerXP_previous = 0;
