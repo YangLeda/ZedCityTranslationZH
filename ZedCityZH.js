@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      7.9
-// @description  网页游戏 Zed City 的汉化插件。Chinese translation for the web game Zed City.
+// @version      8.0
+// @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
 // @match        https://wiki.zed.city/*
@@ -77,7 +77,7 @@
         const logMapByDate = JSON.parse(localStorage.getItem("script_faction_logs"));
         let result = "";
         for (const key in logMapByDate) {
-            if (Number(logMapByDate[key]?.data?.user_id) !== Number(playerId)) {
+            if (Number(logMapByDate[key]?.data?.user_id) !== Number(playerId) && logMapByDate[key]?.data?.username.toLowerCase() !== playerId) {
                 continue;
             }
             if (logMapByDate[key].type === "faction_take_item") {
@@ -106,7 +106,7 @@
             const input = document.createElement("input");
             input.type = "text";
             input.id = "script_search_input";
-            input.placeholder = "输入玩家数字ID";
+            input.placeholder = "输入玩家名或数字ID";
             container.appendChild(input);
 
             const searchButton = document.createElement("button");
@@ -118,7 +118,7 @@
             container.appendChild(searchButton);
 
             const clearButton = document.createElement("button");
-            clearButton.innerText = "重置历史记录";
+            clearButton.innerText = "清空已保存的历史记录";
             clearButton.onclick = function () {
                 console.log("Faction log cleared.");
                 localStorage.setItem("script_faction_logs", JSON.stringify({}));
@@ -127,9 +127,10 @@
 
             const textArea = document.createElement("textarea");
             textArea.id = "script_textArea";
-            textArea.placeholder = "";
+            textArea.placeholder =
+                "使用玩家名或玩家数字ID都可以搜索。\n手动滚动帮派日志，日志会记录到插件本地。\n点击清空按钮，清空本地的存储。\n目前存储不区分帮派，看过的日志都会存储，请按需重置。";
             textArea.rows = 10;
-            textArea.cols = 1000;
+            textArea.cols = 80;
             textArea.style.overflowY = "auto";
             container.appendChild(textArea);
 
@@ -155,6 +156,7 @@
         const response = JSON.parse(r);
         playerXP_new = response.experience;
         currentLevelMaxXP = response.xp_end;
+        updateLevelDisplay();
 
         const expire = response?.raid_cooldown;
         if (expire) {
@@ -2218,8 +2220,34 @@
         "You can raid again in": "你可以在以下时间后再次突袭",
         "You do not have access": "你没有权限",
         "You need to wait before starting a raid": "你需要等待一段时间才能开始突袭",
-        Ready: "准备好",
+        Ready: "就绪",
         "Start Raid": "开始突袭",
+        "Your avatar has been updated": "您的头像已更新",
+        "The Donator House has been released, you can buy membership perks & Zed Packs to trade with other survivors. Membership will give you a boost to your max energy and energy regain times and some other perks. While the donator store is fairly basic right now, we will be adding more things to this in future updates. We thank you for your continued support":
+            "捐赠者之家已发布，您可以购买会员特权和丧尸包与其他幸存者交易。会员资格将提升您的最大能量和能量恢复时间，以及其他一些特权。目前捐赠商店功能较为基础，但我们将在未来更新中添加更多内容。感谢您的持续支持。",
+        "Avatar upload has been fixed": "头像上传问题已修复",
+        "The purchase limit from stores has been increased 3x, the new limit is 360 per 3 hours": "商店的购买限制已提高3倍，新限制为每3小时360个",
+        "More stock of iron bars has been added to the stores": "商店增加了更多铁锭库存",
+        "Added a fix to make sure weapons/armour break when they reach": "确保武器/护甲达到耐久度极限时会损坏",
+        "Upgrade requirements for the kitchen have been fixed to match the unlock level": "厨房的升级要求已修复，与解锁等级相匹配",
+        'Baton weapon type has been fixed to be "Blunt': "警棍武器类型已修复为“钝器”",
+        "Garbo quests will now take some quest items when completing": "完成Garbo任务时现在会消耗一些任务物品",
+        GBP: "GBP",
+        "Membership Perks": "会员特权",
+        "Recieve a special item drop every month": "每月获得一个特殊物品掉落",
+        "Monthly Membership": "月度会员",
+        "Yearly Membership": "年度会员",
+        "Months Free": "免费月份",
+        "Zed Pack": "丧尸包",
+        Discount: "折扣",
+        USD: "USD",
+        EUR: "EUR",
+        "C$ CAD": "C$ CAD",
+        "Each Zed Pack contains": "每个丧尸包包含",
+        "Days Membership": "天会员",
+        Tradable: "可交易",
+        "Booster (Special": "增强剂（特殊",
+        "Effect: Contains 31 days membership and 75 points": "效果：包含31天会员资格和75点数",
     };
 
     // 词典：待处理
@@ -2394,6 +2422,11 @@
             if (excludeReg.test(text)) {
                 return text;
             }
+        }
+
+        if (/^Zed Packs$/.test(text)) {
+            let res = /^Zed Packs$/.exec(text);
+            return "丧尸包";
         }
 
         // XX时间前在线
@@ -2597,6 +2630,11 @@
         if (/^Your ([\w\s-']+) broke$/.test(text)) {
             let res = /^Your ([\w\s-']+) broke$/.exec(text);
             return "你的" + dict(res[1]) + "损坏了";
+        }
+
+        if (/^Thank you for supporting Zed City, (\d+)x Zed Packs have been added to your inventory$/.test(text)) {
+            let res = /^Thank you for supporting Zed City, (\d+)x Zed Packs have been added to your inventory$/.exec(text);
+            return "感谢您支持Zed City，" + res[1] + "个丧尸包已添加到您的库存中";
         }
 
         // 帮派
