@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.7
+// @version      8.8
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -13,6 +13,8 @@
 
 (() => {
     /* ZedTools START */
+
+    let playerName = "";
 
     function getWorthPrice(itemName) {
         const itemWorthList = {
@@ -291,6 +293,7 @@
             input.type = "text";
             input.id = "script_search_input";
             input.placeholder = "输入玩家名或数字ID";
+            input.value = playerName;
             container.appendChild(input);
 
             const searchButton = document.createElement("button");
@@ -369,6 +372,9 @@
         localStorage.setItem("script_playerXp_current", response.experience);
         localStorage.setItem("script_playerXp_max", response.xp_end);
         showPlayerXpChangePopup(response.experience);
+
+        // Player name
+        playerName = response.username;
 
         // Raid
         const expire = response?.raid_cooldown;
