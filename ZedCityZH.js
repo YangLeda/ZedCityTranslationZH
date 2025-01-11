@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.6
+// @version      8.7
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -13,6 +13,28 @@
 
 (() => {
     /* ZedTools START */
+
+    function getWorthPrice(itemName) {
+        const itemWorthList = {
+            Logs: 3,
+            Nails: 12,
+            "Iron Bar": 100,
+            Scrap: 3,
+            Coal: 25,
+            "Zed Pack": 30000,
+            Wire: 2000,
+            Steel: 280,
+            Water: 500,
+            Rope: 3000,
+        };
+
+        if (itemWorthList.hasOwnProperty(itemName)) {
+            return itemWorthList[itemName];
+        } else {
+            console.log("getWorthPrice can not find " + itemName);
+            return 0;
+        }
+    }
 
     // XMLHttpRequest hook
     const open_prototype = XMLHttpRequest.prototype.open;
@@ -137,7 +159,9 @@
             }
             for (const key in record.items) {
                 if (record.items[key] !== 0) {
-                    text += `${record.items[key]}x ${dict(key)}\n`;
+                    text += `${record.items[key]}x ${dict(key)} （每个${numberFormatter(getWorthPrice(key))}, 总计${numberFormatter(
+                        record.items[key] * getWorthPrice(key)
+                    )}）\n`;
                 }
             }
         }
@@ -145,8 +169,55 @@
         return text;
     }
 
+    function numberFormatter(num, digits = 1) {
+        if (num === null || num === undefined) {
+            return null;
+        }
+        if (num < 0) {
+            return "-" + numberFormatter(-num);
+        }
+        const lookup = [
+            { value: 1, symbol: "" },
+            { value: 1e3, symbol: "k" },
+            { value: 1e6, symbol: "M" },
+            { value: 1e9, symbol: "B" },
+        ];
+        const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+        var item = lookup
+            .slice()
+            .reverse()
+            .find(function (item) {
+                return num >= item.value;
+            });
+        return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+    }
+
     function rankByItems() {
-        // todo
+        const records = JSON.parse(localStorage.getItem("script_faction_log_records"));
+        const result = [];
+
+        for (const key in records) {
+            const record = records[key];
+            const playerName = record.playerNames[0];
+            const items = record.items;
+            let itemsWorth = 0;
+
+            for (const key in record.items) {
+                itemsWorth += Number(record.items[key]) * Number(getWorthPrice(key));
+            }
+            result.push({ playerName: playerName, itemsWorth: itemsWorth });
+        }
+
+        function compareByWorth(a, b) {
+            return b.itemsWorth - a.itemsWorth;
+        }
+        result.sort(compareByWorth);
+
+        let text = "";
+        for (const r of result) {
+            text += `${r.playerName} 物品余额 ${numberFormatter(Number(r.itemsWorth).toFixed(0))}\n`;
+        }
+        return text;
     }
 
     function rankByRespect() {
@@ -230,6 +301,27 @@
             };
             container.appendChild(searchButton);
 
+            const rankItemsButton = document.createElement("button");
+            rankItemsButton.innerText = "物品余额排名";
+            rankItemsButton.onclick = function () {
+                document.getElementById("script_textArea").value = rankByItems();
+            };
+            container.appendChild(rankItemsButton);
+
+            const rankRespectButton = document.createElement("button");
+            rankRespectButton.innerText = "突袭声望排名";
+            rankRespectButton.onclick = function () {
+                document.getElementById("script_textArea").value = rankByRespect();
+            };
+            container.appendChild(rankRespectButton);
+
+            const raidButton = document.createElement("button");
+            raidButton.innerText = "突袭冷却查询";
+            raidButton.onclick = function () {
+                document.getElementById("script_textArea").value = raidTimings();
+            };
+            container.appendChild(raidButton);
+
             const clearButton = document.createElement("button");
             clearButton.innerText = "清空历史记录";
             clearButton.onclick = function () {
@@ -240,27 +332,6 @@
                 localStorage.setItem("script_faction_log_records", JSON.stringify({}));
             };
             container.appendChild(clearButton);
-
-            const rankItemsButton = document.createElement("button");
-            rankItemsButton.innerText = "物资统计";
-            rankItemsButton.onclick = function () {
-                document.getElementById("script_textArea").value = rankByItems();
-            };
-            container.appendChild(rankItemsButton);
-
-            const rankRespectButton = document.createElement("button");
-            rankRespectButton.innerText = "声望统计";
-            rankRespectButton.onclick = function () {
-                document.getElementById("script_textArea").value = rankByRespect();
-            };
-            container.appendChild(rankRespectButton);
-
-            const raidButton = document.createElement("button");
-            raidButton.innerText = "突袭计时";
-            raidButton.onclick = function () {
-                document.getElementById("script_textArea").value = raidTimings();
-            };
-            container.appendChild(raidButton);
 
             const textArea = document.createElement("textarea");
             textArea.id = "script_textArea";
@@ -3001,7 +3072,7 @@
                 if (!unmatchedTexts.includes(text)) {
                     unmatchedTexts.push(text);
                 }
-                // console.log(unmatchedTexts);
+                console.log(unmatchedTexts);
             }
             return oriText;
         }
