@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.1
+// @version      8.2
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
 // @match        https://wiki.zed.city/*
 // @icon         https://www.zed.city/favicon.ico
 // @grant        unsafeWindow
-// @grant        GM_addStyle
+// @grant        GM_notification
 // ==/UserScript==
 
 (() => {
@@ -141,14 +141,20 @@
     setInterval(addFactionLogSearch, 500);
 
     // 显示人物和技能XP增量
-    if (!localStorage.getItem("script_playerXP_previous")) {
-        localStorage.setItem("script_playerXP_previous", 0);
+    if (!localStorage.getItem("script_playerXp_previous")) {
+        localStorage.setItem("script_playerXp_previous", 0);
     }
     if (!localStorage.getItem("script_playerXp_current")) {
         localStorage.setItem("script_playerXp_current", 0);
     }
     if (!localStorage.getItem("script_playerXp_max")) {
         localStorage.setItem("script_playerXp_max", 0);
+    }
+    if (!localStorage.getItem("script_energyFullAtTimestamp")) {
+        localStorage.setItem("script_energyFullAtTimestamp", 0);
+    }
+    if (!localStorage.getItem("script_radFullAtTimestamp")) {
+        localStorage.setItem("script_radFullAtTimestamp", 0);
     }
 
     function handleGetStats(r) {
@@ -157,9 +163,46 @@
         localStorage.setItem("script_playerXp_max", response.xp_end);
         showPlayerXpChangePopup(response.experience);
 
+        // Raid
         const expire = response?.raid_cooldown;
         if (expire) {
-            localStorage.setItem("script_raidCooldown", Date.now() + expire * 1000);
+            const previousTimestamp = Number(localStorage.getItem("script_raidCooldown"));
+            const timestamp = Date.now() + expire * 1000;
+            localStorage.setItem("script_raidCooldown", timestamp);
+            if (timestamp - previousTimestamp > 30000) {
+                localStorage.setItem("script_raidIsAlreadyNotified", false);
+            }
+        }
+
+        // Bars
+        const currentEnergy = response.energy;
+        const currentRad = response.rad;
+        const energyRegenIntervalMinute = response.membership ? 10 : 15;
+        const maxEnergy = response.skills.max_energy + (response.membership ? 50 : 0);
+        const maxRad = response.skills.max_rad;
+        const energyRegen = response.energy_regen ? response.energy_regen : 0;
+        const radRegen = response.rad_regen ? response.rad_regen : 0;
+
+        let timeLeftSec = null;
+        if (maxEnergy - currentEnergy > 0) {
+            timeLeftSec = ((maxEnergy - currentEnergy - 5) / 5) * energyRegenIntervalMinute * 60 + energyRegen;
+            let previousTimestamp = Number(localStorage.getItem("script_energyFullAtTimestamp"));
+            let timestamp = Date.now() + timeLeftSec * 1000;
+            localStorage.setItem("script_energyFullAtTimestamp", timestamp);
+            if (timestamp - previousTimestamp > 30000) {
+                localStorage.setItem("script_energyFullAlreadyNotified", false);
+            }
+        }
+
+        timeLeftSec = null;
+        if (maxRad - currentRad > 0) {
+            timeLeftSec = ((maxRad - currentRad - 1) / 1) * 5 * 60 + radRegen;
+            previousTimestamp = Number(localStorage.getItem("script_radFullAtTimestamp"));
+            timestamp = Date.now() + timeLeftSec * 1000;
+            localStorage.setItem("script_radFullAtTimestamp", timestamp);
+            if (timestamp - previousTimestamp > 30000) {
+                localStorage.setItem("script_radFullAlreadyNotified", false);
+            }
         }
     }
 
@@ -171,7 +214,6 @@
     function showSkillsXpChangePopup(skillsXp) {
         const insertElem = document.body.querySelector("#script_player_level");
         if (!insertElem) {
-            console.error("showSkillsXpChangePopup insertElem not found.");
             return;
         }
         const skillsXp_previous = JSON.parse(localStorage.getItem("script_skillsXp_previous"));
@@ -200,7 +242,7 @@
                         div.style.marginLeft = "10px";
                         div.textContent = `${name}+${increase}`;
                         insertElem.appendChild(div);
-                        console.log(`${name}+${increase}`);
+                        // console.log(`${name}+${increase}`);
                         setTimeout(() => {
                             div.remove();
                         }, 6000);
@@ -216,7 +258,6 @@
     function showPlayerXpChangePopup(playerXp) {
         const insertElem = document.body.querySelector("#script_player_level");
         if (!insertElem) {
-            console.error("showPlayerXpChangePopup insertElem not found.");
             return;
         }
         const playerXp_previous = Number(localStorage.getItem("script_playerXp_previous"));
@@ -228,7 +269,7 @@
             div.style.marginLeft = "10px";
             div.textContent = `XP+${increase}`;
             insertElem.appendChild(div);
-            console.log(`XP+${increase}`);
+            // console.log(`XP+${increase}`);
             setTimeout(() => {
                 div.remove();
             }, 6000);
@@ -259,6 +300,68 @@
     }
     setInterval(updatePlayerXpDisplay, 500);
 
+    // 状态栏显示能量和辐射溢出倒计时
+    function updateBarsDisplay() {
+        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        if (!insertToElem) {
+            return;
+        }
+        const energyFullAtTimestamp = Number(localStorage.getItem("script_energyFullAtTimestamp"));
+        const radFullAtTimestamp = Number(localStorage.getItem("script_radFullAtTimestamp"));
+        if (energyFullAtTimestamp === "0" || radFullAtTimestamp === "0") {
+            return;
+        }
+
+        let timeLeftSec = Math.floor((localStorage.getItem("script_energyFullAtTimestamp") - Date.now()) / 1000);
+        let logoElem = document.body.querySelector("#script_energyBar_logo");
+        if (!logoElem) {
+            if (timeLeftSec > 0) {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_energyBar_logo" style="order: 99;"><span class="script_do_not_translate" style="font-size: 12px;">能量 ${timeReadable(
+                        timeLeftSec
+                    )}</span></div>`
+                );
+            } else {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_energyBar_logo" style="order: 99;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">能量已满</span></div>`
+                );
+            }
+        } else {
+            if (timeLeftSec > 0) {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">能量 ${timeReadable(timeLeftSec)}</span>`;
+            } else {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">能量已满</span>`;
+            }
+        }
+
+        timeLeftSec = Math.floor((localStorage.getItem("script_radFullAtTimestamp") - Date.now()) / 1000);
+        logoElem = document.body.querySelector("#script_radBar_logo");
+        if (!logoElem) {
+            if (timeLeftSec > 0) {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_radBar_logo" style="order: 100;"><span class="script_do_not_translate" style="font-size: 12px;">辐射 ${timeReadable(
+                        timeLeftSec
+                    )}</span></div>`
+                );
+            } else {
+                insertToElem.insertAdjacentHTML(
+                    "afterend",
+                    `<div id="script_radBar_logo" style="order: 100;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">辐射已满</span></div>`
+                );
+            }
+        } else {
+            if (timeLeftSec > 0) {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">辐射 ${timeReadable(timeLeftSec)}</span>`;
+            } else {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">辐射已满</span>`;
+            }
+        }
+    }
+    setInterval(updateBarsDisplay, 500);
+
     // 状态栏显示商店重置倒计时
     if (!localStorage.getItem("script_junkStoreResetTimestamp")) {
         localStorage.setItem("script_junkStoreResetTimestamp", 0);
@@ -268,7 +371,12 @@
         const response = JSON.parse(r);
         const secLeft = response?.limits?.reset_time;
         if (secLeft) {
-            localStorage.setItem("script_junkStoreResetTimestamp", Date.now() + secLeft * 1000);
+            const previousTimestamp = Number(localStorage.getItem("script_junkStoreResetTimestamp"));
+            const timestamp = Date.now() + secLeft * 1000;
+            localStorage.setItem("script_junkStoreResetTimestamp", timestamp);
+            if (timestamp - previousTimestamp > 30000) {
+                localStorage.setItem("script_junkStoreIsAlreadyNotified", false);
+            }
         }
     }
 
@@ -337,6 +445,7 @@
         if (perActionTime && perActionConsumeItemNumber && consumeItemNumber) {
             const secLeft = perActionTime * (consumeItemNumber / perActionConsumeItemNumber);
             localStorage.setItem("script_forgeTimestamp", Date.now() + secLeft * 1000);
+            localStorage.setItem("script_forgeIsAlreadyNotified", false);
         }
     }
 
@@ -358,7 +467,12 @@
             const timeLeft = area?.timeLeft;
             if (perActionTime && perActionConsumeItemNumber && consumeItemNumber && iterationsPassed && timeLeft) {
                 const secLeft = perActionTime * (consumeItemNumber / perActionConsumeItemNumber - iterationsPassed) - (perActionTime - timeLeft);
-                localStorage.setItem("script_forgeTimestamp", Date.now() + secLeft * 1000);
+                const previousTimestamp = Number(localStorage.getItem("script_forgeTimestamp"));
+                const timestamp = Date.now() + secLeft * 1000;
+                localStorage.setItem("script_forgeTimestamp", timestamp);
+                if (timestamp - previousTimestamp > 30000) {
+                    localStorage.setItem("script_forgeIsAlreadyNotified", false);
+                }
                 break;
             }
         }
@@ -407,7 +521,12 @@
         const response = JSON.parse(r);
         const expire = response?.expire;
         if (expire) {
-            localStorage.setItem("script_radioTowerTradeTimestamp", Date.now() + expire * 1000);
+            const previousTimestamp = Number(localStorage.getItem("script_radioTowerTradeTimestamp"));
+            const timestamp = Date.now() + expire * 1000;
+            localStorage.setItem("script_radioTowerTradeTimestamp", timestamp);
+            if (timestamp - previousTimestamp > 30000) {
+                localStorage.setItem("script_radioTowerIsAlreadyNotified", false);
+            }
         }
     }
 
@@ -483,6 +602,100 @@
         }
     }
     setInterval(updateRaidDisplay, 500);
+
+    // 倒计时弹窗
+    function pushSystemNotifications() {
+        const forgeTimestamp = Number(localStorage.getItem("script_forgeTimestamp"));
+        const forgeIsAlreadyNotified = localStorage.getItem("script_forgeIsAlreadyNotified");
+        if (forgeTimestamp && forgeTimestamp > 0 && forgeIsAlreadyNotified !== "true") {
+            const timeLeftSec = Math.floor((forgeTimestamp - Date.now()) / 1000);
+            if (timeLeftSec > -60 && timeLeftSec < 0) {
+                console.log("pushSystemNotification forge");
+                localStorage.setItem("script_forgeIsAlreadyNotified", true);
+                GM_notification({
+                    text: "熔炉已完成工作",
+                    title: "ZedTools",
+                    url: "https://www.zed.city/stronghold",
+                });
+            }
+        }
+
+        const radioTowerTimestamp = Number(localStorage.getItem("script_radioTowerTimestamp"));
+        const radioTowerIsAlreadyNotified = localStorage.getItem("script_radioTowerIsAlreadyNotified");
+        if (radioTowerTimestamp && radioTowerTimestamp > 0 && radioTowerIsAlreadyNotified !== "true") {
+            const timeLeftSec = Math.floor((radioTowerTimestamp - Date.now()) / 1000);
+            if (timeLeftSec > -60 && timeLeftSec < 0) {
+                console.log("pushSystemNotification radioTower");
+                localStorage.setItem("script_radioTowerIsAlreadyNotified", true);
+                GM_notification({
+                    text: "无线电塔交易已刷新",
+                    title: "ZedTools",
+                    url: "https://www.zed.city/stronghold",
+                });
+            }
+        }
+
+        const raidTimestamp = Number(localStorage.getItem("script_raidTimestamp"));
+        const raidIsAlreadyNotified = localStorage.getItem("script_raidIsAlreadyNotified");
+        if (raidTimestamp && raidTimestamp > 0 && raidIsAlreadyNotified !== "true") {
+            const timeLeftSec = Math.floor((raidTimestamp - Date.now()) / 1000);
+            if (timeLeftSec > -60 && timeLeftSec < 0) {
+                console.log("pushSystemNotification raid");
+                localStorage.setItem("script_raidIsAlreadyNotified", true);
+                GM_notification({
+                    text: "帮派突袭已冷却",
+                    title: "ZedTools",
+                    url: "https://www.zed.city/raids",
+                });
+            }
+        }
+
+        const junkStoreTimestamp = Number(localStorage.getItem("script_junkStoreTimestamp"));
+        const junkStoreIsAlreadyNotified = localStorage.getItem("script_junkStoreIsAlreadyNotified");
+        if (junkStoreTimestamp && junkStoreTimestamp > 0 && junkStoreIsAlreadyNotified !== "true") {
+            const timeLeftSec = Math.floor((junkStoreTimestamp - Date.now()) / 1000);
+            if (timeLeftSec > -60 && timeLeftSec < 0) {
+                console.log("pushSystemNotification junkStore");
+                localStorage.setItem("script_junkStoreIsAlreadyNotified", true);
+                GM_notification({
+                    text: "废品店商店已刷新",
+                    title: "ZedTools",
+                    url: "https://www.zed.city/store/junk",
+                });
+            }
+        }
+
+        const energyTimestamp = Number(localStorage.getItem("script_energyFullAtTimestamp"));
+        const energyIsAlreadyNotified = localStorage.getItem("script_energyFullAlreadyNotified");
+        if (energyTimestamp && energyTimestamp > 0 && energyIsAlreadyNotified !== "true") {
+            const timeLeftSec = Math.floor((energyTimestamp - Date.now()) / 1000);
+            if (timeLeftSec > -60 && timeLeftSec < 0) {
+                console.log("pushSystemNotification energy bar");
+                localStorage.setItem("script_energyFullAlreadyNotified", true);
+                GM_notification({
+                    text: "能量条已满",
+                    title: "ZedTools",
+                    url: "https://www.zed.city/stronghold",
+                });
+            }
+        }
+
+        const radTimestamp = Number(localStorage.getItem("script_radFullAtTimestamp"));
+        const radIsAlreadyNotified = localStorage.getItem("script_radFullAlreadyNotified");
+        if (radTimestamp && radTimestamp > 0 && radIsAlreadyNotified !== "true") {
+            const timeLeftSec = Math.floor((radTimestamp - Date.now()) / 1000);
+            if (timeLeftSec > -60 && timeLeftSec < 0) {
+                console.log("pushSystemNotification rad bar");
+                localStorage.setItem("script_radFullAlreadyNotified", true);
+                GM_notification({
+                    text: "辐射免疫力条已满",
+                    title: "ZedTools",
+                    url: "https://www.zed.city/scavenge",
+                });
+            }
+        }
+    }
+    setInterval(pushSystemNotifications, 1000);
 
     // 设置里汉化开关
     function addTranslationSwitch() {
