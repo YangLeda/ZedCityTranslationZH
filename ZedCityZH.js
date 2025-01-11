@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.4
+// @version      8.5
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -65,7 +65,6 @@
                 raidLogs[log.date] = log;
             }
         }
-
         localStorage.setItem("script_faction_item_logs", JSON.stringify(itemLogs));
         localStorage.setItem("script_faction_raid_logs", JSON.stringify(raidLogs));
         console.log(`itemLogs: ${Object.keys(itemLogs).length}  raidLogs: ${Object.keys(raidLogs).length}`);
@@ -75,7 +74,7 @@
     function updateFactionLogRecord() {
         const itemLogs = JSON.parse(localStorage.getItem("script_faction_item_logs"));
         const raidLogs = JSON.parse(localStorage.getItem("script_faction_raid_logs"));
-        const result = JSON.parse(localStorage.getItem("script_faction_log_records"));
+        const result = {};
 
         for (const key in itemLogs) {
             const userIdInLog = Number(itemLogs[key]?.data?.user_id);
@@ -127,7 +126,24 @@
         console.log(result);
     }
 
-    function searchPlayer(playerName) {}
+    function searchPlayer(playerName) {
+        const records = JSON.parse(localStorage.getItem("script_faction_log_records"));
+        let text = "";
+
+        for (const key in records) {
+            const record = records[key];
+            if (playerName.toLowerCase() !== record.playerNames[0].toLowerCase() && Number(playerName) !== record.playerId) {
+                continue;
+            }
+            for (const key in record.items) {
+                if (record.items[key] !== 0) {
+                    text += `${record.items[key]}x ${key}\n`;
+                }
+            }
+        }
+
+        return text;
+    }
 
     function rankByItems() {}
 
@@ -192,7 +208,7 @@
             container.appendChild(searchButton);
 
             const clearButton = document.createElement("button");
-            clearButton.innerText = "清空已保存的历史记录";
+            clearButton.innerText = "清空历史记录";
             clearButton.onclick = function () {
                 console.log("Faction log cleared.");
                 document.getElementById("script_textArea").value = "历史记录已清空";
