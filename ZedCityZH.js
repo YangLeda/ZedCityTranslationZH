@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.3
+// @version      8.4
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -40,8 +40,14 @@
     };
 
     // 帮派log记账
-    if (!localStorage.getItem("script_faction_logs")) {
-        localStorage.setItem("script_faction_logs", JSON.stringify({}));
+    if (!localStorage.getItem("script_faction_item_logs")) {
+        localStorage.setItem("script_faction_item_logs", JSON.stringify({}));
+    }
+    if (!localStorage.getItem("script_faction_raid_logs")) {
+        localStorage.setItem("script_faction_raid_logs", JSON.stringify({}));
+    }
+    if (!localStorage.getItem("script_faction_log_records")) {
+        localStorage.setItem("script_faction_log_records", JSON.stringify({}));
     }
 
     function handleGetFactionNotifications(r) {
@@ -49,38 +55,114 @@
         if (!response?.notify) {
             return;
         }
-        const logMapByDate = JSON.parse(localStorage.getItem("script_faction_logs"));
+        const itemLogs = JSON.parse(localStorage.getItem("script_faction_item_logs"));
+        const raidLogs = JSON.parse(localStorage.getItem("script_faction_raid_logs"));
 
         for (const log of response.notify) {
             if (log.type === "faction_take_item" || log.type === "faction_add_item") {
-                if (logMapByDate.hasOwnProperty(log.date)) {
-                    // 已存在此日期的log
-                } else {
-                    logMapByDate[log.date] = log;
+                itemLogs[log.date] = log;
+            } else if (log.type === "faction_raid") {
+                raidLogs[log.date] = log;
+            }
+        }
+
+        localStorage.setItem("script_faction_item_logs", JSON.stringify(itemLogs));
+        localStorage.setItem("script_faction_raid_logs", JSON.stringify(raidLogs));
+        console.log(`itemLogs: ${Object.keys(itemLogs).length}  raidLogs: ${Object.keys(raidLogs).length}`);
+        updateFactionLogRecord();
+    }
+
+    function updateFactionLogRecord() {
+        const itemLogs = JSON.parse(localStorage.getItem("script_faction_item_logs"));
+        const raidLogs = JSON.parse(localStorage.getItem("script_faction_raid_logs"));
+        const result = JSON.parse(localStorage.getItem("script_faction_log_records"));
+
+        for (const key in itemLogs) {
+            const userIdInLog = Number(itemLogs[key]?.data?.user_id);
+            if (userIdInLog && !result[userIdInLog]) {
+                result[userIdInLog] = {
+                    playerId: userIdInLog,
+                    playerNames: [itemLogs[key]?.data?.username],
+                    items: {},
+                    respectFromRaids: 0,
+                    lastRaid: null,
+                };
+            }
+            if (itemLogs[key].type === "faction_take_item") {
+                result[userIdInLog].items[itemLogs[key].data.name] = result[userIdInLog].items[itemLogs[key].data.name]
+                    ? Number(result[userIdInLog].items[itemLogs[key].data.name]) - Number(itemLogs[key].data.qty)
+                    : -Number(itemLogs[key].data.qty);
+                // `${itemLogs[key].data.username} 取走了 ${itemLogs[key].data.qty}x ${dict(itemLogs[key].data.name)}\n`;
+            }
+            if (itemLogs[key].type === "faction_add_item") {
+                result[userIdInLog].items[itemLogs[key].data.name] = result[userIdInLog].items[itemLogs[key].data.name]
+                    ? Number(result[userIdInLog].items[itemLogs[key].data.name]) + Number(itemLogs[key].data.qty)
+                    : Number(itemLogs[key].data.qty);
+                // `${itemLogs[key].data.username} 存入了 ${itemLogs[key].data.qty}x ${dict(itemLogs[key].data.name)}\n`;
+            }
+        }
+
+        for (const key in raidLogs) {
+            if (raidLogs[key].type === "faction_raid" && raidLogs[key].data?.users) {
+                for (const user of raidLogs[key].data.users) {
+                    const userIdInLog = user.id;
+                    if (userIdInLog && !result[userIdInLog]) {
+                        result[userIdInLog] = {
+                            playerId: userIdInLog,
+                            playerNames: [user.username],
+                            items: {},
+                            respectFromRaids: 0,
+                            lastRaid: null,
+                        };
+                    }
+                    result[userIdInLog].respectFromRaids += Number(raidLogs[key].data.respect) / Number(raidLogs[key].data.users.length);
+                    if (!result[userIdInLog].lastRaid || result[userIdInLog].lastRaid.timestamp < Number(raidLogs[key].date)) {
+                        result[userIdInLog].lastRaid = { timestamp: Number(raidLogs[key].date), raidName: raidLogs[key].data.name };
+                    }
                 }
             }
         }
 
-        console.log(Object.keys(logMapByDate).length);
-        localStorage.setItem("script_faction_logs", JSON.stringify(logMapByDate));
+        localStorage.setItem("script_faction_log_records", JSON.stringify(result));
+        console.log(result);
     }
 
-    function checkFactionBalanceByPlayerId(playerId) {
-        const logMapByDate = JSON.parse(localStorage.getItem("script_faction_logs"));
-        let result = "";
-        for (const key in logMapByDate) {
-            if (Number(logMapByDate[key]?.data?.user_id) !== Number(playerId) && logMapByDate[key]?.data?.username.toLowerCase() !== playerId) {
-                continue;
-            }
-            if (logMapByDate[key].type === "faction_take_item") {
-                result += `${logMapByDate[key].data.username} 取走了 ${logMapByDate[key].data.qty}x ${dict(logMapByDate[key].data.name)}\n`;
-            }
-            if (logMapByDate[key].type === "faction_add_item") {
-                result += `${logMapByDate[key].data.username} 存入了 ${logMapByDate[key].data.qty}x ${dict(logMapByDate[key].data.name)}\n`;
+    function searchPlayer(playerName) {}
+
+    function rankByItems() {}
+
+    function rankByRespect() {}
+
+    function raidTimings() {
+        const records = JSON.parse(localStorage.getItem("script_faction_log_records"));
+        const result = [];
+
+        for (const key in records) {
+            const record = records[key];
+            const playerName = record.playerNames[0];
+            if (record.lastRaid) {
+                let nextRaidInSec = null;
+                if (record.lastRaid.raidName === "Raid a Farm") {
+                    nextRaidInSec = Math.floor(record.lastRaid.timestamp + 1 * 60 * 60 - Date.now() / 1000);
+                } else if (record.lastRaid.raidName === "Raid a Hospital") {
+                    nextRaidInSec = Math.floor(record.lastRaid.timestamp + 5 * 60 * 60 - Date.now() / 1000);
+                } else if (record.lastRaid.raidName === "Raid a Store") {
+                    nextRaidInSec = Math.floor(record.lastRaid.timestamp + 20 * 60 * 60 - Date.now() / 1000);
+                }
+                result.push({ playerName: playerName, nextRaidInSec: nextRaidInSec });
             }
         }
-        console.log(result);
-        return result;
+
+        function compareBySec(a, b) {
+            return a.nextRaidInSec - b.nextRaidInSec;
+        }
+        result.sort(compareBySec);
+
+        let text = "";
+        for (const r of result) {
+            text += `${r.playerName} ${r.nextRaidInSec <= 0 ? "突袭已冷却" : "下次突袭 " + timeReadable(r.nextRaidInSec)}\n`;
+        }
+        return text;
     }
 
     function addFactionLogSearch() {
@@ -102,10 +184,10 @@
             container.appendChild(input);
 
             const searchButton = document.createElement("button");
-            searchButton.innerText = "查询";
+            searchButton.innerText = "查询玩家";
             searchButton.onclick = function () {
                 const inputValue = document.getElementById("script_search_input").value;
-                searchButtonOnClick(inputValue);
+                document.getElementById("script_textArea").value = searchPlayer(inputValue);
             };
             container.appendChild(searchButton);
 
@@ -113,23 +195,42 @@
             clearButton.innerText = "清空已保存的历史记录";
             clearButton.onclick = function () {
                 console.log("Faction log cleared.");
-                localStorage.setItem("script_faction_logs", JSON.stringify({}));
+                document.getElementById("script_textArea").value = "历史记录已清空";
+                localStorage.setItem("script_faction_item_logs", JSON.stringify({}));
+                localStorage.setItem("script_faction_raid_logs", JSON.stringify({}));
+                localStorage.setItem("script_faction_log_records", JSON.stringify({}));
             };
             container.appendChild(clearButton);
+
+            const rankItemsButton = document.createElement("button");
+            rankItemsButton.innerText = "物资统计";
+            rankItemsButton.onclick = function () {
+                document.getElementById("script_textArea").value = rankByItems();
+            };
+            container.appendChild(rankItemsButton);
+
+            const rankRespectButton = document.createElement("button");
+            rankRespectButton.innerText = "声望统计";
+            rankRespectButton.onclick = function () {
+                document.getElementById("script_textArea").value = rankByRespect();
+            };
+            container.appendChild(rankRespectButton);
+
+            const raidButton = document.createElement("button");
+            raidButton.innerText = "突袭计时";
+            raidButton.onclick = function () {
+                document.getElementById("script_textArea").value = raidTimings();
+            };
+            container.appendChild(raidButton);
 
             const textArea = document.createElement("textarea");
             textArea.id = "script_textArea";
             textArea.placeholder =
                 "使用玩家名或玩家数字ID都可以搜索。\n手动滚动帮派日志，日志会记录到插件本地。\n点击清空按钮，清空本地的存储。\n目前存储不区分帮派，看过的日志都会存储，请按需重置。";
             textArea.rows = 10;
-            textArea.cols = 80;
+            textArea.cols = 60;
             textArea.style.overflowY = "auto";
             container.appendChild(textArea);
-
-            function searchButtonOnClick(playerId) {
-                console.log("Search faction log for player ID: " + playerId);
-                document.getElementById("script_textArea").value = checkFactionBalanceByPlayerId(playerId);
-            }
 
             insertToElem.parentNode.insertBefore(container, insertToElem);
         }
@@ -639,7 +740,6 @@
         const raidTimestamp = Number(localStorage.getItem("script_raidCooldown"));
         const raidIsAlreadyNotified = localStorage.getItem("script_raidIsAlreadyNotified");
         if (raidTimestamp && raidTimestamp > 0 && raidIsAlreadyNotified !== "true") {
-            console.log("11111");
             const timeLeftSec = Math.floor((raidTimestamp - Date.now()) / 1000);
             if (timeLeftSec > -60 && timeLeftSec < 0) {
                 console.log("pushSystemNotification raid");
@@ -2862,7 +2962,7 @@
                 if (!unmatchedTexts.includes(text)) {
                     unmatchedTexts.push(text);
                 }
-                console.log(unmatchedTexts);
+                // console.log(unmatchedTexts);
             }
             return oriText;
         }
