@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.0
+// @version      8.1
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -19,24 +19,20 @@
     unsafeWindow.XMLHttpRequest.prototype.open = function () {
         this.addEventListener("readystatechange", function (event) {
             if (this.readyState === 4) {
-                try {
-                    if (this.responseURL.includes("api.zed.city/getStats")) {
-                        handleGetStats(this.response);
-                    } else if (this.responseURL.includes("api.zed.city/skills")) {
-                        handleSkills(this.response);
-                    } else if (this.responseURL.includes("api.zed.city/getStore?store_id=junk")) {
-                        handleGetStoreJunkLimit(this.response);
-                    } else if (this.responseURL.includes("api.zed.city/startJob")) {
-                        handleStartJob(this.response);
-                    } else if (this.responseURL.includes("api.zed.city/getStronghold")) {
-                        handleGetStronghold(this.response);
-                    } else if (this.responseURL.includes("api.zed.city/getRadioTower")) {
-                        handleGetRadioTower(this.response);
-                    } else if (this.responseURL.includes("api.zed.city/getFactionNotifications")) {
-                        handleGetFactionNotifications(this.response);
-                    }
-                } catch (error) {
-                    console.log(error);
+                if (this.responseURL.includes("api.zed.city/getStats")) {
+                    handleGetStats(this.response);
+                } else if (this.responseURL.includes("api.zed.city/skills")) {
+                    handleSkills(this.response);
+                } else if (this.responseURL.includes("api.zed.city/getStore?store_id=junk")) {
+                    handleGetStoreJunkLimit(this.response);
+                } else if (this.responseURL.includes("api.zed.city/startJob")) {
+                    handleStartJob(this.response);
+                } else if (this.responseURL.includes("api.zed.city/getStronghold")) {
+                    handleGetStronghold(this.response);
+                } else if (this.responseURL.includes("api.zed.city/getRadioTower")) {
+                    handleGetRadioTower(this.response);
+                } else if (this.responseURL.includes("api.zed.city/getFactionNotifications")) {
+                    handleGetFactionNotifications(this.response);
                 }
             }
             // Object.defineProperty(this, "response", { writable: true });
@@ -144,19 +140,22 @@
     }
     setInterval(addFactionLogSearch, 500);
 
-    // 状态栏显示经验值
-    let playerXP_previous = 0;
-    let playerXP_new = 0;
-    let currentLevelMaxXP = 0;
-
-    let skills_previous = null;
-    let skills_new = null;
+    // 显示人物和技能XP增量
+    if (!localStorage.getItem("script_playerXP_previous")) {
+        localStorage.setItem("script_playerXP_previous", 0);
+    }
+    if (!localStorage.getItem("script_playerXp_current")) {
+        localStorage.setItem("script_playerXp_current", 0);
+    }
+    if (!localStorage.getItem("script_playerXp_max")) {
+        localStorage.setItem("script_playerXp_max", 0);
+    }
 
     function handleGetStats(r) {
         const response = JSON.parse(r);
-        playerXP_new = response.experience;
-        currentLevelMaxXP = response.xp_end;
-        updateLevelDisplay();
+        localStorage.setItem("script_playerXp_current", response.experience);
+        localStorage.setItem("script_playerXp_max", response.xp_end);
+        showPlayerXpChangePopup(response.experience);
 
         const expire = response?.raid_cooldown;
         if (expire) {
@@ -166,77 +165,103 @@
 
     function handleSkills(r) {
         const response = JSON.parse(r);
-        skills_new = [...response.player_skills];
+        showSkillsXpChangePopup(response.player_skills);
     }
 
-    function updateLevelDisplay() {
+    function showSkillsXpChangePopup(skillsXp) {
+        const insertElem = document.body.querySelector("#script_player_level");
+        if (!insertElem) {
+            console.error("showSkillsXpChangePopup insertElem not found.");
+            return;
+        }
+        const skillsXp_previous = JSON.parse(localStorage.getItem("script_skillsXp_previous"));
+
+        if (skillsXp_previous && skillsXp) {
+            for (const s of skillsXp) {
+                for (const i of skillsXp_previous) {
+                    if (i.name === s.name && s.xp !== i.xp) {
+                        const increase = Number(s.xp) - Number(i.xp);
+                        let name = i.name;
+                        const translation = {
+                            hunting: "狩猎",
+                            scavenge: "拾荒",
+                            forging: "锻造",
+                            farming: "耕作",
+                            distilling: "蒸馏",
+                            crafting: "制作",
+                            fishing: "钓鱼",
+                            refining: "精炼",
+                        };
+                        if (translation[name.toLowerCase()]) {
+                            name = translation[name.toLowerCase()];
+                        }
+                        const div = document.createElement("span");
+                        div.style.backgroundColor = "#0A748F";
+                        div.style.marginLeft = "10px";
+                        div.textContent = `${name}+${increase}`;
+                        insertElem.appendChild(div);
+                        console.log(`${name}+${increase}`);
+                        setTimeout(() => {
+                            div.remove();
+                        }, 6000);
+                        break;
+                    }
+                }
+            }
+        }
+
+        localStorage.setItem("script_skillsXp_previous", JSON.stringify(skillsXp));
+    }
+
+    function showPlayerXpChangePopup(playerXp) {
+        const insertElem = document.body.querySelector("#script_player_level");
+        if (!insertElem) {
+            console.error("showPlayerXpChangePopup insertElem not found.");
+            return;
+        }
+        const playerXp_previous = Number(localStorage.getItem("script_playerXp_previous"));
+
+        if (playerXp_previous !== 0 && playerXp_previous !== playerXp) {
+            const increase = playerXp - playerXp_previous;
+            const div = document.createElement("span");
+            div.style.backgroundColor = "#2e7d32";
+            div.style.marginLeft = "10px";
+            div.textContent = `XP+${increase}`;
+            insertElem.appendChild(div);
+            console.log(`XP+${increase}`);
+            setTimeout(() => {
+                div.remove();
+            }, 6000);
+        }
+
+        localStorage.setItem("script_playerXp_previous", JSON.stringify(playerXp));
+    }
+
+    // 显示人物具体经验值
+    function updatePlayerXpDisplay() {
+        const playerXp = Number(localStorage.getItem("script_playerXp_current"));
+        const currentLevelMaxXP = Number(localStorage.getItem("script_playerXp_max"));
+
         const levelElem = document.body.querySelectorAll(".level-up-cont")[1];
         const insertElem = document.body.querySelector("#script_player_level");
         if (levelElem && !insertElem) {
             levelElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_player_level"><span id="script_player_level_inner"><strong>${Math.floor(playerXP_new)} / ${Math.floor(
+                `<div id="script_player_level"><span id="script_player_level_inner"><strong>${Math.floor(playerXp)} / ${Math.floor(
                     currentLevelMaxXP
                 )}</strong></span></div>`
             );
         } else if (levelElem && insertElem) {
-            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${Math.floor(playerXP_new)} / ${Math.floor(
+            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${Math.floor(playerXp)} / ${Math.floor(
                 currentLevelMaxXP
             )}</strong>`;
         }
-        if (insertElem) {
-            if (playerXP_previous !== 0 && playerXP_previous !== playerXP_new) {
-                const increase = playerXP_new - playerXP_previous;
-                const div = document.createElement("span");
-                div.style.backgroundColor = "#2e7d32";
-                div.style.marginLeft = "10px";
-                div.textContent = `XP+${increase}`;
-                insertElem.appendChild(div);
-                setTimeout(() => {
-                    div.remove();
-                }, 5000);
-            }
-            if (skills_previous && skills_new) {
-                for (const s of skills_new) {
-                    for (const i of skills_previous) {
-                        if (i.name === s.name && s.xp !== i.xp) {
-                            const increase = s.xp - i.xp;
-                            let name = i.name;
-                            const translation = {
-                                hunting: "狩猎",
-                                scavenge: "拾荒",
-                                forging: "锻造",
-                                farming: "耕作",
-                                distilling: "蒸馏",
-                                crafting: "制作",
-                                fishing: "钓鱼",
-                                refining: "精炼",
-                            };
-                            if (translation[name.toLowerCase()]) {
-                                name = translation[name.toLowerCase()];
-                            }
-                            const div = document.createElement("span");
-                            div.style.backgroundColor = "#0A748F";
-                            div.style.marginLeft = "10px";
-                            div.textContent = `${name}+${increase}`;
-                            insertElem.appendChild(div);
-                            setTimeout(() => {
-                                div.remove();
-                            }, 5000);
-                            break;
-                        }
-                    }
-                }
-            }
-            playerXP_previous = playerXP_new;
-            skills_previous = skills_new ? [...skills_new] : null;
-        }
     }
-    setInterval(updateLevelDisplay, 500);
+    setInterval(updatePlayerXpDisplay, 500);
 
     // 状态栏显示商店重置倒计时
     if (!localStorage.getItem("script_junkStoreResetTimestamp")) {
-        localStorage.setItem("script_junkStoreResetTimestamp", Date.now());
+        localStorage.setItem("script_junkStoreResetTimestamp", 0);
     }
 
     function handleGetStoreJunkLimit(r) {
@@ -252,6 +277,10 @@
         if (!insertToElem) {
             return;
         }
+        if (localStorage.getItem("script_junkStoreResetTimestamp") === "0") {
+            return;
+        }
+
         const logoElem = document.body.querySelector("#script_junk_store_limit_logo");
         const timeLeftSec = Math.floor((localStorage.getItem("script_junkStoreResetTimestamp") - Date.now()) / 1000);
         if (!logoElem) {
@@ -293,7 +322,7 @@
 
     // 状态栏显示熔炉工作
     if (!localStorage.getItem("script_forgeTimestamp")) {
-        localStorage.setItem("script_forgeTimestamp", Date.now());
+        localStorage.setItem("script_forgeTimestamp", 0);
     }
 
     function handleStartJob(r) {
@@ -338,6 +367,9 @@
     function updateForgeDisplay() {
         const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
         if (!insertToElem) {
+            return;
+        }
+        if (localStorage.getItem("script_forgeTimestamp") === "0") {
             return;
         }
         const logoElem = document.body.querySelector("#script_forge_logo");
