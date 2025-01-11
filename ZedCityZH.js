@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.8
+// @version      8.9
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -15,6 +15,7 @@
     /* ZedTools START */
 
     let playerName = "";
+    let totalBS = 0;
 
     function getWorthPrice(itemName) {
         const itemWorthList = {
@@ -375,6 +376,10 @@
 
         // Player name
         playerName = response.username;
+
+        // Total BS
+        totalBS =
+            Number(response.skills.strength) + Number(response.skills.speed) + Number(response.skills.defense) + Number(response.skills.agility);
 
         // Raid
         const expire = response?.raid_cooldown;
@@ -815,6 +820,28 @@
         }
     }
     setInterval(updateRaidDisplay, 500);
+
+    // 状态栏显示总BS
+    function updateBSDisplay() {
+        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        if (!insertToElem) {
+            return;
+        }
+        const logoElem = document.body.querySelector("#script_bs_logo");
+        if (!logoElem) {
+            insertToElem.insertAdjacentHTML(
+                "afterend",
+                `<div id="script_bs_logo" style="order: 105;"><span class="script_do_not_translate" style="font-size: 12px; color: green;">总战力：${numberFormatter(
+                    totalBS
+                )}</span></div>`
+            );
+        } else {
+            logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px; color: green;">总战力：${numberFormatter(
+                totalBS
+            )}</span>`;
+        }
+    }
+    setInterval(updateBSDisplay, 500);
 
     // 倒计时弹窗
     function pushSystemNotifications() {
