@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.5
+// @version      8.6
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -137,7 +137,7 @@
             }
             for (const key in record.items) {
                 if (record.items[key] !== 0) {
-                    text += `${record.items[key]}x ${key}\n`;
+                    text += `${record.items[key]}x ${dict(key)}\n`;
                 }
             }
         }
@@ -145,9 +145,32 @@
         return text;
     }
 
-    function rankByItems() {}
+    function rankByItems() {
+        // todo
+    }
 
-    function rankByRespect() {}
+    function rankByRespect() {
+        const records = JSON.parse(localStorage.getItem("script_faction_log_records"));
+        const result = [];
+
+        for (const key in records) {
+            const record = records[key];
+            const playerName = record.playerNames[0];
+            const respectFromRaids = record.respectFromRaids;
+            result.push({ playerName: playerName, respectFromRaids: respectFromRaids });
+        }
+
+        function compareByRes(a, b) {
+            return b.respectFromRaids - a.respectFromRaids;
+        }
+        result.sort(compareByRes);
+
+        let text = "";
+        for (const r of result) {
+            text += `${r.playerName} 总突袭声望 ${Number(r.respectFromRaids).toFixed(1)}\n`;
+        }
+        return text;
+    }
 
     function raidTimings() {
         const records = JSON.parse(localStorage.getItem("script_faction_log_records"));
