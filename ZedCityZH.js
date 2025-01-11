@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      8.9
+// @version      9.0
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -502,7 +502,7 @@
         const currentLevelMaxXP = Number(localStorage.getItem("script_playerXp_max"));
 
         const levelElem = document.body.querySelectorAll(".level-up-cont")[1];
-        const insertElem = document.body.querySelector("#script_player_level");
+        let insertElem = document.body.querySelector("#script_player_level");
         if (levelElem && !insertElem) {
             levelElem.insertAdjacentHTML(
                 "beforeend",
@@ -515,12 +515,21 @@
                 currentLevelMaxXP
             )}</strong>`;
         }
+
+        // 插入用于显示倒计时的div
+        insertElem = document.body.querySelector("#script_countdowns_container");
+        if (levelElem?.parentElement?.parentElement?.parentElement && !insertElem) {
+            levelElem?.parentElement?.parentElement?.parentElement.insertAdjacentHTML(
+                "beforeend",
+                `<div id="script_countdowns_container" style="display: flex; align-items: center; justify-content: center; gap: 15px;"></div>`
+            );
+        }
     }
     setInterval(updatePlayerXpDisplay, 500);
 
     // 状态栏显示能量和辐射溢出倒计时
     function updateBarsDisplay() {
-        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        const insertToElem = document.body.querySelector("#script_countdowns_container");
         if (!insertToElem) {
             return;
         }
@@ -535,14 +544,14 @@
         if (!logoElem) {
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_energyBar_logo" style="order: 99;"><span class="script_do_not_translate" style="font-size: 12px;">能量 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_energyBar_logo" style="order: 99;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">能量已满</span></div>`
                 );
             }
@@ -559,14 +568,14 @@
         if (!logoElem) {
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_radBar_logo" style="order: 100;"><span class="script_do_not_translate" style="font-size: 12px;">辐射 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_radBar_logo" style="order: 100;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">辐射已满</span></div>`
                 );
             }
@@ -599,7 +608,7 @@
     }
 
     function updateStoreResetDisplay() {
-        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        const insertToElem = document.body.querySelector("#script_countdowns_container");
         if (!insertToElem) {
             return;
         }
@@ -612,14 +621,14 @@
         if (!logoElem) {
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_junk_store_limit_logo" style="order: 102;"><span class="script_do_not_translate" style="font-size: 12px;">商店 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_junk_store_limit_logo" style="order: 102;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">商店已刷新</span></div>`
                 );
             }
@@ -697,7 +706,7 @@
     }
 
     function updateForgeDisplay() {
-        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        const insertToElem = document.body.querySelector("#script_countdowns_container");
         if (!insertToElem) {
             return;
         }
@@ -709,14 +718,14 @@
         if (!logoElem) {
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_forge_logo" style="order: 101;"><span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_forge_logo" style="order: 101;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span></div>`
                 );
             }
@@ -752,7 +761,7 @@
         if (localStorage.getItem("script_radioTowerTradeTimestamp") === "0") {
             return;
         }
-        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        const insertToElem = document.body.querySelector("#script_countdowns_container");
         if (!insertToElem) {
             return;
         }
@@ -761,14 +770,14 @@
         if (!logoElem) {
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_radio_tower_logo" style="order: 103;"><span class="script_do_not_translate" style="font-size: 12px;">电塔 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_radio_tower_logo" style="order: 103;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">电塔已刷新</span></div>`
                 );
             }
@@ -791,7 +800,7 @@
         if (localStorage.getItem("script_raidCooldown") === "0") {
             return;
         }
-        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        const insertToElem = document.body.querySelector("#script_countdowns_container");
         if (!insertToElem) {
             return;
         }
@@ -800,14 +809,14 @@
         if (!logoElem) {
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_raidCooldown_logo" style="order: 104;"><span class="script_do_not_translate" style="font-size: 12px;">突袭 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
             } else {
                 insertToElem.insertAdjacentHTML(
-                    "afterend",
+                    "beforeend",
                     `<div id="script_raidCooldown_logo" style="order: 104;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">突袭已冷却</span></div>`
                 );
             }
@@ -823,14 +832,14 @@
 
     // 状态栏显示总BS
     function updateBSDisplay() {
-        const insertToElem = document.body.querySelectorAll(".level-up-cont")[1]?.parentElement;
+        const insertToElem = document.body.querySelector("#script_countdowns_container");
         if (!insertToElem) {
             return;
         }
         const logoElem = document.body.querySelector("#script_bs_logo");
         if (!logoElem) {
             insertToElem.insertAdjacentHTML(
-                "afterend",
+                "beforeend",
                 `<div id="script_bs_logo" style="order: 105;"><span class="script_do_not_translate" style="font-size: 12px; color: green;">总战力：${numberFormatter(
                     totalBS
                 )}</span></div>`
