@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      9.3
+// @version      9.4
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -236,7 +236,10 @@
                 } else if (record.lastRaid.raidName === "Raid a Store") {
                     nextRaidInSec = Math.floor(record.lastRaid.timestamp + 20 * 60 * 60 - Date.now() / 1000);
                 }
-                result.push({ playerName: playerName, nextRaidInSec: nextRaidInSec });
+                if (nextRaidInSec > -172800) {
+                    // 排除超过2天的人，可能是已经退帮了
+                    result.push({ playerName: playerName, nextRaidInSec: nextRaidInSec });
+                }
             }
         }
 
