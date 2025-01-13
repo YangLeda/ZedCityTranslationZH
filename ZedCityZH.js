@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      9.2
+// @version      9.3
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1090,6 +1090,7 @@
     ];
 
     /* 词典开始 感谢七包茶整理 */
+
     //1.1 通用頁面
     const dictCommon = {
         purge: "大清洗",
@@ -2846,7 +2847,7 @@
         "Added report a bug to sub menu": "在子菜单中添加了报告bug功能。",
     };
 
-    //2.2 词典：待处理
+    //2.2 词典：待处理 (bot7420新增的会添加到这里，七包茶可以从这里移除整理到其它位置)
     const dictPending = {
         "Tell you what, I know who you should go and see. Buddy... yeah... Maddest guy I know but sure knows how to handle any situation thrown at him. Heck he'd already barricaded up half his neighbourhood before the first zed his his part of town. Just look out for the search lights at light. You won't be able to miss it":
             "我告诉你，我知道你应该去找谁。Buddy……对，就是他……我认识的最疯狂的家伙，但他确实知道如何应对任何情况。他在第一只丧尸袭击他的社区之前，就已经在半个街区设置了路障。晚上留意探照灯，你绝对不会错过。", // 错别字light
