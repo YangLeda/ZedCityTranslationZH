@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      9.5
+// @version      9.6
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -11,22 +11,86 @@
 // @grant        GM_notification
 // ==/UserScript==
 
+//目錄
+
+/* 帮派日志相关 */
+/* 状态栏弹出显示XP增量 */
+/* 状态栏等级图标旁显示人物具体经验值 */
+/* 状态栏显示能量和辐射溢出倒计时 */
+/* 状态栏显示商店重置倒计时 */
+/* 状态栏显示熔炉工作 */
+/* 状态栏显示无线电塔交易刷新 */
+/* 状态栏显示帮派突袭冷却计时 */
+/* 状态栏显示总BS */
+/* 倒计时弹窗 */
+/* 废品场屏蔽垃圾物品购买 */
+/* 设置里添加功能开关 */
+/* 工具方法 */
+
+//字典
+//1.1 通用頁面
+//1.2 幫派
+//1.3 地點
+//1.4 庫存
+//1.4-1 護甲
+// 頭
+// 身體
+// 腿
+// 腳
+//1.4-2 武器
+//1.4-3 交通工具
+//1.4-4 資源
+// 材料
+// 魚
+//1.4-5 子彈
+//1.4-6 醫療
+//1.4-7 增強
+// 食物
+// 能量
+// 飲料
+//1.4-8 道具裝備
+//1.4-9 雜項
+//1.4-10 獎盃
+//1.5 技能
+//1.6 書
+//1.7 貨幣
+//1.8 怪物
+//1.9 其他 (尚未整理的翻譯)
+//2.1 版本更新
+//2.2 词典：待处理
+
 (() => {
     /* ZedTools START */
 
     // 物品价值表
     function getWorthPrice(itemName) {
         const itemWorthList = {
-            Logs: 3,
-            Nails: 12,
-            "Iron Bar": 100,
-            Scrap: 3,
+            Logs: 7,
             Coal: 25,
-            "Zed Pack": 30000,
-            Wire: 2000,
-            Steel: 280,
-            Water: 500,
-            Rope: 3000,
+            "Gun Powder": 50,
+            Scrap: 8,
+            "Iron Bar": 105,
+            Nails: 12,
+            Steel: 240,
+            Wire: 1000,
+            Rope: 2000,
+            Plastic: 1500,
+            Tarp: 4000,
+            Fuel: 400,
+            Water: 120,
+            "Barley Seeds": 100,
+            Gears: 1500,
+            "Cooked Fish": 180,
+            Beer: 350,
+            "e-Cola": 3000,
+            炸药: 0,
+            "Pistol Ammo": 300,
+            "Silver key": 8000,
+            "Advanced Tools": 40000,
+            Pickaxe: 2200,
+            "Wooden Fishing Rod": 1400,
+            "Zed Pack": 35000,
+            Chocolate: 500,
         };
 
         if (itemWorthList.hasOwnProperty(itemName)) {
@@ -1119,13 +1183,15 @@
         "Upcoming Server Reset and Open Release": "即将到来的服务器重置与公开发布",
         "load more": "加载更多",
         "Final Reset": "最终重置",
-        "Train your stats to become more effective in combat": "训练你的属性，以在战斗中更有效",
+
         train: "训练",
         "The damage you make on impact": "你命中时造成的伤害",
         "Your ability to resist damage": "你抵抗伤害的能力",
         "The chance of hitting your target": "击中目标的概率",
         "Your ability to dodge an attack": "你的闪避能力",
+        "You gained 31 days membership and 75 points": "你获得了 31 天会员资格和 75 积分",
 
+        // CITY-城市
         Trading: "交易",
         "Donator House": "捐赠者之家",
         Market: "市场",
@@ -1146,8 +1212,15 @@
         Sell: "出售",
         "Booster (Medical)": "增强剂（医疗）",
         "Booster (Energy Drink)": "增强剂（能量饮料）",
-        "A massive incinerator stands in the middle of the city, billowing out smoke as the fire within burns hot enough to turn anything into ash":
-            "一个巨大的焚烧炉屹立在城市的中央，浓烟四起，炉内的火焰足以将任何物品烧成灰烬",
+
+        "Not enough items in stock": "库存不足",
+        "Limit Reset": "限购重置",
+        "You have reached your hourly buy limit": "您已达到每小时购买限制。",
+        "Trades expire in": "交易刷新于",
+        "Trade Completed": "交易完成",
+        Trade: "交易",
+        "Something went wrong": "出错了",
+
         Weight: "重量",
         kg: "千克",
         Weapons: "武器",
@@ -1158,21 +1231,30 @@
         Boosters: "增强剂",
         Equipment: "装备",
         Misc: "杂项",
-        Trophy: "奖杯",
-
         Login: "登录",
-        "Quest UI": "任务界面",
-
-        "Ranged Weapons": "远程武器",
-        Blueprints: "蓝图",
-
         "Faction Roles": "派系角色",
         "Daily Rations": "每日配给",
         "Player Profiles": "玩家资料",
 
-        "The Purge is Upon Us": "大清洗即将来临",
-        "As Ash blankets the city, a raspy chuckle attracts your notice": "当灰烬覆盖城市时，一阵沙哑的笑声引起了你的注意。",
-        "Select a location to continue": "选择一个地点继续",
+        "Go Back": "返回",
+        ATTEMPTS: "尝试",
+        SUCCESS: "成功",
+        FAILS: "失败",
+        "Loot Discovered": "发现战利品",
+        "Unknown Loot": "未知战利品",
+        "Loot Found Recently": "最近找到的战利品",
+
+        "Refill Energy": "补充能量",
+        "Refill Rad Immunity": "补充辐射免疫力",
+        "RESET SKILL PERKS": "重置技能",
+        Refill: "补充",
+        PURCHASE: "购买",
+
+        "Cooking Cooked Fish": "烹饪熟鱼",
+
+        "Gym upgrade": "健身房升级",
+        "Medical Bay Upgrade": "医疗间升级",
+        "Upgrade Radio Tower": "升级无线电塔",
     };
 
     // 任務
@@ -1187,6 +1269,12 @@
         Garbo: "Garbo",
         Buddy: "Buddy",
         Meat: "Meat",
+
+        "The Purge is Upon Us": "大清洗即将来临",
+        "A massive incinerator stands in the middle of the city, billowing out smoke as the fire within burns hot enough to turn anything into ash":
+            "一个巨大的焚烧炉屹立在城市的中央，浓烟四起，炉内的火焰足以将任何物品烧成灰烬",
+        "As Ash blankets the city, a raspy chuckle attracts your notice": "当灰烬覆盖城市时，一阵沙哑的笑声引起了你的注意。",
+        "Select a location to continue": "选择一个地点继续",
 
         "Welcome to the End": "欢迎来到末日",
         "Getting started at the end of the world": "在世界末日时开始你的冒险",
@@ -1472,7 +1560,6 @@
             "自你到来后，丧尸屠夫第一次将目光从电影中移开，带着期待的微笑看向你。",
         "You think to yourself... What have you gotten yourself into this time": "你心里想……这次自己又惹上了什么麻烦。",
         "Objective: Clear Food Court": "目标：清理美食广场",
-
         //MEAT-5
         "Haha heck yes! I enjoyed the the mall so much it was fantastic! Just like in the films, I even shot a zed or two myself":
             "哈哈，当然！我太喜欢逛那个商场了，太棒了！就像电影里一样，我甚至亲手射杀了一个丧尸。",
@@ -1491,8 +1578,10 @@
         Camp: "营地",
         Storage: "仓库",
         Farm: "农场",
+        "A patch of slightly fertile soil": "一块稍微肥沃的土壤",
         Distillery: "酒厂",
-        Refinery: "精炼厂",
+        Refinery: "炼油厂",
+        "Rusty machine that smells of fish oil and burnt plastic": "一台生锈的机器，散发着鱼油和烧焦塑料的味道",
         Base: "基地",
         Raid: "袭击",
         Raids: "突袭",
@@ -1517,12 +1606,61 @@
         "Distilling Beer": "蒸馏啤酒",
         Distillers: "蒸馏器",
 
+        Farmers: "农民",
+        "Team Efficiency": "团队效率",
+        "Farming Barley": "种植大麦",
+        "Total Time Left": "剩余总时间",
+
         "Set up Raid on Farm": "筹备袭击农场",
         "Are you sure you want to set up raid on farm?": "你确定要筹备袭击农场吗",
         Team: "团队",
         Empty: "空",
         Join: "加入",
         "Cancel Raid": "取消袭击",
+
+        "Are you sure you want to cancel this raid": "你确定要取消这次突袭吗",
+        Abort: "中止",
+        "Setup Raid a Hospital": "筹备突袭医院",
+        "Are you sure you want to setup Raid a Hospital": "你确定要筹备突袭医院吗",
+        "You are already in a raid": "你已经在一次突袭中",
+        "Setup Raid a Store": "筹备突袭商店",
+        "Are you sure you want to setup Raid a Store": "你确定要筹备突袭商店吗",
+        "Add Role": "添加角色",
+        Roles: "角色",
+        Edit: "编辑",
+        "Manage Member": "管理成员",
+        Kick: "踢出",
+        "Camp Upgrade": "营地升级",
+        "Update Role": "更新角色",
+        "Role Name": "角色名称",
+        Permissions: "权限",
+        Management: "管理",
+        "Allows the player to oversee and manage the agricultural activities within the community. They can start new crops and manage workers":
+            "允许玩家监督和管理社区内的农业活动。他们可以种植新作物并管理工人",
+        "Distillery Management": "酿酒厂管理",
+        "Gives the player the authority to oversee and manage the distillery operations. They can produce beverages and manage workers":
+            "赋予玩家监督和管理酿酒厂运作的权限。他们可以生产饮品并管理工人",
+        "Refinery Management": "炼油厂管理",
+        "Allows the player to oversee and manage the refinery activities within the community. They can start new refining processes and manage workers":
+            "允许玩家监督和管理社区内的炼油活动。他们可以启动新的炼油流程并管理工人",
+        "Storage Management": "仓库管理",
+        "Allows the player to take items from the faction storage": "允许玩家从派系仓库取物品",
+        "Manage Raids": "管理突袭",
+        "Gives the player the authority to cancel raids and remove players from pending raids": "赋予玩家取消突袭和移除待处理突袭中玩家的权限",
+        "Manage Applications": "管理申请",
+        "Grants the ability to accept or decline applications": "授予接受或拒绝申请的能力",
+        "Manage Buildings": "管理建筑",
+        "Allows the player to initiate upgrades on any building with resources allocated from the faction storage":
+            "允许玩家使用派系仓库分配的资源启动任何建筑的升级",
+        "Kick Member": "踢出成员",
+        "Grants the ability to kick members from the faction. The leader can not be kicked": "授予踢出派系成员的权限。领导者不能被踢出",
+        Administrator: "管理员",
+        "Gives the player full access to all permissions": "赋予玩家对所有权限的完全访问权限",
+        Rations: "配给",
+        "Add Rations": "添加配给",
+        "Add Item": "添加物品",
+
+        "Ammo Type": "弹药类型",
     };
 
     //1.3 地點
@@ -1591,6 +1729,23 @@
         Foyer: "大堂",
         "Raging Zombie": "狂怒丧尸",
         "Police HQ": "警察总部",
+
+        // 說明
+        "Train your stats to become more effective in combat": "训练你的属性，以在战斗中更有效",
+        "Heal to attack more crawlers": "治疗以攻击更多爬行者",
+        "A crafting bench is a sturdy table where manual work is done": "制作工作台是一个坚固的桌子，用来进行手工制作",
+        "Complete building to access furnace": "完成建筑以访问炉子",
+        "Hot enough to melt things": "热度足以融化物品",
+        "Complete building to access kitchen": "完成建筑以访问厨房",
+        "Hot enough to cook things": "热度足以烹饪食物",
+        "Complete building to access radio tower": "完成建筑以访问无线电塔",
+        "Complete building to access weapon bench": "完成建筑以访问武器台",
+        "Fabricate firearms": "制造枪械",
+        "Complete building to access ammo bench": "完成建筑以访问弹药台",
+        "For packin heat": "装填火药",
+        "Complete building to access armour bench": "完成建筑以访问护甲台",
+        "Designer and craft designer outfits": "设计并制作设计师服装",
+        "Complete building to access garage": "完成建筑以访问车库",
     };
 
     //1.4 庫存
@@ -1598,31 +1753,31 @@
     const dictWeapon = {
         "Baseball Bat": "棒球棒",
         Spear: "长矛",
-        "AK-74u": "AK-74u",
         Bow: "弓",
-        "Desert Eagle": "沙漠之鹰",
-        Pistol: "手枪",
 
+        // 槍類
         Handmade: "手工手枪",
         Handgun: "手枪",
+        Pistol: "手枪",
+        "Desert Eagle": "沙漠之鹰",
+        "Scuff Shotgun": "钝口霰弹枪",
         Shotgun: "霰弹枪",
+        "AK-74u": "AK-74u",
         AK: "AK",
         MP: "MP",
         Rifle: "步枪",
-        Blunt: "钝器",
+        "Chain Shotgun": "链式霰弹枪",
+        Revolver: "左轮手枪",
+        SMG: "冲锋枪",
+        Sawnoff: "锯口霰弹枪",
 
+        Blunt: "钝器",
         Chainsaw: "电锯",
         Drill: "钻机",
         "Fire Axe": "消防斧",
         Machete: "砍刀",
         "Meat Cleaver": "剁肉刀",
         "Magazine Size": "弹匣容量",
-        "Chain Shotgun": "链式霰弹枪",
-
-        Revolver: "左轮手枪",
-        SMG: "冲锋枪",
-        "Scuff Shotgun": "钝口霰弹枪",
-        Sawnoff: "锯口霰弹枪",
 
         Baton: "警棍",
         Bladed: "带刃",
@@ -1632,11 +1787,20 @@
 
     //1.4-2 護甲
     const dictsEquip = {
+        "Armour (Head": "护甲（头部）",
+        "Armour (body": "护甲（身体）",
+        "Armour (Legs": "护甲（腿部）",
+        "Armour (feet": "护甲（脚）",
+
+        //頭部
+        "Army Helmet": "军用头盔",
         "Camo Hat": "迷彩帽",
         "Cowboy Hat": "牛仔帽",
         "Gas Mask": "防毒面具",
         "Riot Helmet": "防暴头盔",
         Sunglasses: "太阳镜",
+        "Hockey Mask": "冰球面罩",
+        //身體
         "Barrel Vest": "桶形背心",
         "Body Vest": "防护背心",
         "Camo Vest": "迷彩背心",
@@ -1644,11 +1808,13 @@
         "Cloth Jacket": "布质夹克",
         "Leather Jacket": "皮夹克",
         "Padded Vest": "衬垫背心",
+        //腿部
         "Armoured Pants": "装甲裤",
         "Army Pants": "军裤",
         "Camo Pants": "迷彩裤",
         "Cargo Pants": "工装裤",
         "Cargo Shorts": "工装短裤",
+        "Cloth Pants": "布裤",
         "Heavily Armoured Pants": "重装甲裤",
         Jeans: "牛仔裤",
         "Jogging Bottoms": "跑步裤",
@@ -1656,6 +1822,7 @@
         "Padded Pants": "衬垫裤",
         "Sweat Pants": "运动裤",
         "Swim Shorts": "游泳短裤",
+        //腳
         "Army Boots": "军靴",
         "Camo Boots": "迷彩靴",
         "Hazmat Boots": "防护靴",
@@ -1663,13 +1830,6 @@
         "Soldier Boots": "士兵靴",
         "Trekking Boots": "徒步靴",
         "Work Boots": "工作靴",
-
-        "Cloth Pants": "布裤",
-        "Armour (Legs": "护甲（腿部）",
-        "Hockey Mask": "冰球面罩",
-        "Armour (Head": "护甲（头部）",
-
-        "Army Helmet": "军用头盔",
     };
 
     //1.4-3 交通工具
@@ -1682,84 +1842,86 @@
     //1.4-4 資源
     const dictItemResources = {
         Resource: "资源",
-        "Barley Seeds": "大麦种子",
-        "Dirty Water": "脏水",
-        "Iron Bar": "铁锭",
-        Logs: "原木",
-        Nails: "钉子",
-        Plastic: "塑料",
-        Steel: "钢铁",
-        Tarp: "防水布",
-        Water: "水",
-        Cloth: "布料",
-        Coal: "煤炭",
-        Fuel: "燃料",
 
-        "Iron Ore": "铁矿石",
-        Scrap: "废铁",
-        Gears: "齿轮",
-        Rope: "绳子",
-        Oilcloth: "油布",
-        Ash: "灰烬",
+        //材料
+        "Advanced Tools": "高级工具",
         Barley: "大麦",
+        "Barley Seeds": "大麦种子",
+        Barricade: "路障",
         Brick: "砖块",
         Cement: "水泥",
-        Flux: "助焊剂",
-        "Purify Water": "净化水",
-        Wire: "铁丝",
-        Thread: "线",
-
-        Perch: "栖木",
-
-        Oil: "油",
-        Rock: "岩石",
-        Tape: "胶带",
-        Barricade: "路障",
+        Cloth: "布料",
+        Coal: "煤炭",
+        "Dirty Water": "脏水",
         Explosives: "爆炸物",
+        "Fishing Reel": "鱼线轮",
+        Flux: "助焊剂",
+        Fuel: "燃料",
+        Gears: "齿轮",
+        "Gun Powder": "火药",
+        "Iron Bar": "铁锭",
+        "Iron Ore": "铁矿石",
+        Logs: "原木",
+        Nails: "钉子",
+        Oil: "油",
+        Plastic: "塑料",
+        Rock: "岩石",
+        Rope: "绳子",
+        Scrap: "废铁",
+        Steel: "钢铁",
+        Tarp: "防水布",
+        Thread: "线",
+        "Unrefined Plastic": "未精炼塑料",
+        Water: "水",
+        Wire: "铁丝",
+        "Zed Juice": "丧尸汁",
 
-        Carp: "鲤鱼",
+        //魚
         Angelfish: "天使鱼",
-        "Raw Fish": "生鱼",
+        Barnaclefish: "藤壶鱼",
+        Bass: "鲈鱼",
+        Carp: "鲤鱼",
+        Perch: "河鲈",
         Rockfish: "石鱼",
         Sandfish: "沙鱼",
-        Bass: "鲈鱼",
-        Barnaclefish: "藤壶鱼",
+
+        Oilcloth: "油布",
+        Ash: "灰烬",
+        "Purify Water": "净化水",
+
+        Tape: "胶带",
+
+        "Raw Fish": "生鱼",
+
         "Giant Pufferfish": "巨型河豚",
         "Golden Egg": "金蛋",
         "Golden Skull": "金色头骨",
         "Monster Catfish": "怪物鲶鱼",
         "Viper Barnaclefish": "毒蛇藤壶鱼",
 
-        "Animal Meat": "动物肉",
         "Cooked Angelfish": "熟天使鱼",
         "Cooked Barnaclefish": "熟藤壶鱼",
         "Cooked Carp": "熟鲤鱼",
         "Cooked Perch": "熟鲈鱼",
         "Cooked Sandfish": "熟沙鱼",
-        "Cooked Meat": "熟肉",
-        "Fish Kebab": "鱼肉串",
-        "Pumpkin Pie": "南瓜派",
-        Sandwich: "三明治",
 
-        Chocolate: "巧克力",
-        Eyebellini: "眼球鸡尾酒",
-        "Mixed Vegetables": "混合蔬菜",
         "Zen Egg": "禅蛋",
-
         "Dino Egg": "恐龙蛋",
-        "e-Cola": "原子可乐",
-
         "ZedBull Egg": "丧尸红牛蛋",
-        "Witch's Brew": "巫师饮品",
         "Survivor Egg": "幸存者蛋",
-        "Zed Juice": "丧尸汁",
+
+        // 說明
+        // 線
+        "A long, thin strand of cotton used in sewing": "一条用于缝纫的长而细的棉线",
+        // 丧尸汁
+        "Made by carefully crushing the head of Zeds between two rocks": "通过小心地将丧尸的头部夹在两块岩石之间来制作",
     };
 
     //1.4-5 子彈
     const dictItemAmmo = {
+        Arrows: "箭",
         "Simple Ammo": "简单弹药",
         "Shotgun Slug": "霰弹枪弹丸",
-        "Ammo Type": "弹药类型",
         "Rifle Ammo": "步枪弹药",
         "Pistol Ammo": "手枪子弹",
     };
@@ -1769,13 +1931,42 @@
         Bandage: "绷带",
         "Effect: Reduce recovery time by 10 minutes, increases life by 10 and medical cooldown by 5 minutes":
             "效果：减少10分钟的恢复时间，增加10点生命值和5分钟的医疗冷却时间",
+        "Med Booster": "医疗助推器",
+        "Effect: Reduce recovery time by 20 minutes, increases life by 20 and medical cooldown by 15 minutes":
+            "效果：减少20分钟恢复时间，增加20点生命值，医疗冷却时间延长15分钟",
+        "Small Med Kit": "小型医疗包",
+        "Effect: Reduce recovery time by 30 minutes, increases life by 20 and medical cooldown by 10 minutes":
+            "效果：减少30分钟恢复时间，增加20点生命值，医疗冷却时间延长10分钟",
+        "Med Kit": "医疗包",
+        "Effect: Reduce recovery time by 1 hour, increases life by 50 and medical cooldown by 30 minutes":
+            "效果：减少1小时恢复时间，增加50点生命值，医疗冷却时间延长30分钟",
     };
 
     //1.4-7 增強
     const dictEnhance = {
-        Beer: "啤酒",
+        //食物
+        "Animal Meat": "动物肉",
+        Chocolate: "巧克力",
         "Canned Food": "罐装食物",
         "Cooked Fish": "熟鱼",
+        "Cooked Meat": "熟肉",
+        "Fish Kebab": "鱼肉串",
+        Kwizine: "美食",
+        "Mixed Vegetables": "混合蔬菜",
+        "Pumpkin Pie": "南瓜派",
+        Sandwich: "三明治",
+
+        //能量
+        Coffee: "咖啡",
+        "e-Cola": "原子可乐",
+        Eyebellini: "眼球鸡尾酒",
+        "Witch's Brew": "巫师饮品",
+        ZedBull: "丧尸红牛",
+
+        //飲料
+        Beer: "啤酒",
+        Vodka: "伏特加",
+        Whiskey: "威士忌",
 
         "Effect: Increases rad immunity by 1 and booster cooldown by 1 hour": "效果：增加辐射免疫力1，增强剂冷却时间1小时",
         "Effect: Increases morale by 20 and booster cooldown by 30 minutes": "效果：增加士气20，增强剂冷却时间30分钟",
@@ -1800,7 +1991,6 @@
         "Booster (Alcohol": "增强剂（酒精）",
 
         "Effect: Increases morale by 100 and booster cooldown by 30 minutes": "效果：增加士气100，增强剂冷却时间30分钟",
-
         "Effect: Increases morale by 10 and booster cooldown by 30 minutes": "效果：增加士气10，增强剂冷却时间30分钟",
         "Effect: Increases morale by 100, rad immunity by 10 and booster cooldown by 30 minutes":
             "效果：增加士气100，辐射免疫力10，增强剂冷却时间30分钟",
@@ -1812,33 +2002,21 @@
         "Effect: Increases morale by 100, energy by 25 and booster cooldown by 30 minutes": "效果：增加100点士气、25点能量和30分钟的增益冷却时间",
         "Effect: Increases morale by 500 and booster cooldown by 30 minutes": "效果：增加500点士气和30分钟的增益冷却时间",
 
-        "Med Booster": "医疗助推器",
-        "Effect: Reduce recovery time by 20 minutes, increases life by 20 and medical cooldown by 15 minutes":
-            "效果：减少20分钟恢复时间，增加20点生命值，医疗冷却时间延长15分钟",
-        "Med Kit": "医疗包",
-        "Effect: Reduce recovery time by 1 hour, increases life by 50 and medical cooldown by 30 minutes":
-            "效果：减少1小时恢复时间，增加50点生命值，医疗冷却时间延长30分钟",
         Morphine: "吗啡",
-        "Small Med Kit": "小型医疗包",
-        "Effect: Reduce recovery time by 30 minutes, increases life by 20 and medical cooldown by 10 minutes":
-            "效果：减少30分钟恢复时间，增加20点生命值，医疗冷却时间延长10分钟",
-        Coffee: "咖啡",
+
         "Effect: Increases morale by 75 and booster cooldown by 30 minutes": "效果：增加75点士气，助推器冷却时间延长30分钟",
         "Effect: Increases morale by 300 and booster cooldown by 30 minutes": "效果：增加300点士气，助推器冷却时间延长30分钟",
         "Effect: Increases morale by 125 and booster cooldown by 30 minutes": "效果：增加125点士气，助推器冷却时间延长30分钟",
-        Vodka: "伏特加",
         "Effect: Increases rad immunity by 2 and booster cooldown by 1 hour": "效果：增加2点辐射免疫，助推器冷却时间延长1小时",
-        Whiskey: "威士忌",
         "Effect: Increases rad immunity by 3 and booster cooldown by 1 hour": "效果：增加3点辐射免疫，助推器冷却时间延长1小时",
-
         "Effect: Increases morale by 50 and booster cooldown by 30 minutes": "效果：增加士气50，增强剂冷却时间30分钟",
-
         "Effect: Increases energy by 250 and booster cooldown by 2 hours": "效果：增加250点能量，助推器冷却时间延长2小时",
     };
 
     //1.4-8 道具裝備
     const dictItemEquipment = {
         Pickaxe: "镐",
+        Shovel: "铲子",
         "Wooden Fishing Rod": "木质钓鱼竿",
         "Steel Fishing Rod": "钢制钓鱼竿",
         "Pro Fishing Rod": "专业钓鱼竿",
@@ -1846,13 +2024,30 @@
 
     //1.4-9 雜項
     const dictItemOther = {
-        Lighter: "打火机",
-        "Police RFID": "警察射频ID",
         "Barracks key": "军营钥匙",
+        "Buddys Pass": "伙伴通行证",
+        "Fuel Injector": "燃料喷射器",
+        "Generals RFID": "将军的射频ID",
+        Lighter: "打火机",
+        Lockpick: "开锁器",
+        "Lucky coin": "幸运硬币",
+        "Security Card": "安保卡",
+        "Bronze Key": "青铜钥匙",
+
+        "Silver key": "银钥匙",
+        "Police RFID": "警察射频ID",
+        Compass: "指南针",
+        Crowbar: "撬棍",
+        Flashlight: "手电筒",
+
+        Binoculars: "双筒望远镜",
+        "Helps you see": "帮助你看得更清楚",
     };
 
     //1.4-10 獎盃
-    const dictItemTrophy = {};
+    const dictItemTrophy = {
+        Trophy: "奖杯",
+    };
 
     //1.5 技能
     const dictSkill = {
@@ -1889,13 +2084,12 @@
         "Increase speed by": "增加速度",
         Agility: "敏捷",
         "Increase agility by": "增加敏捷",
-
+        "Morale Perk": "士气特技",
+        "Max Morale": "最大士气",
         "Upgrade Immunity": "升级免疫力",
         "Immunity Perk": "免疫力特技",
         "Max Rad Immunity": "最大辐射免疫力",
-
-        "Morale Perk": "士气特技",
-        "Max Morale": "最大士气",
+        "Rad Immunity": "辐射免疫力",
     };
 
     //1.6 書
@@ -1907,8 +2101,9 @@
     //1.8 怪物
     const dictMonster = {
         Zombie: "丧尸",
-        ZedBull: "丧尸红牛",
         Crawler: "爬行者",
+        Bloater: "鼓胀者",
+        Spitter: "喷吐者",
         "Weakness: Blunt": "弱点：钝器",
 
         "Raging Bloater": "狂怒鼓胀者",
@@ -1919,21 +2114,12 @@
         "Weakness: Pistol": "弱点：手枪",
         "Frenzied Spitter": "狂暴喷吐者",
         "Weakness: Piercing": "弱点：穿刺",
-
-        Bloater: "鼓胀者",
     };
 
     //1.9 其他 (尚未整理的翻譯)
     const dictOther = {
         "Min Level": "最低等级",
 
-        "Go Back": "返回",
-        ATTEMPTS: "尝试",
-        SUCCESS: "成功",
-        FAILS: "失败",
-        "Loot Discovered": "发现战利品",
-
-        "Advanced Tools": "高级工具",
         Take: "拿取",
         "Weapon (Ranged)": "武器（远程）",
         Durability: "耐久度",
@@ -1945,9 +2131,9 @@
         "Fire Rate": "射速",
         Weapon: "武器",
         Piercing: "穿刺",
-        Arrows: "箭",
+
         "Add Items": "添加物品",
-        "Heal to attack more crawlers": "治疗以攻击更多爬行者",
+
         Upgrade: "升级",
         Regen: "回复",
         "Per 15 Min": "每15分钟",
@@ -1957,7 +2143,7 @@
         Menu: "菜单",
         Submit: "提交",
         energy: "能量",
-        "Rad Immunity": "辐射免疫力",
+
         "Membership Expires": "会员到期",
         Notifications: "通知",
         "No activity found": "无活动日志",
@@ -1980,8 +2166,6 @@
         Quantity: "数量",
         Cancel: "取消",
 
-        "Gym upgrade": "健身房升级",
-
         "Medical Bay Level": "医疗间等级",
         "Weapon (Ranged": "武器（远程）",
 
@@ -1990,41 +2174,21 @@
         "Booster (Easter": "增强剂（复活节）",
 
         Low: "低",
-        "Buddys Pass": "伙伴通行证",
         Miscellaneous: "杂项",
-        "Generals RFID": "将军的射频ID",
-        "Security Card": "安保卡",
-        "Silver key": "银钥匙",
+
         "Take Item": "拿取物品",
-        "A patch of slightly fertile soil": "一块稍微肥沃的土壤",
-        Farmers: "农民",
-        "Team Efficiency": "团队效率",
-        "Farming Barley": "种植大麦",
-        "Total Time Left": "剩余总时间",
 
         Build: "建造",
-        "Hot enough to melt things": "热度足以融化物品",
-        "Complete building to access furnace": "完成建筑以访问炉子",
+
         "Forge Nails": "锻造钉子",
         "Smelt Scrap": "熔炼废铁",
         "Smelt Iron Ore": "熔炼铁矿",
 
         Discoverable: "可发现物品",
-        "Hot enough to cook things": "热度足以烹饪食物",
-        "Complete building to access kitchen": "完成建筑以访问厨房",
 
-        "Complete building to access radio tower": "完成建筑以访问无线电塔",
-        "Fabricate firearms": "制造枪械",
-        "Complete building to access weapon bench": "完成建筑以访问武器台",
-
-        "For packin heat": "装填火药",
-        "Complete building to access ammo bench": "完成建筑以访问弹药台",
-        "Gun Powder": "火药",
-        "Designer and craft designer outfits": "设计并制作设计师服装",
-        "Complete building to access armour bench": "完成建筑以访问护甲台",
         "Craft Cloth Pants": "制作布裤",
         "Craft Cloth Jacket": "制作布夹克",
-        "Complete building to access garage": "完成建筑以访问车库",
+
         Stinger: "毒刺",
         Efficiency: "效率",
         Capacity: "容量",
@@ -2080,9 +2244,6 @@
         "If you wish to support us by helping to cover some hosting & development costs, you can use the button below":
             "如果你希望通过帮助覆盖一些主机和开发费用来支持我们，可以使用下面的按钮。",
 
-        "Refill Energy": "补充能量",
-        "Refill Rad Immunity": "补充辐射免疫力",
-        "Rusty machine that smells of fish oil and burnt plastic": "一台生锈的机器，散发着鱼油和烧焦塑料的味道",
         refiners: "精炼器",
         "Complete upgrade to access workers": "完成升级以解锁工人",
         "Extract Materials": "提取材料",
@@ -2090,19 +2251,14 @@
         "Extract Oils": "提取油料",
         "Refine Plastic": "精炼塑料",
 
-        Refill: "补充",
-
         leave: "离开",
-
         visit: "查看",
         "You gained": "你获得了",
         "Your rad is already full": "你的辐射值已经满了",
         "Your energy has been refilled": "你的能量已经重新填充",
-        "Unrefined Plastic": "未精炼塑料",
 
-        "A crafting bench is a sturdy table where manual work is done": "制作工作台是一个坚固的桌子，用来进行手工制作",
         "Complete building to access crafting bench": "完成建筑以访问制作工作台",
-        Kwizine: "烹饪",
+
         None: "无",
 
         "Items Farmed": "耕种的物品",
@@ -2137,11 +2293,11 @@
         "Help Guide": "帮助",
         "Zed City": "Zed City",
         "Zed City | The Survival MMORPG": "Zed City | 生存MMORPG",
-        "Loot Found Recently": "最近找到的战利品",
+
         "YOU LEVELED UP": "你升级了",
         Continue: "继续",
         "Canvas is not supported in your browser": "你的浏览器不支持Canvas",
-        "Unknown Loot": "未知战利品",
+
         "Your scavenging skill level needs to be": "你的拾荒技能等级需要达到",
         Fish: "钓鱼",
         "gained every": "每",
@@ -2150,10 +2306,6 @@
         "angela deposited 9x Ash": "angela存入9个灰烬",
         "Your membership will expire in": "您的会员将在",
         "a month": "一个月后到期",
-
-        "A long, thin strand of cotton used in sewing": "一条用于缝纫的长而细的棉线",
-
-        "Made by carefully crushing the head of Zeds between two rocks": "通过小心地将丧尸的头部夹在两块岩石之间来制作",
 
         "Setup Raid a Farm": "筹备突袭农场",
         "Are you sure you want to setup Raid a Farm": "你确定要筹备突袭农场吗",
@@ -2192,7 +2344,7 @@
         VS: "VS",
         WINNER: "胜利",
         "will show a total time if you are crafting more than 1x": "如果你制作超过1个，将显示总时间",
-        "Medical Bay Upgrade": "医疗间升级",
+
         "Item added to your inventory": "物品已添加到你的库存",
         Use: "使用",
         "Consume Item": "消耗物品",
@@ -2200,63 +2352,14 @@
         "Medical Cooldown": "医疗冷却时间",
 
         "Bench Level": "制作台等级",
-        "Are you sure you want to cancel this raid": "你确定要取消这次突袭吗",
-        Abort: "中止",
-        "Setup Raid a Hospital": "筹备突袭医院",
-        "Are you sure you want to setup Raid a Hospital": "你确定要筹备突袭医院吗",
-        "You are already in a raid": "你已经在一次突袭中",
-        "Setup Raid a Store": "筹备突袭商店",
-        "Are you sure you want to setup Raid a Store": "你确定要筹备突袭商店吗",
-        "Add Role": "添加角色",
-        Roles: "角色",
-        Edit: "编辑",
-        "Manage Member": "管理成员",
-        Kick: "踢出",
-        "Camp Upgrade": "营地升级",
-        "Update Role": "更新角色",
-        "Role Name": "角色名称",
-        Permissions: "权限",
-        Management: "管理",
-        "Allows the player to oversee and manage the agricultural activities within the community. They can start new crops and manage workers":
-            "允许玩家监督和管理社区内的农业活动。他们可以种植新作物并管理工人",
-        "Distillery Management": "酿酒厂管理",
-        "Gives the player the authority to oversee and manage the distillery operations. They can produce beverages and manage workers":
-            "赋予玩家监督和管理酿酒厂运作的权限。他们可以生产饮品并管理工人",
-        "Refinery Management": "炼油厂管理",
-        "Allows the player to oversee and manage the refinery activities within the community. They can start new refining processes and manage workers":
-            "允许玩家监督和管理社区内的炼油活动。他们可以启动新的炼油流程并管理工人",
-        "Storage Management": "仓库管理",
-        "Allows the player to take items from the faction storage": "允许玩家从派系仓库取物品",
-        "Manage Raids": "管理突袭",
-        "Gives the player the authority to cancel raids and remove players from pending raids": "赋予玩家取消突袭和移除待处理突袭中玩家的权限",
-        "Manage Applications": "管理申请",
-        "Grants the ability to accept or decline applications": "授予接受或拒绝申请的能力",
-        "Manage Buildings": "管理建筑",
-        "Allows the player to initiate upgrades on any building with resources allocated from the faction storage":
-            "允许玩家使用派系仓库分配的资源启动任何建筑的升级",
-        "Kick Member": "踢出成员",
-        "Grants the ability to kick members from the faction. The leader can not be kicked": "授予踢出派系成员的权限。领导者不能被踢出",
-        Administrator: "管理员",
-        "Gives the player full access to all permissions": "赋予玩家对所有权限的完全访问权限",
-        Rations: "配给",
-        "Add Rations": "添加配给",
-        "Adrenaline Booster": "肾上腺素助推器",
-        "Add Item": "添加物品",
 
-        "Fishing Reel": "鱼线轮",
+        "Adrenaline Booster": "肾上腺素助推器",
+
         "An essential item to make your rod work": "使鱼竿运作的必需品",
         High: "高",
-        Binoculars: "双筒望远镜",
-        "Helps you see": "帮助你看得更清楚",
-        "Bronze Key": "青铜钥匙",
-        Compass: "指南针",
-        Crowbar: "撬棍",
-        Flashlight: "手电筒",
-        "Fuel Injector": "燃料喷射器",
-        Lockpick: "开锁器",
-        "Lucky coin": "幸运硬币",
+
         Map: "地图",
-        Shovel: "铲子",
+
         Transceiver: "无线电收发器",
         "Donator Pack": "捐赠者礼包",
         "Role Updated": "角色已更新",
@@ -2395,15 +2498,6 @@
         "Level Experience": "等级经验",
         Upgrading: "升级中",
 
-        "Not enough items in stock": "库存不足",
-        "Limit Reset": "限购重置",
-        "You have reached your hourly buy limit": "您已达到每小时购买限制。",
-        "Trades expire in": "交易刷新于",
-        "Trade Completed": "交易完成",
-        Trade: "交易",
-        "Upgrade Radio Tower": "升级无线电塔",
-        "Something went wrong": "出错了",
-
         "Smelt Steel": "熔炼钢铁",
 
         Eat: "吃",
@@ -2431,18 +2525,40 @@
         "Months Free": "免费月份",
         "Zed Pack": "丧尸包",
         Discount: "折扣",
-        USD: "USD",
-        EUR: "EUR",
-        "C$ CAD": "C$ CAD",
+        USD: "美元",
+        EUR: "欧元",
+        "C$ CAD": "加元",
         "Each Zed Pack contains": "每个丧尸包包含",
         "Days Membership": "天会员",
         Tradable: "可交易",
-        "Booster (Special": "增强剂（特殊",
+        "Booster (Special": "增强剂（特殊）",
         "Effect: Contains 31 days membership and 75 points": "效果：包含31天会员资格和75点数",
     };
 
     //2.1 版本更新
     const dictVersion = {
+        //v1.0.3
+        "Zed Packs & Membership": "丧尸包和会员",
+        "Zed Packs will now refill your stats when opened, everyone who has already opened Zed Pack(s) will receive 2x free refills for each pack opened. When subscribing to a new membership, you will receive the special item for that month instantly. Everyone who has already subscribed will have received this item now":
+            "丧尸包现在打开时会补充你的数值，已打开过丧尸包的每个人将获得每个包2次免费的补充。订阅新会员时，您将立即收到该月份的特殊物品。所有已订阅的用户现在应该已经收到此物品",
+        "Added skill points to the store and introduced the ability to reset skill perks": "在商店中添加了技能点，并引入了重置技能特权的功能",
+        Scavenges: "拾荒",
+        "More XP will be given for both normal rank & skills when attempting scavenges that cost higher Rad Immunity":
+            "在尝试需要更高辐射免疫的拾荒时，将获得更多普通等级和技能经验值",
+        "Added the ability to transfer ownership of a faction to a new leader, you can do this by visiting your camp. When attempting to leave the faction, if you are the leader, a warning will be displayed about the faction being destroyed":
+            "新增了将派系所有权转移给新领导者的功能，可以通过访问您的营地来完成。如果尝试离开派系，且您是领导者，将显示有关派系被摧毁的警告",
+        "Zed Bot (Discord Bot": "丧尸机器人（Discord机器人）",
+        "Reduced time the bot will take between checking for new verified survivors": "减少了机器人检查新认证幸存者之间的时间",
+        'Added a new role "ZC Supporter", awarded to survivors with an active membership': '新增角色"丧尸支持者"，授予具有有效会员资格的幸存者',
+        'Added a new role "ZC Faction Leader"': '新增角色"丧尸派系领导者"',
+        "Fixed delay in updating notifications after viewing": "修复了查看后更新通知的延迟问题",
+        "Fixed bug where non-existent factions showed a loading animation": "修复了不存在的派系显示加载动画的问题",
+        "Fixed issue where consuming an item showed 'out of quantity' with 1 remaining": "修复了消耗物品时显示“数量不足”但实际剩余1个的问题",
+        "Added server time display to the top-left menu": "在左上角菜单中新增了服务器时间显示",
+        "Removed certain refinery blueprints, to be reintroduced later": "移除了某些炼油厂的蓝图，将在稍后重新引入",
+        "Fixed some issues in the password reset process that may have caused confusion": "修复了密码重置过程中的一些可能引起混淆的问题",
+        "Resolved issue with market listings disappearing when setting the price too high": "解决了市场列表在设置价格过高时消失的问题",
+
         //v1.0.2
         "The Donator House has been released, you can buy membership perks & Zed Packs to trade with other survivors. Membership will give you a boost to your max energy and energy regain times and some other perks. While the donator store is fairly basic right now, we will be adding more things to this in future updates. We thank you for your continued support":
             "捐赠者之家已发布，您可以购买会员特权和丧尸包与其他幸存者交易。会员资格将提升您的最大能量和能量恢复时间，以及其他一些特权。目前捐赠商店功能较为基础，但我们将在未来更新中添加更多内容。感谢您的持续支持。",
@@ -2535,7 +2651,7 @@
             "为锁定的蓝图添加了提示，以更明显地提醒你需要升级建筑。",
 
         //v0.3.1
-        "Fuel Depot (Explore Location": "燃料站（探索地点",
+        "Fuel Depot (Explore Location": "燃料站（探索地点）",
         "Discover a new area packed with massive, abandoned fuel tankers, offering a prime opportunity to replenish your fuel reserves":
             "发现一个全新的区域，里面堆满了废弃的巨大油罐车，为补充你的燃料储备提供了绝佳的机会。",
         "Fuel weight has been reduced to 0.75kg": "燃料重量已减少至0.75kg。",
@@ -2653,7 +2769,7 @@
         "A bug has been resolved which was stopping a full stack of items being loaded into a vehicle":
             "已解决一个漏洞，阻止了将完整堆叠的物品加载到车辆中",
         "Travel times will now be displayed on the explore locations": "旅行时间现在将在探索位置上显示",
-        "You are no longer able to load ammo into your vehicle (all ammo can be fired without loading it into your vehicle)":
+        "You are no longer able to load ammo into your vehicle (all ammo can be fired without loading it into your vehicle":
             "你现在无法将弹药加载到你的车辆中（所有弹药可以在没有加载到车辆中的情况下开火）",
         "Population counter has been added to explore locations": "已在探索位置添加人口计数器",
         "Quantity inputs will now use the numpad on mobile and tablet devices": "数量输入现在将在移动设备和平板设备上使用数字小键盘",
