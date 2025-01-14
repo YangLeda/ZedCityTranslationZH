@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      9.6
+// @version      9.7
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -114,6 +114,8 @@
                     handleGetStoreJunkLimit(this.response);
                 } else if (this.responseURL.includes("api.zed.city/startJob")) {
                     handleStartJob(this.response);
+                } else if (this.responseURL.includes("api.zed.city/completeJob")) {
+                    handleCompleteJob(this.response);
                 } else if (this.responseURL.includes("api.zed.city/getStronghold")) {
                     handleGetStronghold(this.response);
                 } else if (this.responseURL.includes("api.zed.city/getRadioTower")) {
@@ -706,6 +708,16 @@
             localStorage.setItem("script_forgeTimestamp", Date.now() + secLeft * 1000);
             localStorage.setItem("script_forgeIsAlreadyNotified", false);
         }
+    }
+
+    function handleCompleteJob(r) {
+        const response = JSON.parse(r);
+        const jobName = response?.job?.codename;
+        if (jobName !== "furnace") {
+            return;
+        }
+        localStorage.setItem("script_forgeTimestamp", Date.now());
+        localStorage.setItem("script_forgeIsAlreadyNotified", true);
     }
 
     function handleGetStronghold(r) {
@@ -2550,7 +2562,7 @@
         "Zed Bot (Discord Bot": "丧尸机器人（Discord机器人）",
         "Reduced time the bot will take between checking for new verified survivors": "减少了机器人检查新认证幸存者之间的时间",
         'Added a new role "ZC Supporter", awarded to survivors with an active membership': '新增角色"丧尸支持者"，授予具有有效会员资格的幸存者',
-        'Added a new role "ZC Faction Leader"': '新增角色"丧尸派系领导者"',
+        'Added a new role "ZC Faction Leader': '新增角色"丧尸派系领导者"',
         "Fixed delay in updating notifications after viewing": "修复了查看后更新通知的延迟问题",
         "Fixed bug where non-existent factions showed a loading animation": "修复了不存在的派系显示加载动画的问题",
         "Fixed issue where consuming an item showed 'out of quantity' with 1 remaining": "修复了消耗物品时显示“数量不足”但实际剩余1个的问题",
@@ -3452,7 +3464,7 @@
                 if (!unmatchedTexts.includes(text)) {
                     unmatchedTexts.push(text);
                 }
-                // console.log(unmatchedTexts);
+                console.log(unmatchedTexts);
             }
             return oriText;
         }
