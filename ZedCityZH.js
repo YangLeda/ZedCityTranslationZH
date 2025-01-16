@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      9.9
+// @version      10.0
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -894,12 +894,12 @@
         if (!logoElem) {
             insertToElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_bs_logo" style="order: 105;"><span class="script_do_not_translate" style="font-size: 12px; color: green;">总战力：${numberFormatter(
+                `<div id="script_bs_logo" style="order: 105;"><span class="script_do_not_translate" style="font-size: 12px; color: green;">战力：${numberFormatter(
                     totalBS
                 )}</span></div>`
             );
         } else {
-            logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px; color: green;">总战力：${numberFormatter(
+            logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px; color: green;">战力：${numberFormatter(
                 totalBS
             )}</span>`;
         }
