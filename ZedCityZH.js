@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      9.8
+// @version      9.9
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -22,7 +22,7 @@
 /* 状态栏显示帮派突袭冷却计时 */
 /* 状态栏显示总BS */
 /* 倒计时弹窗 */
-/* 废品场屏蔽垃圾物品购买 */
+/* 废品场屏蔽物品收售 */
 /* 设置里添加功能开关 */
 /* 工具方法 */
 
@@ -443,15 +443,12 @@
 
         // Raid
         const expire = response?.raid_cooldown;
-        console.log("expire " + expire);
         if (expire) {
             const previousTimestamp = Number(localStorage.getItem("script_raidTimestamp"));
             const timestamp = Date.now() + expire * 1000;
             localStorage.setItem("script_raidTimestamp", timestamp);
-            console.log("script_raidTimestamp set to " + new Date(timestamp).toLocaleTimeString("en-US"));
             if (timestamp - previousTimestamp > 30000) {
                 localStorage.setItem("script_raidIsAlreadyNotified", false);
-                console.log("script_raidIsAlreadyNotified is set to false");
             }
         }
 
@@ -521,7 +518,6 @@
                         div.style.marginLeft = "10px";
                         div.textContent = `${name}+${increase}`;
                         insertElem.appendChild(div);
-                        // console.log(`${name}+${increase}`);
                         setTimeout(() => {
                             div.remove();
                         }, 6000);
@@ -548,7 +544,6 @@
             div.style.marginLeft = "10px";
             div.textContent = `XP+${increase}`;
             insertElem.appendChild(div);
-            // console.log(`XP+${increase}`);
             setTimeout(() => {
                 div.remove();
             }, 6000);
@@ -951,12 +946,10 @@
         const raidTimestamp = Number(localStorage.getItem("script_raidTimestamp"));
         const raidIsAlreadyNotified = localStorage.getItem("script_raidIsAlreadyNotified");
         if (raidTimestamp && raidTimestamp > 0 && raidIsAlreadyNotified !== "true") {
-            console.log("raid notifi check");
             const timeLeftSec = Math.floor((raidTimestamp - Date.now()) / 1000);
             if (timeLeftSec > -60 && timeLeftSec < 0) {
                 console.log("pushSystemNotification raid");
                 localStorage.setItem("script_raidIsAlreadyNotified", true);
-                console.log("script_raidIsAlreadyNotified is set to true");
                 GM_notification({
                     text: "帮派突袭已冷却",
                     title: "ZedTools",
@@ -1012,7 +1005,7 @@
     }
     setInterval(pushSystemNotifications, 1000);
 
-    /* 废品场屏蔽垃圾物品购买 */
+    /* 废品场屏蔽物品收售 */
     if (!localStorage.getItem("script_settings_junk")) {
         localStorage.setItem("script_settings_junk", "enabled");
     }
@@ -1029,6 +1022,9 @@
                 let label = item.querySelector(".q-item__label");
                 let buySpan = item.querySelector("span.block");
                 if (label && buySpan && getOriTextFromElement(label) === "Nails" && getOriTextFromElement(buySpan) === "Buy") {
+                    item.style.display = "none";
+                }
+                if (label && buySpan && getOriTextFromElement(buySpan) === "Sell" && getOriTextFromElement(label) !== "Nails") {
                     item.style.display = "none";
                 }
             });
@@ -1322,7 +1318,6 @@
         "Unlock with membership": "会员解锁",
         "Days Membership": "天会员",
         Tradable: "可交易",
-        "Effect: Contains 31 days membership and 75 points": "效果 : 包含31天会员资格和75点数",
         "You gained 31 days membership and 75 points": "你获得了 31 天会员资格和 75 积分",
         "Refill Energy": "补充能量",
         "Refill Rad Immunity": "补充辐射免疫力",
@@ -2621,7 +2616,7 @@
         //v1.0.3
         "Zed Packs & Membership": "丧尸包和会员",
         "Zed Packs will now give you a random loot drop when opened, everyone who has already opened Zed Pack(s) will receive 2x free refills for each pack opened. When subscribing to a new membership, you will receive the special item for that month instantly. Everyone who has already subscribed will have received this item now":
-            "现在打开 “丧尸包”（Zed Packs）时，将会随机掉落物品。凡是已经打开过 “僵尸包” 的玩家，每打开一个包，都将免费获得两次补充机会。新订阅会员，将立即获得当月的特殊物品。凡是已经订阅的玩家，现在也都已收到该物品。",
+            "现在打开 “丧尸包”（Zed Packs）时，将会随机掉落物品。凡是已经打开过 “丧尸包” 的玩家，每打开一个包，都将免费获得两次补充机会。新订阅会员，将立即获得当月的特殊物品。凡是已经订阅的玩家，现在也都已收到该物品。",
         "Added skill points to the store and introduced the ability to reset skill perks": "在商店中添加了技能点，并引入了重置技能特权的功能",
         Scavenges: "拾荒",
         "More XP will be given for both normal rank & skills when attempting scavenges that cost higher Rad Immunity":
@@ -3052,6 +3047,15 @@
     const dictPending = {
         "Tell you what, I know who you should go and see. Buddy... yeah... Maddest guy I know but sure knows how to handle any situation thrown at him. Heck he'd already barricaded up half his neighbourhood before the first zed his his part of town. Just look out for the search lights at light. You won't be able to miss it":
             "我告诉你，我知道你应该去找谁。Buddy……对，就是他……我认识的最疯狂的家伙，但他确实知道如何应对任何情况。他在第一只丧尸袭击他的社区之前，就已经在半个街区设置了路障。晚上留意探照灯，你绝对不会错过。", // 错别字light
+        "Life Perk": "生命特技",
+        "Max Life": "最大生命",
+        "Thank you for your support! Your payment is being processed and your account will be credited soon!":
+            "感谢支持！您的付款正在处理，将很快添加到你的账号！",
+        V: "V",
+        "Rations resupply": "配给供应",
+        "Effect: Contains 31 days membership, 75 points and a random loot drop": "效果：包含31天会员资格、75点数和一个随机掉落物",
+        "Active an hour ago": "1小时前在线",
+        "Claim Rations": "领取配给", // todo
     };
 
     /* 词典结束 感谢七包茶整理 */
@@ -3284,6 +3288,10 @@
         if (/^([\w\s]+) has been kicked from the faction$/.test(text)) {
             let res = /^([\w\s]+) has been kicked from the faction$/.exec(text);
             return res[1] + " 被踢出了帮派";
+        }
+        if (/^([\w\s]+) claimed (\d+)x ([\w\s-']+) rations$/.test(text)) {
+            let res = /^([\w\s]+) claimed (\d+)x ([\w\s-']+) rations$/.exec(text);
+            return res[1] + " 领取了" + res[2] + "x " + dict(res[3]) + " 配给";
         }
         if (/^([\w\s]+) upgraded ([\w\s]+) to level (\d+)$/.test(text)) {
             let res = /^([\w\s]+) upgraded ([\w\s]+) to level (\d+)$/.exec(text);
