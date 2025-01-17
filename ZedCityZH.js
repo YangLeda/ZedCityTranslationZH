@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.2
+// @version      10.3
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -560,9 +560,20 @@
     }
 
     /* 状态栏等级图标旁显示人物具体经验值 */
+    if (!localStorage.getItem("script_estimate_levelup_time_switch")) {
+        localStorage.setItem("script_estimate_levelup_time_switch", "enabled");
+    }
+
     function updatePlayerXpDisplay() {
         const playerXp = Number(localStorage.getItem("script_playerXp_current"));
         const currentLevelMaxXP = Number(localStorage.getItem("script_playerXp_max"));
+
+        // 预估角色升级时间，每h经验获取大概是12*5+12=72
+        let levelUpInText = "";
+        if (localStorage.getItem("script_estimate_levelup_time_switch") === "enabled") {
+            const levelUpInSec = Math.floor((currentLevelMaxXP - playerXp) / 72) * 60 * 60;
+            levelUpInText = `${timeReadableNoSec(levelUpInSec)}升级`;
+        }
 
         const levelElem = document.body.querySelectorAll(".level-up-cont")[1];
         let insertElem = document.body.querySelector("#script_player_level");
@@ -571,12 +582,12 @@
                 "beforeend",
                 `<div id="script_player_level"><span id="script_player_level_inner"><strong>${Math.floor(playerXp)} / ${Math.floor(
                     currentLevelMaxXP
-                )}</strong></span></div>`
+                )}</strong> ${levelUpInText}</span></div>`
             );
         } else if (levelElem && insertElem) {
             insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${Math.floor(playerXp)} / ${Math.floor(
                 currentLevelMaxXP
-            )}</strong>`;
+            )}</strong> ${levelUpInText}`;
         }
 
         // 插入用于显示倒计时的div
@@ -1054,7 +1065,6 @@
             checkbox.type = "checkbox";
             checkbox.classList.add("script_translation_switch");
             const label = document.createElement("label");
-            label.textContent = "The checkbox is OFF";
             label.style.fontSize = "20px";
             const savedState = localStorage.getItem("script_translate") === "enabled";
             checkbox.checked = savedState;
@@ -1079,7 +1089,6 @@
             checkbox.type = "checkbox";
             checkbox.classList.add("script_notifications_switch");
             const label = document.createElement("label");
-            label.textContent = "The checkbox is OFF";
             label.style.fontSize = "20px";
             const savedState = localStorage.getItem("script_settings_notifications") === "enabled";
             checkbox.checked = savedState;
@@ -1103,7 +1112,6 @@
             checkbox.type = "checkbox";
             checkbox.classList.add("script_junk_switch");
             const label = document.createElement("label");
-            label.textContent = "The checkbox is OFF";
             label.style.fontSize = "20px";
             const savedState = localStorage.getItem("script_settings_junk") === "enabled";
             checkbox.checked = savedState;
@@ -1112,6 +1120,30 @@
                 const isChecked = checkbox.checked;
                 label.textContent = isChecked ? "废品场屏蔽垃圾物品购买" : "废品场屏蔽垃圾物品购买";
                 localStorage.setItem("script_settings_junk", isChecked ? "enabled" : "disabled");
+            });
+            container.appendChild(checkbox);
+            container.appendChild(label);
+            insertToElem.appendChild(container);
+        }
+
+        switchElem = document.body.querySelector(".script_estimate_levelup_time_switch");
+        if (!switchElem) {
+            const container = document.createElement("div");
+            container.classList.add("script_estimate_levelup_time_switch");
+            container.style.margin = "30px";
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("script_estimate_levelup_time_switch");
+            const label = document.createElement("label");
+            label.style.fontSize = "20px";
+            const savedState = localStorage.getItem("script_estimate_levelup_time_switch") === "enabled";
+            checkbox.checked = savedState;
+            label.textContent = savedState
+                ? "状态栏显示预计下次人物升级时间（按每小时获取12*5+12=72XP计算）"
+                : "状态栏显示预计下次人物升级时间（按每小时获取12*5+12=72XP计算）";
+            checkbox.addEventListener("change", () => {
+                const isChecked = checkbox.checked;
+                localStorage.setItem("script_estimate_levelup_time_switch", isChecked ? "enabled" : "disabled");
             });
             container.appendChild(checkbox);
             container.appendChild(label);
@@ -1158,7 +1190,7 @@
 
     function timeReadable(sec) {
         if (sec >= 86400) {
-            return Number(sec / 86400).toFixed(1) + " days";
+            return Number(sec / 86400).toFixed(1) + "天";
         }
         const d = new Date(Math.round(sec * 1000));
         function pad(i) {
@@ -1166,6 +1198,19 @@
         }
         let hours = d.getUTCHours() ? d.getUTCHours() + ":" : "";
         let str = hours + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
+        return str;
+    }
+
+    function timeReadableNoSec(sec) {
+        if (sec >= 86400) {
+            return Number(sec / 86400).toFixed(1) + "天";
+        }
+        const d = new Date(Math.round(sec * 1000));
+        function pad(i) {
+            return ("0" + i).slice(-2);
+        }
+        let hours = d.getUTCHours() ? d.getUTCHours() + ":" : "";
+        let str = hours + pad(d.getUTCMinutes());
         return str;
     }
 
