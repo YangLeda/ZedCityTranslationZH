@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.0
+// @version      10.1
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -25,6 +25,7 @@
 /* 废品场屏蔽物品收售 */
 /* 设置里添加功能开关 */
 /* 工具方法 */
+/* 健身房添加勾选锁和Max按钮 */
 
 //字典
 //1.1 通用頁面
@@ -424,6 +425,9 @@
     if (!localStorage.getItem("script_radFullAtTimestamp")) {
         localStorage.setItem("script_radFullAtTimestamp", 0);
     }
+    if (!localStorage.getItem("script_energy")) {
+        localStorage.setItem("script_energy", 0);
+    }
 
     function handleGetStats(r) {
         const response = JSON.parse(r);
@@ -460,6 +464,8 @@
         const maxRad = response.skills.max_rad;
         const energyRegen = response.energy_regen ? response.energy_regen : 0;
         const radRegen = response.rad_regen ? response.rad_regen : 0;
+
+        localStorage.setItem("script_energy", currentEnergy);
 
         if (maxEnergy - currentEnergy > 0) {
             const timeLeftSec = ((maxEnergy - currentEnergy - 5) / 5) * energyRegenIntervalMinute * 60 + energyRegen;
@@ -1161,6 +1167,78 @@
         let str = hours + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
         return str;
     }
+
+    /* 健身房添加勾选锁和Max按钮 */
+    const processedElements = new Set();
+
+    const lockElement = (element, isLocked) => {
+        element.style.pointerEvents = isLocked ? "none" : "";
+        element.style.opacity = isLocked ? "0.5" : "";
+    };
+
+    const getCheckboxStates = () => {
+        const states = localStorage.getItem("script_gymCheckboxs");
+        return states ? JSON.parse(states) : {};
+    };
+
+    const saveCheckboxStates = (states) => {
+        localStorage.setItem("script_gymCheckboxs", JSON.stringify(states));
+    };
+
+    function addGymLocks() {
+        const elements = document.querySelectorAll(".grid-cont.text-center.gym-cont");
+        const states = getCheckboxStates();
+
+        elements.forEach((element, index) => {
+            if (!processedElements.has(element)) {
+                // Checkbox
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.className = "lock-checkbox";
+                checkbox.style.cssText = "position: absolute; bottom: 10px; left: 10px; z-index: 1000; pointer-events: auto;";
+
+                const key = `checkbox-${element.dataset.id || index}`;
+                checkbox.checked = states[key] || false;
+                lockElement(element, checkbox.checked);
+
+                checkbox.addEventListener("change", () => {
+                    const checked = checkbox.checked;
+                    lockElement(element, checked);
+                    states[key] = checked;
+                    saveCheckboxStates(states);
+                });
+
+                // Max button
+                const maxbtn = document.createElement("button");
+                maxbtn.textContent = "Max";
+                maxbtn.style.cssText = "position: absolute; bottom: 10px; right: 10px; z-index: 1000; pointer-events: auto;";
+
+                maxbtn.addEventListener("click", () => {
+                    const input = element.querySelector("input");
+                    let timesOfTraining = Number(localStorage.getItem("script_energy")) / 5;
+                    if (timesOfTraining < 1) {
+                        timesOfTraining = 1;
+                    }
+                    // react hack
+                    let lastValue = input.value;
+                    input.value = timesOfTraining;
+                    let event = new Event("input", { bubbles: true });
+                    event.simulated = true;
+                    let tracker = input._valueTracker;
+                    if (tracker) {
+                        tracker.setValue(lastValue);
+                    }
+                    input.dispatchEvent(event);
+                });
+
+                element.style.position = "relative";
+                element.appendChild(checkbox);
+                element.appendChild(maxbtn);
+                processedElements.add(element);
+            }
+        });
+    }
+    setInterval(addGymLocks, 500);
 
     /* ZedTools END */
 
