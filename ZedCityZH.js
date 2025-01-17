@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.1
+// @version      10.2
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -26,6 +26,7 @@
 /* 设置里添加功能开关 */
 /* 工具方法 */
 /* 健身房添加勾选锁和Max按钮 */
+/* NPC商店买卖添加Max按钮 */
 
 //字典
 //1.1 通用頁面
@@ -1239,6 +1240,68 @@
         });
     }
     setInterval(addGymLocks, 500);
+
+    /* NPC商店买卖添加Max按钮 */
+    function addMaxBuySellButton() {
+        if (!window.location.href.includes("zed.city/store/")) {
+            return;
+        }
+        const modal = document.querySelector(`.small-modal`);
+        if (!modal) {
+            return;
+        }
+        if (modal.querySelector(`.script-store-max-btn`)) {
+            return;
+        }
+        if (!modal.querySelector(`input`)) {
+            return;
+        }
+
+        // Max button
+        const maxbtn = document.createElement("button");
+        maxbtn.className = "script-store-max-btn";
+        maxbtn.textContent = "Max";
+        maxbtn.style.cssText = "position: absolute; bottom: 10px; right: 10px; z-index: 1000; pointer-events: auto;";
+
+        maxbtn.addEventListener("click", () => {
+            const input = modal.querySelector("input");
+            // react hack
+            let lastValue = input.value;
+            input.value = 999999;
+            let event = new Event("input", { bubbles: true });
+            event.simulated = true;
+            let tracker = input._valueTracker;
+            if (tracker) {
+                tracker.setValue(lastValue);
+            }
+            input.dispatchEvent(event);
+        });
+
+        // 360 button
+        const btn360 = document.createElement("button");
+        btn360.className = "script-store-max-btn";
+        btn360.textContent = "360";
+        btn360.style.cssText = "position: absolute; bottom: 10px; left: 10px; z-index: 1000; pointer-events: auto;";
+
+        btn360.addEventListener("click", () => {
+            const input = modal.querySelector("input");
+            // react hack
+            let lastValue = input.value;
+            input.value = 360;
+            let event = new Event("input", { bubbles: true });
+            event.simulated = true;
+            let tracker = input._valueTracker;
+            if (tracker) {
+                tracker.setValue(lastValue);
+            }
+            input.dispatchEvent(event);
+        });
+
+        modal.style.position = "relative";
+        modal.appendChild(maxbtn);
+        modal.appendChild(btn360);
+    }
+    setInterval(addMaxBuySellButton, 500);
 
     /* ZedTools END */
 
