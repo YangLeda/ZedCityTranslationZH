@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.4
+// @version      10.5
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -946,7 +946,7 @@
             }
         }
 
-        const radioTowerTimestamp = Number(localStorage.getItem("script_radioTowerTimestamp"));
+        const radioTowerTimestamp = Number(localStorage.getItem("script_radioTowerTradeTimestamp"));
         const radioTowerIsAlreadyNotified = localStorage.getItem("script_radioTowerIsAlreadyNotified");
         if (radioTowerTimestamp && radioTowerTimestamp > 0 && radioTowerIsAlreadyNotified !== "true") {
             const timeLeftSec = Math.floor((radioTowerTimestamp - Date.now()) / 1000);
@@ -976,7 +976,7 @@
             }
         }
 
-        const junkStoreTimestamp = Number(localStorage.getItem("script_junkStoreTimestamp"));
+        const junkStoreTimestamp = Number(localStorage.getItem("script_junkStoreResetTimestamp"));
         const junkStoreIsAlreadyNotified = localStorage.getItem("script_junkStoreIsAlreadyNotified");
         if (junkStoreTimestamp && junkStoreTimestamp > 0 && junkStoreIsAlreadyNotified !== "true") {
             const timeLeftSec = Math.floor((junkStoreTimestamp - Date.now()) / 1000);
