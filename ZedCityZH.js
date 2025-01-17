@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.3
+// @version      10.4
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -571,7 +571,7 @@
         // 预估角色升级时间，每h经验获取大概是12*5+12=72
         let levelUpInText = "";
         if (localStorage.getItem("script_estimate_levelup_time_switch") === "enabled") {
-            const levelUpInSec = Math.floor((currentLevelMaxXP - playerXp) / 72) * 60 * 60;
+            const levelUpInSec = Math.floor(((currentLevelMaxXP - playerXp) / 72) * 60 * 60);
             levelUpInText = `${timeReadableNoSec(levelUpInSec)}升级`;
         }
 
