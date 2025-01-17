@@ -3547,4 +3547,58 @@
             return oriText;
         }
     }
+
+
+        // Lock the gym (by xiaom)
+    // -----------------------------
+    const processedElements = new Set();
+
+    const lockElement = (element, isLocked) => {
+        element.style.pointerEvents = isLocked ? 'none' : '';
+        element.style.opacity = isLocked ? '0.5' : '';
+    };
+
+    const getCheckboxStates = () => {
+        const states = localStorage.getItem('GYMcheckbox');
+        return states ? JSON.parse(states) : {};
+    };
+
+    const saveCheckboxStates = (states) => {
+        localStorage.setItem('GYMcheckbox', JSON.stringify(states));
+    };
+
+    const addCheckboxes = () => {
+        const elements = document.querySelectorAll('.grid-cont.text-center.gym-cont');
+        const states = getCheckboxStates();
+
+        elements.forEach((element, index) => {
+            if (!processedElements.has(element)) {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'lock-checkbox';
+                checkbox.style.cssText = 'position: absolute; bottom: 10px; left: 10px; z-index: 1000; pointer-events: auto;';
+
+                const key = `checkbox-${element.dataset.id || index}`;
+                checkbox.checked = states[key] || false;
+                lockElement(element, checkbox.checked);
+
+                checkbox.addEventListener('change', () => {
+                    const checked = checkbox.checked;
+                    lockElement(element, checked);
+                    states[key] = checked;
+                    saveCheckboxStates(states);
+                });
+
+                element.style.position = 'relative';
+                element.appendChild(checkbox);
+                processedElements.add(element);
+            }
+        });
+    };
+
+    const observer = new MutationObserver(addCheckboxes);
+    observer.observe(document.body, { childList: true, subtree: true });
+    addCheckboxes();
+    // -----------------------------
+    
 })();
