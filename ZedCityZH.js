@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.6
+// @version      10.7
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -572,7 +572,7 @@
         let levelUpInText = "";
         if (localStorage.getItem("script_estimate_levelup_time_switch") === "enabled") {
             const levelUpInSec = Math.floor(((currentLevelMaxXP - playerXp) / 72) * 60 * 60);
-            levelUpInText = `${timeReadableNoSec(levelUpInSec)}升级`;
+            levelUpInText = `${timeReadableNoSec(levelUpInSec)}后升级`;
         }
 
         const levelElem = document.body.querySelectorAll(".level-up-cont")[1];
@@ -1205,13 +1205,7 @@
         if (sec >= 86400) {
             return Number(sec / 86400).toFixed(1) + "天";
         }
-        const d = new Date(Math.round(sec * 1000));
-        function pad(i) {
-            return ("0" + i).slice(-2);
-        }
-        let hours = d.getUTCHours() ? d.getUTCHours() + ":" : "";
-        let str = hours + pad(d.getUTCMinutes());
-        return str;
+        return Number(sec / 3600).toFixed(1) + "h";
     }
 
     /* 健身房添加勾选锁和Max按钮 */
@@ -3238,7 +3232,7 @@
         "Rations resupply": "配给供应",
         "Effect: Contains 31 days membership, 75 points and a random loot drop": "效果：包含31天会员资格、75点数和一个随机掉落物",
         "Active an hour ago": "1小时前在线",
-        "Claim Rations": "领取配给", // todo
+        "Claim Rations": "领取配给",
     };
 
     /* 词典结束 感谢七包茶整理 */
@@ -3643,10 +3637,13 @@
             let res = /^Your ([\w\s-']+) broke$/.exec(text);
             return "你的" + dict(res[1]) + "损坏了";
         }
-
         if (/^Thank you for supporting Zed City, (\d+)x Zed Packs have been added to your inventory$/.test(text)) {
             let res = /^Thank you for supporting Zed City, (\d+)x Zed Packs have been added to your inventory$/.exec(text);
             return "感谢您支持Zed City，" + res[1] + "个丧尸包已添加到您的库存中";
+        }
+        if (/^You fished the ([\w\s-']+) and caught$/.test(text)) {
+            let res = /^You fished the ([\w\s-']+) and caught$/.exec(text);
+            return "你在" + dict(res[1]) + "钓鱼获得了";
         }
 
         // 帮派
