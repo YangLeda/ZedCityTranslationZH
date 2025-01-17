@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.7
+// @version      10.8
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -27,6 +27,7 @@
 /* 工具方法 */
 /* 健身房添加勾选锁和Max按钮 */
 /* 生产和NPC商店买卖添加Max按钮 */
+/* 拾荒统计 */
 
 //字典
 //1.1 通用頁面
@@ -720,20 +721,47 @@
     if (!localStorage.getItem("script_forgeTimestamp")) {
         localStorage.setItem("script_forgeTimestamp", 0);
     }
+    if (!localStorage.getItem("script_scavenge_records")) {
+        localStorage.setItem("script_scavenge_records", "{}");
+    }
 
     function handleStartJob(r) {
         const response = JSON.parse(r);
         const jobName = response?.job?.codename;
+
+        // 熔炉
         const perActionTime = response?.job?.items?.["item_requirement-bp"]?.vars?.wait_time;
         const perActionConsumeItemNumber = response?.job?.items?.["item_requirement-bp"]?.vars?.items?.["item_requirement-1"]?.qty;
         const consumeItemNumber = response?.job?.items?.["item_requirement-1"]?.quantity;
-        if (jobName !== "furnace") {
-            return;
-        }
-        if (perActionTime && perActionConsumeItemNumber && consumeItemNumber) {
+        if (jobName === "furnace" && perActionTime && perActionConsumeItemNumber && consumeItemNumber) {
             const secLeft = perActionTime * (consumeItemNumber / perActionConsumeItemNumber);
             localStorage.setItem("script_forgeTimestamp", Date.now() + secLeft * 1000);
             localStorage.setItem("script_forgeIsAlreadyNotified", false);
+            return;
+        }
+
+        // 拾荒统计
+        if (jobName.startsWith("job_scavenge_")) {
+            const records = JSON.parse(localStorage.getItem("script_scavenge_records"));
+            const mapName = response?.job?.name;
+            if (!records.hasOwnProperty(mapName)) {
+                records[mapName] = {
+                    mapName: mapName,
+                    doneTimes: 0,
+                    itemRewards: {},
+                };
+            }
+
+            records[mapName].doneTimes += 1;
+            if (response?.outcome?.rewards) {
+                for (const reward of response?.outcome?.rewards) {
+                    if (!records[mapName].itemRewards.hasOwnProperty(reward.name)) {
+                        records[mapName].itemRewards[reward.name] = 0;
+                    }
+                    records[mapName].itemRewards[reward.name] += Number(reward.posted_qty);
+                }
+            }
+            localStorage.setItem("script_scavenge_records", JSON.stringify(records));
         }
     }
 
@@ -1338,6 +1366,35 @@
         }
     }
     setInterval(addMaxBuySellButton, 500);
+
+    /* 拾荒统计 */
+    function addScavengeRecords() {
+        if (!window.location.href.includes("zed.city/scavenge")) {
+            return;
+        }
+        const insertToElem = document.body.querySelector(".q-page.q-layout-padding div");
+        if (!insertToElem) {
+            return;
+        }
+        const textElem = document.body.querySelector("#script_scavenge_records");
+        if (!textElem) {
+            const records = JSON.parse(localStorage.getItem("script_scavenge_records"));
+            let text = "【拾荒统计】<br/>";
+            for (const mapKey in records) {
+                text += "<br/>";
+                const map = records[mapKey];
+                text += dict(map.mapName) + "共" + map.doneTimes + "次：<br/>";
+                for (const itemKey in map.itemRewards) {
+                    text += dict(itemKey) + " x " + map.itemRewards[itemKey] + "<br/>";
+                }
+            }
+            insertToElem.insertAdjacentHTML(
+                "beforeend",
+                `<div id="script_scavenge_records"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
+            );
+        }
+    }
+    setInterval(addScavengeRecords, 500);
 
     /* ZedTools END */
 
