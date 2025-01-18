@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.9
+// @version      11.0
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -625,15 +625,25 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_energyBar_logo" style="order: 99;"><span class="script_do_not_translate" style="font-size: 12px;">能量 ${timeReadable(
+                    `<div id="script_energyBar_logo" style="order: 99; cursor: pointer;"><span class="script_do_not_translate" style="font-size: 12px;">能量 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
+                insertToElem.querySelector("#script_energyBar_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_gym"));
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_gym"));
+                    history.go(-1);
+                });
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_energyBar_logo" style="order: 99;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">能量已满</span></div>`
+                    `<div id="script_energyBar_logo" style="order: 99; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">能量已满</span></div>`
                 );
+                insertToElem.querySelector("#script_energyBar_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_gym"));
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_gym"));
+                    history.go(-1);
+                });
             }
         } else {
             if (timeLeftSec > 0) {
@@ -649,15 +659,25 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_radBar_logo" style="order: 100;"><span class="script_do_not_translate" style="font-size: 12px;">辐射 ${timeReadable(
+                    `<div id="script_radBar_logo" style="order: 100; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">辐射 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
+                insertToElem.querySelector("#script_radBar_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/scavenge");
+                    history.pushState(null, null, "https://www.zed.city/scavenge");
+                    history.go(-1);
+                });
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_radBar_logo" style="order: 100;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">辐射已满</span></div>`
+                    `<div id="script_radBar_logo" style="order: 100; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">辐射已满</span></div>`
                 );
+                insertToElem.querySelector("#script_radBar_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/scavenge");
+                    history.pushState(null, null, "https://www.zed.city/scavenge");
+                    history.go(-1);
+                });
             }
         } else {
             if (timeLeftSec > 0) {
@@ -702,15 +722,25 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_junk_store_limit_logo" style="order: 102;"><span class="script_do_not_translate" style="font-size: 12px;">商店 ${timeReadable(
+                    `<div id="script_junk_store_limit_logo" style="order: 102; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">商店 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
+                insertToElem.querySelector("#script_junk_store_limit_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/store/junk");
+                    history.pushState(null, null, "https://www.zed.city/store/junk");
+                    history.go(-1);
+                });
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_junk_store_limit_logo" style="order: 102;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">商店已刷新</span></div>`
+                    `<div id="script_junk_store_limit_logo" style="order: 102; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">商店已刷新</span></div>`
                 );
+                insertToElem.querySelector("#script_junk_store_limit_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/store/junk");
+                    history.pushState(null, null, "https://www.zed.city/store/junk");
+                    history.go(-1);
+                });
             }
         } else {
             if (timeLeftSec > 0) {
@@ -731,6 +761,15 @@
     }
     if (!localStorage.getItem("script_hunting_records")) {
         localStorage.setItem("script_hunting_records", "{}");
+    }
+    if (!localStorage.getItem("script_stronghold_id_gym")) {
+        localStorage.setItem("script_stronghold_id_gym", "");
+    }
+    if (!localStorage.getItem("script_stronghold_id_radio_tower")) {
+        localStorage.setItem("script_stronghold_id_radio_tower", "");
+    }
+    if (!localStorage.getItem("script_stronghold_id_furnace")) {
+        localStorage.setItem("script_stronghold_id_furnace", "");
     }
 
     function handleStartJob(r) {
@@ -788,6 +827,20 @@
 
     function handleGetStronghold(r) {
         const response = JSON.parse(r);
+        // 据点房间ID
+        for (const key in response.stronghold) {
+            const area = response.stronghold[key].codename;
+            if (area === "gym") {
+                localStorage.setItem("script_stronghold_id_gym", String(key));
+            }
+            if (area === "radio_tower") {
+                localStorage.setItem("script_stronghold_id_radio_tower", String(key));
+            }
+            if (area === "furnace") {
+                localStorage.setItem("script_stronghold_id_furnace", String(key));
+            }
+        }
+
         if (!response.stronghold) {
             return;
         }
@@ -829,15 +882,25 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_forge_logo" style="order: 101;"><span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(
+                    `<div id="script_forge_logo" style="order: 101; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
+                insertToElem.querySelector("#script_forge_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_furnace"));
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_furnace"));
+                    history.go(-1);
+                });
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_forge_logo" style="order: 101;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span></div>`
+                    `<div id="script_forge_logo" style="order: 101; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span></div>`
                 );
+                insertToElem.querySelector("#script_forge_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_furnace"));
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_furnace"));
+                    history.go(-1);
+                });
             }
         } else {
             if (timeLeftSec > 0) {
@@ -881,15 +944,25 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_radio_tower_logo" style="order: 103;"><span class="script_do_not_translate" style="font-size: 12px;">电塔 ${timeReadable(
+                    `<div id="script_radio_tower_logo" style="order: 103; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">电塔 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
+                insertToElem.querySelector("#script_radio_tower_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_radio_tower"));
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_radio_tower"));
+                    history.go(-1);
+                });
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_radio_tower_logo" style="order: 103;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">电塔已刷新</span></div>`
+                    `<div id="script_radio_tower_logo" style="order: 103; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">电塔已刷新</span></div>`
                 );
+                insertToElem.querySelector("#script_radio_tower_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_radio_tower"));
+                    history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_radio_tower"));
+                    history.go(-1);
+                });
             }
         } else {
             if (timeLeftSec > 0) {
@@ -920,15 +993,25 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_raidCooldown_logo" style="order: 104;"><span class="script_do_not_translate" style="font-size: 12px;">突袭 ${timeReadable(
+                    `<div id="script_raidCooldown_logo" style="order: 104; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">突袭 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
+                insertToElem.querySelector("#script_raidCooldown_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/raids");
+                    history.pushState(null, null, "https://www.zed.city/raids");
+                    history.go(-1);
+                });
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_raidCooldown_logo" style="order: 104;"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">突袭已冷却</span></div>`
+                    `<div id="script_raidCooldown_logo" style="order: 104; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">突袭已冷却</span></div>`
                 );
+                insertToElem.querySelector("#script_raidCooldown_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/raids");
+                    history.pushState(null, null, "https://www.zed.city/raids");
+                    history.go(-1);
+                });
             }
         } else {
             if (timeLeftSec > 0) {
@@ -980,7 +1063,7 @@
                 GM_notification({
                     text: "熔炉已完成工作",
                     title: "ZedTools",
-                    url: "https://www.zed.city/stronghold",
+                    url: "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_furnace"),
                 });
             }
         }
@@ -995,7 +1078,7 @@
                 GM_notification({
                     text: "无线电塔交易已刷新",
                     title: "ZedTools",
-                    url: "https://www.zed.city/stronghold",
+                    url: "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_radio_tower"),
                 });
             }
         }
@@ -1040,7 +1123,7 @@
                 GM_notification({
                     text: "能量条已满",
                     title: "ZedTools",
-                    url: "https://www.zed.city/stronghold",
+                    url: "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_gym"),
                 });
             }
         }
