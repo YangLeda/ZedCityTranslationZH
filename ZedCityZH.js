@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      10.8
+// @version      10.9
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
 // @match        https://wiki.zed.city/*
-// @icon         https://www.zed.city/favicon.ico
+// @icon         https://www.zed.city/icons/favicon.svg
 // @grant        unsafeWindow
 // @grant        GM_notification
 // ==/UserScript==
@@ -28,6 +28,7 @@
 /* 健身房添加勾选锁和Max按钮 */
 /* 生产和NPC商店买卖添加Max按钮 */
 /* 拾荒统计 */
+/* 狩猎统计 */
 
 //字典
 //1.1 通用頁面
@@ -139,6 +140,10 @@
                     handleGetRadioTower(this.response);
                 } else if (this.responseURL.includes("api.zed.city/getFactionNotifications")) {
                     handleGetFactionNotifications(this.response);
+                } else if (this.responseURL.includes("api.zed.city/getFight") && !this.responseURL.includes("api.zed.city/getFightLog")) {
+                    handleGetFight(this.response);
+                } else if (this.responseURL.includes("api.zed.city/doFight")) {
+                    handleDoFight(this.response);
                 }
             }
         });
@@ -724,6 +729,9 @@
     if (!localStorage.getItem("script_scavenge_records")) {
         localStorage.setItem("script_scavenge_records", "{}");
     }
+    if (!localStorage.getItem("script_hunting_records")) {
+        localStorage.setItem("script_hunting_records", "{}");
+    }
 
     function handleStartJob(r) {
         const response = JSON.parse(r);
@@ -741,7 +749,7 @@
         }
 
         // 拾荒统计
-        if (jobName.startsWith("job_scavenge_")) {
+        if (jobName?.startsWith("job_scavenge_")) {
             const records = JSON.parse(localStorage.getItem("script_scavenge_records"));
             const mapName = response?.job?.name;
             if (!records.hasOwnProperty(mapName)) {
@@ -763,6 +771,9 @@
             }
             localStorage.setItem("script_scavenge_records", JSON.stringify(records));
         }
+
+        // 狩猎统计
+        handleHuntingStartJob(response);
     }
 
     function handleCompleteJob(r) {
@@ -1377,24 +1388,186 @@
             return;
         }
         const textElem = document.body.querySelector("#script_scavenge_records");
-        if (!textElem) {
-            const records = JSON.parse(localStorage.getItem("script_scavenge_records"));
-            let text = "【拾荒统计】<br/>";
-            for (const mapKey in records) {
-                text += "<br/>";
-                const map = records[mapKey];
-                text += dict(map.mapName) + "共" + map.doneTimes + "次：<br/>";
-                for (const itemKey in map.itemRewards) {
-                    text += dict(itemKey) + " x " + map.itemRewards[itemKey] + "<br/>";
-                }
+
+        const records = JSON.parse(localStorage.getItem("script_scavenge_records"));
+        let text = "【拾荒统计】<br/>";
+        for (const mapKey in records) {
+            text += "<br/>";
+            const map = records[mapKey];
+            text += dict(map.mapName) + "共" + map.doneTimes + "次：<br/>";
+            for (const itemKey in map.itemRewards) {
+                text += dict(itemKey) + " x " + map.itemRewards[itemKey] + "<br/>";
             }
+        }
+
+        if (!textElem) {
             insertToElem.insertAdjacentHTML(
                 "beforeend",
                 `<div id="script_scavenge_records"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
             );
+        } else {
+            textElem.innerHTML = `<div class="script_do_not_translate" style="font-size: 12px; ">${text}</div>`;
         }
     }
     setInterval(addScavengeRecords, 500);
+
+    /* 狩猎统计 */
+    // 战斗状态：
+    // 0. 没有战斗
+    // 1. 已 startJob 获取地图
+    // 2. 已 getFight 获取怪物
+    // 3. 已 doFight 获取掉落
+    const pendingFight = { status: 0, mapName1: "", mapName2: "", monsterName: "", winner: "", lootItems: {} };
+
+    function handleHuntingStartJob(response) {
+        const jobName = response?.job?.codename;
+        if (jobName?.startsWith("job_hunting_")) {
+            let mapName1 = jobName.replace("job_hunting_", "");
+            mapName1 = mapName1.substring(0, mapName1.length - 2);
+            if (mapName1 === "mall") {
+                mapName1 = "shopping mall";
+            }
+            const mapName2 = response?.job?.name;
+
+            if (pendingFight.status !== 0) {
+                console.error("handleHuntingStartJob previous status !== 0");
+                console.error(pendingFight);
+            }
+            pendingFight.status = 1;
+            pendingFight.mapName1 = mapName1;
+            pendingFight.mapName2 = mapName2;
+            pendingFight.monsterName = "";
+            pendingFight.winner = "";
+            pendingFight.lootItems = {};
+            console.log(pendingFight);
+        }
+    }
+
+    function handleGetFight(r) {
+        const response = JSON.parse(r);
+        const monsterName = response?.victim?.user?.username;
+
+        if (pendingFight.status !== 1) {
+            console.error("handleGetFight previous status !== 1");
+            console.error(pendingFight);
+            return;
+        }
+        pendingFight.status = 2;
+        pendingFight.monsterName = monsterName;
+        console.log(pendingFight);
+    }
+
+    function handleDoFight(r) {
+        const response = JSON.parse(r);
+        if (pendingFight.status !== 2) {
+            console.error("handleDoFight previous status !== 2");
+            console.error(pendingFight);
+            return;
+        }
+        if (!response?.winner) {
+            return;
+        }
+        pendingFight.status = 3;
+        pendingFight.winner = String(response.winner);
+        if (response?.loot) {
+            for (const item of response.loot) {
+                pendingFight.lootItems[item.name] = item.quantity;
+            }
+        }
+        console.log(pendingFight);
+        saveFight();
+    }
+
+    function saveFight() {
+        const records = JSON.parse(localStorage.getItem("script_hunting_records"));
+        if (!records.hasOwnProperty(pendingFight.mapName1)) {
+            records[pendingFight.mapName1] = {};
+        }
+        if (!records[pendingFight.mapName1].hasOwnProperty(pendingFight.mapName2)) {
+            records[pendingFight.mapName1][pendingFight.mapName2] = { wonTimes: 0, lostTimes: 0, monsters: {} };
+        }
+        if (!pendingFight.winner.startsWith("npc_")) {
+            records[pendingFight.mapName1][pendingFight.mapName2].wonTimes += 1;
+        } else {
+            records[pendingFight.mapName1][pendingFight.mapName2].lostTimes += 1;
+        }
+
+        if (!records[pendingFight.mapName1][pendingFight.mapName2].monsters.hasOwnProperty(pendingFight.monsterName)) {
+            records[pendingFight.mapName1][pendingFight.mapName2].monsters[pendingFight.monsterName] = { wonTimes: 0, lostTimes: 0, itemLoots: {} };
+        }
+        if (!pendingFight.winner.startsWith("npc_")) {
+            records[pendingFight.mapName1][pendingFight.mapName2].monsters[pendingFight.monsterName].wonTimes += 1;
+        } else {
+            records[pendingFight.mapName1][pendingFight.mapName2].monsters[pendingFight.monsterName].lostTimes += 1;
+        }
+
+        for (const item in pendingFight.lootItems) {
+            if (!records[pendingFight.mapName1][pendingFight.mapName2].monsters[pendingFight.monsterName].itemLoots.hasOwnProperty(item)) {
+                records[pendingFight.mapName1][pendingFight.mapName2].monsters[pendingFight.monsterName].itemLoots[item] = 0;
+            }
+            records[pendingFight.mapName1][pendingFight.mapName2].monsters[pendingFight.monsterName].itemLoots[item] += Number(
+                pendingFight.lootItems[item]
+            );
+        }
+
+        localStorage.setItem("script_hunting_records", JSON.stringify(records));
+        console.log(records);
+
+        if (pendingFight.status !== 3) {
+            console.error("saveFight previous status !== 3");
+            console.error(pendingFight);
+        }
+        pendingFight.status = 0;
+        pendingFight.mapName1 = "";
+        pendingFight.mapName2 = "";
+        pendingFight.monsterName = "";
+        pendingFight.lootItems = {};
+    }
+
+    function addHuntingRecordsToPage() {
+        if (!window.location.href.includes("zed.city/hunting")) {
+            return;
+        }
+        const insertToElem = document.body.querySelector(".q-page.q-layout-padding div");
+        if (!insertToElem) {
+            return;
+        }
+        const textElem = document.body.querySelector("#script_hunting_records");
+
+        const records = JSON.parse(localStorage.getItem("script_hunting_records"));
+        let text = "【狩猎统计】<br/>";
+        for (const map1Key in records) {
+            text += "<br/>";
+            text += dict(map1Key) + "<br/>";
+            for (const map2Key in records[map1Key]) {
+                const map = records[map1Key][map2Key];
+                text += "---- [" + dict(map2Key) + "]<br/>";
+                for (const monsterKey in map.monsters) {
+                    text +=
+                        "-------- " +
+                        dict(monsterKey) +
+                        "（" +
+                        map.monsters[monsterKey].wonTimes +
+                        "/" +
+                        map.monsters[monsterKey].lostTimes +
+                        "）<br/>";
+                    for (const itemKey in map.monsters[monsterKey].itemLoots) {
+                        text += "++++++++ " + dict(itemKey) + " x " + map.monsters[monsterKey].itemLoots[itemKey] + "<br/>";
+                    }
+                }
+            }
+        }
+
+        if (!textElem) {
+            insertToElem.insertAdjacentHTML(
+                "beforeend",
+                `<div id="script_hunting_records"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
+            );
+        } else {
+            textElem.innerHTML = `<div class="script_do_not_translate" style="font-size: 12px; ">${text}</div>`;
+        }
+    }
+    setInterval(addHuntingRecordsToPage, 500);
 
     /* ZedTools END */
 
@@ -1426,7 +1599,7 @@
         Hunt: "狩猎",
         Hunting: "狩猎",
         Scavenge: "拾荒",
-        Explore: "探索",
+        Explore: "远征",
         Skills: "技能",
         Help: "帮助",
         Build: "建造",
@@ -1995,7 +2168,7 @@
     const dictVehicle = {
         Vehicle: "车辆",
         "No Vehicle": "没有车辆",
-        "You need a vehicle to explore": "你需要一辆车来探索",
+        "You need a vehicle to explore": "你需要一辆车来远征",
     };
 
     //1.4-4 資源
@@ -2378,7 +2551,7 @@
         "Now that you've gathered some scrap, it’s time to smelt it down into nails. These little things are essential for building and crafting, but don’t waste them—resources aren’t exactly easy to come by in this world. What you choose to do with them is up to you":
             "现在你已经收集了一些废料，是时候将它们熔炼成钉子了。这些小东西对建筑和制作至关重要，但不要浪费它们——在这个世界上资源并不容易获得。你决定如何使用它们",
         "You’ve learned the basics of survival, but there’s much more ahead. Build, hunt, explore—there’s a whole world out there still waiting to be discovered. Good luck... you're going to need it":
-            "你已经学会了生存的基础知识，但前方还有更多挑战。建造、狩猎、探索——外面还有一个等待被发现的广阔世界。祝你好运……你会需要的",
+            "你已经学会了生存的基础知识，但前方还有更多挑战。建造、狩猎、远征——外面还有一个等待被发现的广阔世界。祝你好运……你会需要的",
         "Objective: Craft Nails": "目标：制作钉子",
 
         //---------------Myena-1
@@ -2946,7 +3119,7 @@
             "选择武器时要谨慎，丧尸现在会对特定类型的武器有弱点。",
         "A detailed list of all the items in the game can be found in the wiki": "游戏中所有物品的详细列表可以在wiki中找到。",
         "Crafting will show a total time if you are crafting more than 1x": "如果你制作多个物品，制作时间将会显示总时长。",
-        "Explore list has been ordered by travel time & difficulty rating": "探索列表将按照旅行时间和难度等级排序。",
+        "Explore list has been ordered by travel time & difficulty rating": "远征列表将按照旅行时间和难度等级排序。",
         "The help page has been updated to include links to wiki + discord": "帮助页面已更新，包含了指向wiki和Discord的链接。",
 
         //v0.3.2
@@ -3283,13 +3456,28 @@
             "我告诉你，我知道你应该去找谁。Buddy……对，就是他……我认识的最疯狂的家伙，但他确实知道如何应对任何情况。他在第一只丧尸袭击他的社区之前，就已经在半个街区设置了路障。晚上留意探照灯，你绝对不会错过。", // 错别字light
         "Life Perk": "生命特技",
         "Max Life": "最大生命",
-        "Thank you for your support! Your payment is being processed and your account will be credited soon!":
+        "Thank you for your support! Your payment is being processed and your account will be credited soon":
             "感谢支持！您的付款正在处理，将很快添加到你的账号！",
         V: "V",
         "Rations resupply": "配给供应",
-        "Effect: Contains 31 days membership, 75 points and a random loot drop": "效果：包含31天会员资格、75点数和一个随机掉落物",
+        "Effect: Contains 31 days membership, 75 Zed Coin and a random loot drop": "效果：包含31天会员资格、75点数和一个随机掉落物",
         "Active an hour ago": "1小时前在线",
         "Claim Rations": "领取配给",
+        "Zed Coin": "丧尸币",
+        of: "共",
+        "Points will now be known as Zed Coin, we have added the ability to list these on the market":
+            "点数现在将被称为丧尸币，我们已添加将其列入市场的功能",
+        'Once you hit level 5, the "Help" link will switch to "Forums", you can still access both anytime from the top-left menu. We’ve also fixed a bug that was causing issues when creating new topics':
+            "当你达到5级时，“帮助”链接将切换为“论坛”，你仍然可以随时通过左上角菜单访问两者。我们还修复了一个在创建新主题时引发问题的错误",
+        "Browser Icon": "浏览器图标",
+        "We’ve updated the ZC browser icon to make it clearer, and now it’ll change to alert you whenever you get a new notification":
+            "我们更新了丧尸城市浏览器图标，使其更加清晰，现在每当你收到新通知时，它会发生变化以提醒你",
+        "Fixed a bug that caused display issues during Discord registration": "修复了在Discord注册过程中导致显示问题的错误",
+        "Reduced the number of items shown in the item selection list": "减少了物品选择列表中显示的物品数量",
+        "Fixed some caching issues, which means faster load times and less data usage going forward":
+            "修复了一些缓存问题，这意味着未来加载时间更快，数据使用量更少",
+        "You are injured": "你受伤了",
+        "You can only buy 1 skill point per level": "每1个等级只能购买1个技能点",
     };
 
     /* 词典结束 感谢七包茶整理 */
@@ -3587,6 +3775,10 @@
         if (/^([\w\s]+) skill level increased$/.test(text)) {
             let res = /^([\w\s]+) skill level increased$/.exec(text);
             return dict(res[1]) + "技能等级提升";
+        }
+        if (/^Thank you for subscribing to Zed City! You have been awarded (\d+) Zed Coin and (\d+) days of membership$/.test(text)) {
+            let res = /^Thank you for subscribing to Zed City! You have been awarded (\d+) Zed Coin and (\d+) days of membership$/.exec(text);
+            return `感谢您订阅 Zed City！您以获得 ${res[1]}丧尸币 和 ${res[2]}天会员`;
         }
 
         // 你没有足够的XX
