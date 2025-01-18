@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.0
+// @version      11.1
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -417,6 +417,9 @@
     setInterval(addFactionLogSearch, 500);
 
     /* 状态栏弹出显示XP增量 */
+    if (!localStorage.getItem("script_getStats")) {
+        localStorage.setItem("script_getStats", "{}");
+    }
     if (!localStorage.getItem("script_playerXp_previous")) {
         localStorage.setItem("script_playerXp_previous", 0);
     }
@@ -437,6 +440,7 @@
     }
 
     function handleGetStats(r) {
+        localStorage.setItem("script_getStats", r);
         const response = JSON.parse(r);
 
         // Player XP
@@ -813,6 +817,44 @@
 
         // 狩猎统计
         handleHuntingStartJob(response);
+
+        // 锻炼统计
+        handleGymStartJob(response);
+    }
+
+    function handleGymStartJob(response) {
+        const jobName = response?.job?.codename;
+        if (jobName !== "gym") {
+            return;
+        }
+        const playerName = localStorage.getItem("script_playerName");
+        const getStats = JSON.parse(localStorage.getItem("script_getStats"));
+
+        const gymLevel = response?.job?.vars?.level;
+        const gain = response?.outcome?.rewards?.gain;
+        const stat = response?.outcome?.rewards?.skill;
+        const energy = response?.outcome?.iterations * 5;
+        const statBefore = Number(getStats.skills[stat]);
+        const moralBefore = Number(getStats.morale);
+        let moralAfter = 0;
+        for (const item of response?.reactive_items_qty) {
+            if (item.codename === "morale") {
+                moralAfter = Number(item.quantity);
+            }
+        }
+
+        const text = `${playerName}在${gymLevel}星健身房用${energy}能量锻炼，士气从${moralBefore}减少了${moralBefore - moralAfter}，${dict(
+            stat
+        )}从${statBefore}增加了${gain}`;
+        console.log(text);
+
+        const insertToElem = document.body.querySelector(".q-page.q-layout-padding div");
+        if (insertToElem) {
+            insertToElem.insertAdjacentHTML(
+                "beforeend",
+                `<div id=""><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
+            );
+        }
     }
 
     function handleCompleteJob(r) {
