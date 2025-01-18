@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.1
+// @version      11.2
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -29,6 +29,7 @@
 /* 生产和NPC商店买卖添加Max按钮 */
 /* 拾荒统计 */
 /* 狩猎统计 */
+/* 锻炼细节显示 */
 
 //字典
 //1.1 通用頁面
@@ -822,6 +823,7 @@
         handleGymStartJob(response);
     }
 
+    /* 锻炼细节显示 */
     function handleGymStartJob(response) {
         const jobName = response?.job?.codename;
         if (jobName !== "gym") {
@@ -847,6 +849,11 @@
             stat
         )}从${statBefore}增加了${gain}`;
         console.log(text);
+        console.log(
+            `${playerName} trained in the ${gymLevel} stars gym with ${energy} energy, morale decreased from ${moralBefore} by ${
+                moralBefore - moralAfter
+            }, ${stat} increased from ${statBefore} by ${gain}`
+        );
 
         const insertToElem = document.body.querySelector(".q-page.q-layout-padding div");
         if (insertToElem) {
