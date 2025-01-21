@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.2
+// @version      11.3
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -33,8 +33,9 @@
 
 //字典
 //1.1 通用頁面
+//---------------登入首頁
 //---------------個人
-//---------------會員狀態
+//---------------會員
 //---------------城市
 //---------------市場狀態(購買,上架)
 //---------------物品狀態(重量,類型)
@@ -698,6 +699,9 @@
     if (!localStorage.getItem("script_junkStoreResetTimestamp")) {
         localStorage.setItem("script_junkStoreResetTimestamp", 0);
     }
+    if (!localStorage.getItem("script_junkStore_ironBarStock")) {
+        localStorage.setItem("script_junkStore_ironBarStock", 0);
+    }
 
     function handleGetStoreJunkLimit(r) {
         const response = JSON.parse(r);
@@ -708,6 +712,15 @@
             localStorage.setItem("script_junkStoreResetTimestamp", timestamp);
             if (timestamp - previousTimestamp > 30000) {
                 localStorage.setItem("script_junkStoreIsAlreadyNotified", false);
+            }
+        }
+
+        // 铁锭出售库存
+        if (response?.storeItems) {
+            for (const item of response?.storeItems) {
+                if (item.codename === "iron_bar") {
+                    localStorage.setItem("script_junkStore_ironBarStock", item.quantity);
+                }
             }
         }
     }
@@ -1488,15 +1501,19 @@
 
         // 360 button
         if (window.location.href.includes("/store/junk")) {
+            let ironBarStock = Number(localStorage.getItem("script_junkStore_ironBarStock"));
+            if (ironBarStock > 360) {
+                ironBarStock = 360;
+            }
             const btn360 = document.createElement("button");
             btn360.className = "script-store-max-btn";
-            btn360.textContent = "360";
+            btn360.textContent = ironBarStock;
             btn360.style.cssText = "position: absolute; bottom: 10px; left: 10px; z-index: 1000; pointer-events: auto;";
             btn360.addEventListener("click", () => {
                 const input = modal.querySelector("input");
                 // react hack
                 let lastValue = input.value;
-                input.value = 360;
+                input.value = ironBarStock;
                 let event = new Event("input", { bubbles: true });
                 event.simulated = true;
                 let tracker = input._valueTracker;
@@ -1721,6 +1738,7 @@
 
     //1.1 通用頁面
     const dictCommon = {
+        "Offline for maintenance": "离线维护中",
         purge: "大清洗",
         stronghold: "据点",
         Faction: "帮派",
@@ -1741,11 +1759,9 @@
         Forums: "论坛",
         "Report Bug": "报告错误",
         Mission: "任务",
-        Progress: "进度",
         "Upcoming Server Reset and Open Release": "即将到来的服务器重置与公开发布",
         "load more": "加载更多",
         "Final Reset": "最终重置",
-        News: "新闻",
         train: "训练",
         "Go Back": "返回",
         ATTEMPTS: "尝试",
@@ -1764,7 +1780,7 @@
         "Per 15 Min": "每15分钟",
         Recovery: "恢复",
         Upgrading: "升级中",
-
+        "YOU LEVELED UP": "你升级了",
         LVL: "等级",
         Menu: "菜单",
         Submit: "提交",
@@ -1773,9 +1789,7 @@
         Cancel: "取消",
         "Social Logins": "社交帐号登录",
         "An unknown error occurred": "发生未知错误",
-
         "Help Guide": "帮助",
-
         Equip: "装备",
         "Equip Item": "装备物品",
         "No Items": "没有物品",
@@ -1796,11 +1810,47 @@
         Eat: "吃",
         "Are you sure you want to eat this": "你确定要吃这个吗？",
         "Your booster cooldown is too high": "你的强化剂冷却时间太高了",
+        "Canvas is not supported in your browser": "你的浏览器不支持Canvas",
+        "Zed City | The Survival MMORPG": "Zed City | 生存MMORPG",
+
+        //---------------登入首頁
+        "Zed City": "Zed City",
+        "Create Account": "创建账户",
+        News: "新闻",
+        "Can You Survive": "你能生存吗",
+        "Play Now": "立即游戏",
+        "Learn More": "了解更多",
+        "Deep Exploration": "深度探索",
+        "Explore dark and infested locations around the map, working through each challenge and unlocking the next rooms until you find the supplies you're in need of to survive":
+            "探索地图上黑暗且感染的地点，完成每个挑战并解锁下一间房间，直到找到你需要的生存物资。",
+        "Your Stronghold": "你的据点",
+        "Develop your stronghold into a fully equipped base, with crafting stations, resources, and everything you need to thrive":
+            "将你的据点发展成一个设施齐全的基地，配备制作站、资源和一切你需要的物资。",
+        Alliances: "联盟",
+        "Join forces with factions, building alliances and growing alongside other survivors": "与帮派联手，建立联盟，与其他幸存者共同成长。",
+        "PvP Dominance": "PvP主宰",
+        "Face off against other players in high-stakes PvP encounters to prove your dominance":
+            "在高风险的PvP对战中与其他玩家对决，证明你的主宰地位。",
+        "Trade and Prosper": "交易与繁荣",
+        "Trade goods and rare items with others to grow your influence and wealth": "与他人交易商品和稀有物品，扩大你的影响力和财富。",
+        "Blueprint Mastery": "蓝图精通",
+        "Discover and craft blueprints to expand your abilities and customize your approach": "发现并制作蓝图，拓展你的能力，定制你的策略。",
+        "Skillful Survival": "熟练的生存",
+        "Shape your path by mastering skills like fishing, hunting, and many others essential for survival":
+            "通过掌握钓鱼、狩猎等多种生存技能，塑造你的生存之路。",
+        "We have a growing community on discord and would love for you to join us in creating the best Multiplayer Zombie Survival Simulator":
+            "我们在Discord上有一个不断壮大的社区，欢迎你加入我们，共同打造最好的多人丧尸生存模拟器。",
+        "This website uses cookies": "本网站使用 Cookie",
+        "We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services":
+            "我们使用 Cookie 来个性化内容和广告，提供社交媒体功能并分析我们的流量。我们还会与社交媒体、广告和分析合作伙伴分享您对我们网站的使用信息，这些信息可能与您提供给他们的信息或他们从您使用其服务中收集的信息相结合。",
+        "Allow All": "全部允许",
+        Deny: "拒绝",
+        "Privacy Policy": "隐私政策",
+        "Terms of Service": "服务条款",
+        "Green Lab Games Ltd": "Green Lab Games有限公司",
 
         //--------------個人
-        "Create Account": "创建账户",
         "Logging Out": "登出",
-        "Can You Survive": "你能生存吗",
         "Alpha in progress": "Alpha 测试进行中",
         "Join the discussion": "加入讨论",
         "We are currently in a closed alpha stage, you can get an access code from our discord server. We have a growing community on discord and would love for you to join us in creating the best Multiplayer Zombie Survival Simulator":
@@ -1809,6 +1859,12 @@
         Password: "密码",
         "Access Code": "访问代码",
         "You can request an access code on our discord server": "您可以在我们的 Discord 服务器上请求访问代码",
+        "Sign in with Discord": "通过Discord登录",
+        "Create a Survivor": "创建幸存者",
+        "I agree to the Terms of Service": "我同意服务条款",
+        "You must only register one account per person": "每人只能注册一个账户。",
+        "Survivor Name": "幸存者名称",
+        "Continue Playing": "继续游戏",
         "Display Name": "显示名称",
         "This field is required": "此字段为必填项",
         "Forgot password": "忘记密码",
@@ -1838,7 +1894,7 @@
         "New Password": "新密码",
         "Repeat Password": "重复密码",
 
-        //--------------會員狀態
+        //--------------會員
         GBP: "英镑",
         "Membership Perks": "会员特权",
         "Recieve a special item drop every month": "每月获得一个特殊物品掉落",
@@ -1846,6 +1902,8 @@
         "Yearly Membership": "年度会员",
         "Months Free": "免费月份",
         "Zed Pack": "丧尸包",
+        "Donator Pack": "捐赠者礼包",
+        "Effect: Contains 31 days membership, 75 Zed Coin and a random loot drop": "效果：包含31天会员资格、75点数和一个随机掉落物",
         Discount: "折扣",
         USD: "美元",
         EUR: "欧元",
@@ -1864,6 +1922,7 @@
         Refill: "补充",
         PURCHASE: "购买",
         Membership: "会员",
+        "You can only buy 1 skill point per level": "每1个等级只能购买1个技能点",
         Deals: "优惠",
         Back: "返回",
         FREE: "免费",
@@ -1965,10 +2024,10 @@
         "used its teeth to bite": "用牙齿咬",
         "Stop Auto": "停止自动攻击",
         "was defeated by": "被击败于",
-        "Items Gained": "获得物品",
         INJURED: "受伤",
         "Fight Outcome": "战斗结果",
         "You are injured for": "你受伤",
+        "You are injured": "你受伤了",
         DEFEATED: "战败",
         VS: "VS",
         WINNER: "胜利",
@@ -2410,6 +2469,7 @@
         "Booster (Energy Drink)": "增强剂（能量饮料）",
         "Booster (Special": "增强剂（特殊）",
         "Booster (Easter": "增强剂（复活节）",
+        "Adrenaline Booster": "肾上腺素助推器",
 
         //---------------食物
         "Animal Meat": "动物肉",
@@ -2562,6 +2622,8 @@
         Agility: "敏捷",
         "Increase agility by": "增加敏捷",
         "Morale Perk": "士气特技",
+        "Life Perk": "生命特技",
+        "Max Life": "最大生命",
         "Max Morale": "最大士气",
         "Upgrade Immunity": "升级免疫力",
         "Immunity Perk": "免疫力特技",
@@ -2574,22 +2636,22 @@
     const dictItemBook = {};
 
     //1.7 貨幣
-    const dictItemCurrencies = {};
+    const dictItemCurrencies = {
+        "Zed Coin": "丧尸币",
+    };
 
     //1.8 怪物
     const dictMonster = {
         Zombie: "丧尸",
-        Crawler: "爬行者",
-        Bloater: "鼓胀者",
-        Spitter: "喷吐者",
-        "Weakness: Blunt": "弱点：钝器",
-
-        "Raging Bloater": "狂怒鼓胀者",
-        "Weakness: Rifle": "弱点：步枪",
-
-        "Raging Crawler": "狂怒爬行者",
         "Frenzied Zombie": "狂暴丧尸",
         "Weakness: Pistol": "弱点：手枪",
+        Crawler: "爬行者",
+        "Raging Crawler": "狂怒爬行者",
+        "Weakness: Blunt": "弱点：钝器",
+        Bloater: "鼓胀者",
+        "Raging Bloater": "狂怒鼓胀者",
+        "Weakness: Rifle": "弱点：步枪",
+        Spitter: "喷吐者",
         "Frenzied Spitter": "狂暴喷吐者",
         "Weakness: Piercing": "弱点：穿刺",
     };
@@ -2598,10 +2660,13 @@
     const dictMission = {
         quest: "任务",
         "Quest Progress": "任务进度",
+        Progress: "进度",
         Completed: "已完成",
         Complete: "完成",
         "Objective Completed": "目标完成",
         "Select a quest to continue": "选择一个任务继续",
+        "Items Gained": "获得物品",
+        "Level Experience": "等级经验",
 
         //--------------NPC名稱
         Myena: "Myena",
@@ -2615,7 +2680,8 @@
             "一个巨大的焚烧炉屹立在城市的中央，浓烟四起，炉内的火焰足以将任何物品烧成灰烬",
         "As Ash blankets the city, a raspy chuckle attracts your notice": "当灰烬覆盖城市时，一阵沙哑的笑声引起了你的注意。",
         "Select a location to continue": "选择一个地点继续",
-
+        "Tell you what, I know who you should go and see. Buddy... yeah... Maddest guy I know but sure knows how to handle any situation thrown at him. Heck he'd already barricaded up half his neighbourhood before the first zed his his part of town. Just look out for the search lights at light. You won't be able to miss it":
+            "我告诉你，我知道你应该去找谁。Buddy……对，就是他……我认识的最疯狂的家伙，但他确实知道如何应对任何情况。他在第一只丧尸袭击他的社区之前，就已经在半个街区设置了路障。晚上留意探照灯，你绝对不会错过。", // 错别字light
         "Welcome to the End": "欢迎来到末日",
         "Getting started at the end of the world": "在世界末日时开始你的冒险",
         "A stranger appears": "一个陌生人出现",
@@ -3045,11 +3111,9 @@
         "A bag of Cement mix": "一袋水泥混合料",
 
         Miscellaneous: "杂项",
-
         Stinger: "毒刺",
         Efficiency: "效率",
         Capacity: "容量",
-
         leave: "离开",
         visit: "查看",
         "You gained": "你获得了",
@@ -3064,13 +3128,7 @@
         "Top Forger": "顶级锻造者",
         "Top Hunter": "顶级猎人",
         "Top Scavenger": "顶级拾荒者",
-
-        "Zed City": "Zed City",
-        "Zed City | The Survival MMORPG": "Zed City | 生存MMORPG",
-
-        "YOU LEVELED UP": "你升级了",
         Continue: "继续",
-        "Canvas is not supported in your browser": "你的浏览器不支持Canvas",
         "Your scavenging skill level needs to be": "你的拾荒技能等级需要达到",
         Fish: "钓鱼",
         "gained every": "每",
@@ -3084,74 +3142,42 @@
         "Medical Bay Level": "医疗间等级",
         "Bench Level": "制作台等级",
 
-        "Adrenaline Booster": "肾上腺素助推器",
-
         "An essential item to make your rod work": "使鱼竿运作的必需品",
+        V: "V",
         High: "高",
         Low: "低",
         Map: "地图",
-
-        "Donator Pack": "捐赠者礼包",
-
         Close: "关闭",
         Points: "点数",
         money: "金钱",
         Offline: "离线",
-        "Offline for maintenance": "离线维护中",
         Retry: "重试",
-        "Green Lab Games Ltd": "Green Lab Games有限公司",
-        "Privacy Policy": "隐私政策",
-        "Terms of Service": "服务条款",
-        "Play Now": "立即游戏",
-        "Learn More": "了解更多",
-        "Deep Exploration": "深度探索",
-        "Explore dark and infested locations around the map, working through each challenge and unlocking the next rooms until you find the supplies you're in need of to survive":
-            "探索地图上黑暗且感染的地点，完成每个挑战并解锁下一间房间，直到找到你需要的生存物资。",
-        "Develop your stronghold into a fully equipped base, with crafting stations, resources, and everything you need to thrive":
-            "将你的据点发展成一个设施齐全的基地，配备制作站、资源和一切你需要的物资。",
-        Alliances: "联盟",
-        "Join forces with factions, building alliances and growing alongside other survivors": "与帮派联手，建立联盟，与其他幸存者共同成长。",
-        "PvP Dominance": "PvP主宰",
-        "Face off against other players in high-stakes PvP encounters to prove your dominance":
-            "在高风险的PvP对战中与其他玩家对决，证明你的主宰地位。",
-        "Trade and Prosper": "交易与繁荣",
-        "Trade goods and rare items with others to grow your influence and wealth": "与他人交易商品和稀有物品，扩大你的影响力和财富。",
-        "Blueprint Mastery": "蓝图精通",
-        "Discover and craft blueprints to expand your abilities and customize your approach": "发现并制作蓝图，拓展你的能力，定制你的策略。",
-        "Skillful Survival": "熟练的生存",
-        "Shape your path by mastering skills like fishing, hunting, and many others essential for survival":
-            "通过掌握钓鱼、狩猎等多种生存技能，塑造你的生存之路。",
-        "We have a growing community on discord and would love for you to join us in creating the best Multiplayer Zombie Survival Simulator":
-            "我们在Discord上有一个不断壮大的社区，欢迎你加入我们，共同打造最好的多人丧尸生存模拟器。",
-        "Create a Survivor": "创建幸存者",
-        "I agree to the Terms of Service": "我同意服务条款",
-        "You must only register one account per person": "每人只能注册一个账户。",
-        "Sign in with Discord": "通过Discord登录",
-        "Survivor Name": "幸存者名称",
-        "Your Stronghold": "你的据点",
-        "Continue Playing": "继续游戏",
-
+        Lockpicks: "撬锁工具",
         "You need to be level": "你需要达到等级",
 
         "Coming Soon": "即将推出",
         "Donator House is coming soon": "捐赠者之家即将推出",
 
-        Lockpicks: "撬锁工具",
-
-        "This website uses cookies": "本网站使用 Cookie",
-        "We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services":
-            "我们使用 Cookie 来个性化内容和广告，提供社交媒体功能并分析我们的流量。我们还会与社交媒体、广告和分析合作伙伴分享您对我们网站的使用信息，这些信息可能与您提供给他们的信息或他们从您使用其服务中收集的信息相结合。",
-        "Allow All": "全部允许",
-        Deny: "拒绝",
         min: "最低",
         "hours ago": "小时前",
-        "Level Experience": "等级经验",
-
-        // 7.9版以後----------------------分---------------割--------------線---------------------
+        "Active an hour ago": "1小时前在线",
     };
 
     //2.2 版本更新
     const dictVersion = {
+        //v1.0.4
+        "Points will now be known as Zed Coin, we have added the ability to list these on the market":
+            "点数现在将被称为丧尸币，我们已添加将其列入市场的功能",
+        'Once you hit level 5, the "Help" link will switch to "Forums", you can still access both anytime from the top-left menu. We’ve also fixed a bug that was causing issues when creating new topics':
+            "当你达到5级时，“帮助”链接将切换为“论坛”，你仍然可以随时通过左上角菜单访问两者。我们还修复了一个在创建新主题时引发问题的错误",
+        "Browser Icon": "浏览器图标",
+        "We’ve updated the ZC browser icon to make it clearer, and now it’ll change to alert you whenever you get a new notification":
+            "我们更新了丧尸城市浏览器图标，使其更加清晰，现在每当你收到新通知时，它会发生变化以提醒你",
+        "Fixed a bug that caused display issues during Discord registration": "修复了在Discord注册过程中导致显示问题的错误",
+        "Reduced the number of items shown in the item selection list": "减少了物品选择列表中显示的物品数量",
+        "Fixed some caching issues, which means faster load times and less data usage going forward":
+            "修复了一些缓存问题，这意味着未来加载时间更快，数据使用量更少",
+
         //v1.0.3
         "Zed Packs & Membership": "丧尸包和会员",
         "Zed Packs will now give you a random loot drop when opened, everyone who has already opened Zed Pack(s) will receive 2x free refills for each pack opened. When subscribing to a new membership, you will receive the special item for that month instantly. Everyone who has already subscribed will have received this item now":
@@ -3584,32 +3610,9 @@
 
     //2.3 词典：待处理 (bot7420新增的会添加到这里，七包茶可以从这里移除整理到其它位置)
     const dictPending = {
-        "Tell you what, I know who you should go and see. Buddy... yeah... Maddest guy I know but sure knows how to handle any situation thrown at him. Heck he'd already barricaded up half his neighbourhood before the first zed his his part of town. Just look out for the search lights at light. You won't be able to miss it":
-            "我告诉你，我知道你应该去找谁。Buddy……对，就是他……我认识的最疯狂的家伙，但他确实知道如何应对任何情况。他在第一只丧尸袭击他的社区之前，就已经在半个街区设置了路障。晚上留意探照灯，你绝对不会错过。", // 错别字light
-        "Life Perk": "生命特技",
-        "Max Life": "最大生命",
-        "Thank you for your support! Your payment is being processed and your account will be credited soon":
-            "感谢支持！您的付款正在处理，将很快添加到你的账号！",
-        V: "V",
-        "Rations resupply": "配给供应",
-        "Effect: Contains 31 days membership, 75 Zed Coin and a random loot drop": "效果：包含31天会员资格、75点数和一个随机掉落物",
-        "Active an hour ago": "1小时前在线",
-        "Claim Rations": "领取配给",
-        "Zed Coin": "丧尸币",
-        of: "共",
-        "Points will now be known as Zed Coin, we have added the ability to list these on the market":
-            "点数现在将被称为丧尸币，我们已添加将其列入市场的功能",
-        'Once you hit level 5, the "Help" link will switch to "Forums", you can still access both anytime from the top-left menu. We’ve also fixed a bug that was causing issues when creating new topics':
-            "当你达到5级时，“帮助”链接将切换为“论坛”，你仍然可以随时通过左上角菜单访问两者。我们还修复了一个在创建新主题时引发问题的错误",
-        "Browser Icon": "浏览器图标",
-        "We’ve updated the ZC browser icon to make it clearer, and now it’ll change to alert you whenever you get a new notification":
-            "我们更新了丧尸城市浏览器图标，使其更加清晰，现在每当你收到新通知时，它会发生变化以提醒你",
-        "Fixed a bug that caused display issues during Discord registration": "修复了在Discord注册过程中导致显示问题的错误",
-        "Reduced the number of items shown in the item selection list": "减少了物品选择列表中显示的物品数量",
-        "Fixed some caching issues, which means faster load times and less data usage going forward":
-            "修复了一些缓存问题，这意味着未来加载时间更快，数据使用量更少",
-        "You are injured": "你受伤了",
-        "You can only buy 1 skill point per level": "每1个等级只能购买1个技能点",
+        "Skill point added successfully": "已成功增加技能点",
+        "Upgrade Life": "升级生命",
+        "Your morale will reset in": "士气将重置于",
     };
 
     /* 词典结束 感谢七包茶整理 */
