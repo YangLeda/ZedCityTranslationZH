@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.3
+// @version      11.4
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -33,33 +33,33 @@
 
 //字典
 //1.1 通用頁面
-//---------------登入首頁
-//---------------個人
-//---------------會員
-//---------------城市
-//---------------市場狀態(購買,上架)
-//---------------物品狀態(重量,類型)
-//---------------戰鬥狀態
+//----------------/ 登入首頁
+//----------------/ 個人
+//----------------/ 會員
+//----------------/ 城市
+//----------------/ 市場狀態(購買,上架)
+//----------------/ 物品狀態(重量,類型)
+//----------------/ 戰鬥狀態
 //1.2 幫派
-//---------------權限
+//----------------/ 權限
 //1.3 地點
 //1.4 庫存
-//----1.4-1 護甲
-//---------------頭
-//---------------身體
-//---------------腿
-//---------------腳
-//----1.4-2 武器
+//----1.4-1 武器
+//----1.4-2 護甲
+//----------------/ 頭
+//----------------/ 身體
+//----------------/ 腿
+//----------------/ 腳
 //----1.4-3 交通工具
 //----1.4-4 資源
-//---------------材料
-//---------------魚
+//----------------/ 材料
+//----------------/ 魚
 //----1.4-5 子彈
 //----1.4-6 醫療
 //----1.4-7 增強
-//---------------食物
-//---------------能量
-//---------------飲料
+//----------------/ 食物
+//----------------/ 能量
+//----------------/ 飲料
 //----1.4-8 道具裝備
 //----1.4-9 雜項
 //----1.4-10 獎盃
@@ -68,12 +68,12 @@
 //1.7 貨幣
 //1.8 怪物
 //1.9 任務
-//---------------NPC名稱
-//---------------Myena
-//---------------Garbo
-//---------------Buddy
-//---------------Meat
-//---------------Gray
+//----------------/ NPC名稱
+//----------------/ Myena
+//----------------/ Garbo
+//----------------/ Buddy
+//----------------/ Meat
+//----------------/ Gray
 //2.0 幫助說明
 //2.1 其他 (尚未整理的翻譯)
 //2.2 版本更新
@@ -1781,6 +1781,7 @@
         Recovery: "恢复",
         Upgrading: "升级中",
         "YOU LEVELED UP": "你升级了",
+        "You need to be level": "你需要达到等级",
         LVL: "等级",
         Menu: "菜单",
         Submit: "提交",
@@ -1813,7 +1814,7 @@
         "Canvas is not supported in your browser": "你的浏览器不支持Canvas",
         "Zed City | The Survival MMORPG": "Zed City | 生存MMORPG",
 
-        //---------------登入首頁
+        //----------------/ 登入首頁
         "Zed City": "Zed City",
         "Create Account": "创建账户",
         News: "新闻",
@@ -1849,7 +1850,7 @@
         "Terms of Service": "服务条款",
         "Green Lab Games Ltd": "Green Lab Games有限公司",
 
-        //--------------個人
+        //----------------/ 個人
         "Logging Out": "登出",
         "Alpha in progress": "Alpha 测试进行中",
         "Join the discussion": "加入讨论",
@@ -1894,7 +1895,7 @@
         "New Password": "新密码",
         "Repeat Password": "重复密码",
 
-        //--------------會員
+        //----------------/ 會員
         GBP: "英镑",
         "Membership Perks": "会员特权",
         "Recieve a special item drop every month": "每月获得一个特殊物品掉落",
@@ -1923,6 +1924,7 @@
         PURCHASE: "购买",
         Membership: "会员",
         "You can only buy 1 skill point per level": "每1个等级只能购买1个技能点",
+        "Skill point added successfully": "已成功增加技能点",
         Deals: "优惠",
         Back: "返回",
         FREE: "免费",
@@ -1943,12 +1945,16 @@
         "If you wish to support us by helping to cover some hosting & development costs, you can use the button below":
             "如果你希望通过帮助覆盖一些主机和开发费用来支持我们，可以使用下面的按钮。",
 
-        //--------------CITY-城市
+        //----------------/ 城市
         Trading: "交易",
         "Donator House": "捐赠者之家",
         Market: "市场",
         Info: "信息",
         "Hall Of Fame": "名人堂",
+        "Top Crafter": "顶级工匠",
+        "Top Forger": "顶级锻造者",
+        "Top Hunter": "顶级猎人",
+        "Top Scavenger": "顶级拾荒者",
         "City Stats": "城市统计",
         Survivors: "幸存者",
         Retail: "零售",
@@ -1958,7 +1964,7 @@
         "Donator Store": "捐赠商店",
         Incinerator: "焚烧炉",
 
-        //--------------市場狀態(購買,上架)
+        //----------------/ 市場狀態(購買,上架)
         Buy: "购买",
         Sell: "出售",
         "Not enough items in stock": "库存不足",
@@ -1984,7 +1990,7 @@
         "Invalid price": "价格无效",
         "Offer not found": "未找到在售订单",
 
-        //--------------物品狀態(重量,類型)
+        //----------------/ 物品狀態(重量,類型)
         Weight: "重量",
         kg: "千克",
         Weapons: "武器",
@@ -2009,7 +2015,7 @@
         Piercing: "穿刺",
         "Ammo Type": "弹药类型",
 
-        //--------------戰鬥狀態
+        //----------------/ 戰鬥狀態
         Fight: "战斗",
         "Auto Attack": "自动攻击",
         "Fight Log": "战斗日志",
@@ -2124,7 +2130,7 @@
 
         "Item added to your inventory": "物品已添加到你的库存",
 
-        //---------------權限
+        //----------------/ 權限
         "Manage Member": "管理成员",
         Kick: "踢出",
         Permissions: "权限",
@@ -2272,7 +2278,7 @@
     };
 
     //1.4 庫存
-    //1.4-1 武器
+    //----1.4-1 武器
     const dictWeapon = {
         "Baseball Bat": "棒球棒",
         Spear: "长矛",
@@ -2308,14 +2314,14 @@
         Wrench: "扳手",
     };
 
-    //1.4-2 護甲
+    //----1.4-2 護甲
     const dictsEquip = {
         "Armour (Head": "护甲（头部）",
         "Armour (body": "护甲（身体）",
         "Armour (Legs": "护甲（腿部）",
         "Armour (feet": "护甲（脚）",
 
-        //頭部
+        //----------------/ 頭
         "Army Helmet": "军用头盔",
         "Camo Hat": "迷彩帽",
         "Cowboy Hat": "牛仔帽",
@@ -2323,7 +2329,8 @@
         "Riot Helmet": "防暴头盔",
         Sunglasses: "太阳镜",
         "Hockey Mask": "冰球面罩",
-        //身體
+
+        //----------------/ 身體
         "Barrel Vest": "桶形背心",
         "Body Vest": "防护背心",
         "Camo Vest": "迷彩背心",
@@ -2331,7 +2338,8 @@
         "Cloth Jacket": "布质夹克",
         "Leather Jacket": "皮夹克",
         "Padded Vest": "衬垫背心",
-        //腿部
+
+        //----------------/ 腿
         "Armoured Pants": "装甲裤",
         "Army Pants": "军裤",
         "Camo Pants": "迷彩裤",
@@ -2345,7 +2353,8 @@
         "Padded Pants": "衬垫裤",
         "Sweat Pants": "运动裤",
         "Swim Shorts": "游泳短裤",
-        //腳
+
+        //----------------/ 腳
         "Army Boots": "军靴",
         "Camo Boots": "迷彩靴",
         "Hazmat Boots": "防护靴",
@@ -2355,18 +2364,18 @@
         "Work Boots": "工作靴",
     };
 
-    //1.4-3 交通工具
+    //----1.4-3 交通工具
     const dictVehicle = {
         Vehicle: "车辆",
         "No Vehicle": "没有车辆",
         "You need a vehicle to explore": "你需要一辆车来远征",
     };
 
-    //1.4-4 資源
+    //----1.4-4 資源
     const dictItemResources = {
         Resource: "资源",
 
-        //材料
+        //----------------/ 材料
         "Advanced Tools": "高级工具",
         Barley: "大麦",
         "Barley Seeds": "大麦种子",
@@ -2404,7 +2413,7 @@
         "Purify Water": "净化水",
         Tape: "胶带",
 
-        //魚
+        //----------------/ 魚
         Angelfish: "天使鱼",
         Barnaclefish: "藤壶鱼",
         Bass: "鲈鱼",
@@ -2438,7 +2447,7 @@
         "Made by carefully crushing the head of Zeds between two rocks": "通过小心地将丧尸的头部夹在两块岩石之间来制作",
     };
 
-    //1.4-5 子彈
+    //----1.4-5 子彈
     const dictItemAmmo = {
         Arrows: "箭",
         "Simple Ammo": "简单弹药",
@@ -2447,7 +2456,7 @@
         "Pistol Ammo": "手枪子弹",
     };
 
-    //1.4-6 醫療
+    //----1.4-6 醫療
     const dictItemMedical = {
         Bandage: "绷带",
         "Effect: Reduce recovery time by 10 minutes, increases life by 10 and medical cooldown by 5 minutes":
@@ -2463,7 +2472,7 @@
             "效果：减少1小时恢复时间，增加50点生命值，医疗冷却时间延长30分钟",
     };
 
-    //1.4-7 增強
+    //----1.4-7 增強
     const dictEnhance = {
         "Booster (Medical)": "增强剂（医疗）",
         "Booster (Energy Drink)": "增强剂（能量饮料）",
@@ -2471,7 +2480,7 @@
         "Booster (Easter": "增强剂（复活节）",
         "Adrenaline Booster": "肾上腺素助推器",
 
-        //---------------食物
+        //----------------/ 食物
         "Animal Meat": "动物肉",
         Chocolate: "巧克力",
         "Canned Food": "罐装食物",
@@ -2483,14 +2492,14 @@
         "Pumpkin Pie": "南瓜派",
         Sandwich: "三明治",
 
-        //---------------能量
+        //----------------/ 能量
         Coffee: "咖啡",
         "e-Cola": "原子可乐",
         Eyebellini: "眼球鸡尾酒",
         "Witch's Brew": "巫师饮品",
         ZedBull: "丧尸红牛",
 
-        //---------------飲料
+        //----------------/ 飲料
         Beer: "啤酒",
         Vodka: "伏特加",
         Whiskey: "威士忌",
@@ -2540,7 +2549,7 @@
         "Effect: Increases energy by 250 and booster cooldown by 2 hours": "效果：增加250点能量，助推器冷却时间延长2小时",
     };
 
-    //1.4-8 道具裝備
+    //----1.4-8 道具裝備
     const dictItemEquipment = {
         Pickaxe: "镐",
         Shovel: "铲子",
@@ -2549,7 +2558,7 @@
         "Pro Fishing Rod": "专业钓鱼竿",
     };
 
-    //1.4-9 雜項
+    //----1.4-9 雜項
     const dictItemOther = {
         "Barracks key": "军营钥匙",
         "Buddys Pass": "伙伴通行证",
@@ -2573,7 +2582,7 @@
         "Helps you see": "帮助你看得更清楚",
     };
 
-    //1.4-10 獎盃
+    //----1.4-10 獎盃
     const dictItemTrophy = {
         Trophy: "奖杯",
         "We thank you for taking part in alpha, your account has been reset and you have been awarded a special trophy for your help":
@@ -2624,7 +2633,9 @@
         "Morale Perk": "士气特技",
         "Life Perk": "生命特技",
         "Max Life": "最大生命",
+        "Upgrade Life": "升级生命",
         "Max Morale": "最大士气",
+        "Your morale will reset in": "士气将重置于",
         "Upgrade Immunity": "升级免疫力",
         "Immunity Perk": "免疫力特技",
         "Max Rad Immunity": "最大辐射免疫力",
@@ -2668,7 +2679,7 @@
         "Items Gained": "获得物品",
         "Level Experience": "等级经验",
 
-        //--------------NPC名稱
+        //----------------/ NPC名稱
         Myena: "Myena",
         Garbo: "Garbo",
         Buddy: "Buddy",
@@ -3124,10 +3135,6 @@
         Search: "搜索",
         ID: "ID",
         "No survivors found": "未找到幸存者",
-        "Top Crafter": "顶级工匠",
-        "Top Forger": "顶级锻造者",
-        "Top Hunter": "顶级猎人",
-        "Top Scavenger": "顶级拾荒者",
         Continue: "继续",
         "Your scavenging skill level needs to be": "你的拾荒技能等级需要达到",
         Fish: "钓鱼",
@@ -3153,7 +3160,6 @@
         Offline: "离线",
         Retry: "重试",
         Lockpicks: "撬锁工具",
-        "You need to be level": "你需要达到等级",
 
         "Coming Soon": "即将推出",
         "Donator House is coming soon": "捐赠者之家即将推出",
@@ -3609,11 +3615,7 @@
     };
 
     //2.3 词典：待处理 (bot7420新增的会添加到这里，七包茶可以从这里移除整理到其它位置)
-    const dictPending = {
-        "Skill point added successfully": "已成功增加技能点",
-        "Upgrade Life": "升级生命",
-        "Your morale will reset in": "士气将重置于",
-    };
+    const dictPending = {};
 
     /* 词典结束 感谢七包茶整理 */
 
@@ -3961,12 +3963,8 @@
             let res = /^x ([\w\s-']+)$/.exec(text);
             return "x " + dict(res[1]);
         }
-        if (/^You do not have a ([\w\s-']+)$/.test(text)) {
-            let res = /^You do not have a ([\w\s-']+)$/.exec(text);
-            return "你没有" + dict(res[1]);
-        }
-        if (/^You do not have an ([\w\s-']+)$/.test(text)) {
-            let res = /^You do not have an ([\w\s-']+)$/.exec(text);
+        if (/^You do not have a[n]? ([\w\s-']+)$/.test(text)) {
+            let res = /^You do not have a[n]? ([\w\s-']+)$/.exec(text);
             return "你没有" + dict(res[1]);
         }
         if (/^You gained ([\d+])([\w\s-']+)$/.test(text)) {
