@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.4
+// @version      11.5
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -91,26 +91,30 @@
             Scrap: 8,
             "Iron Bar": 105,
             Nails: 12,
-            Steel: 240,
-            Wire: 1000,
-            Rope: 2000,
-            Plastic: 1500,
-            Tarp: 4000,
-            Fuel: 400,
-            Water: 120,
+            Steel: 241,
+            Wire: 2500,
+            Rope: 6000,
+            Plastic: 4000,
+            Tarp: 6000,
+            Fuel: 3000,
+            Water: 100,
             "Barley Seeds": 100,
-            Gears: 1500,
-            "Cooked Fish": 180,
-            Beer: 350,
-            "e-Cola": 3000,
-            炸药: 0,
+            Gears: 4000,
+            "Cooked Fish": 175,
+            Beer: 300,
+            "e-Cola": 4000,
+            炸药: 20000,
             "Pistol Ammo": 300,
-            "Silver key": 8000,
-            "Advanced Tools": 40000,
-            Pickaxe: 2200,
-            "Wooden Fishing Rod": 1400,
-            "Zed Pack": 35000,
-            Chocolate: 500,
+            "Silver key": 10000,
+            "Advanced Tools": 50000,
+            Pickaxe: 2170,
+            "Wooden Fishing Rod": 2800,
+            "Zed Pack": 50000,
+            Chocolate: 800,
+            "Zed Juice": 50,
+            ZedBull: 6000,
+            "Unrefined Plastic": 30000,
+            Thread: 1500,
         };
 
         if (itemWorthList.hasOwnProperty(itemName)) {
@@ -2064,7 +2068,7 @@
         Farm: "农场",
         "A patch of slightly fertile soil": "一块稍微肥沃的土壤",
         Distillery: "酒厂",
-        Refinery: "炼油厂",
+        Refinery: "精炼厂",
         "Rusty machine that smells of fish oil and burnt plastic": "一台生锈的机器，散发着鱼油和烧焦塑料的味道",
         "Faction Base": "帮派基地",
         Base: "基地",
@@ -2152,9 +2156,9 @@
         "Distillery Management": "酿酒厂管理",
         "Gives the player the authority to oversee and manage the distillery operations. They can produce beverages and manage workers":
             "赋予玩家监督和管理酿酒厂运作的权限。他们可以生产饮品并管理工人",
-        "Refinery Management": "炼油厂管理",
+        "Refinery Management": "精炼厂管理",
         "Allows the player to oversee and manage the refinery activities within the community. They can start new refining processes and manage workers":
-            "允许玩家监督和管理社区内的炼油活动。他们可以启动新的炼油流程并管理工人",
+            "允许玩家监督和管理社区内的精炼活动。他们可以启动新的精炼流程并管理工人",
         "Storage Management": "仓库管理",
         "Allows the player to take items from the faction storage": "允许玩家从派系仓库取物品",
         "Manage Raids": "管理突袭",
@@ -2403,7 +2407,7 @@
         Steel: "钢铁",
         Tarp: "防水布",
         Thread: "线",
-        "Unrefined Plastic": "未精炼塑料",
+        "Unrefined Plastic": "粗塑料",
         Water: "水",
         Wire: "铁丝",
         "Zed Juice": "丧尸汁",
@@ -3202,7 +3206,7 @@
         "Fixed bug where non-existent factions showed a loading animation": "修复了不存在的派系显示加载动画的问题",
         "Fixed issue where consuming an item showed 'out of quantity' with 1 remaining": "修复了消耗物品时显示“数量不足”但实际剩余1个的问题",
         "Added server time display to the top-left menu": "在左上角菜单中新增了服务器时间显示",
-        "Removed certain refinery blueprints, to be reintroduced later": "移除了某些炼油厂的蓝图，将在稍后重新引入",
+        "Removed certain refinery blueprints, to be reintroduced later": "移除了某些精炼厂的蓝图，将在稍后重新引入",
         "Fixed some issues in the password reset process that may have caused confusion": "修复了密码重置过程中的一些可能引起混淆的问题",
         "Resolved issue with market listings disappearing when setting the price too high": "解决了市场列表在设置价格过高时消失的问题",
         "Free refills can be used without waiting": "免费填充可以不用等待即可使用",
@@ -3344,7 +3348,7 @@
         "Fishing has been expanded, train your new skill by catching a range of new fish, which can be found in various spots across the game. Three fishing rods have been added and they can be obtained in the crafting bench":
             "钓鱼系统已扩展，通过捕捉新的鱼类来训练你的新技能，鱼类可以在游戏中的不同地点找到。添加了三种钓鱼竿，可以在制作台获得",
         "A new building has been added to factions. Team up with faction members to produce new materials and train up your refinery skills":
-            "派系中添加了一座新建筑。与派系成员组队，生产新材料并训练你的炼油技能",
+            "派系中添加了一座新建筑。与派系成员组队，生产新材料并训练你的精炼技能",
         "Explore the reserve and try to catch some fish at the new spots, you may need to defeat some zeds before you are safe to explore":
             "探索保护区，并尝试在新地点捕捉一些鱼，在你安全探索之前，可能需要击败一些丧尸",
         "A new location to explore, gain access to new materials after you defeat the zeds lingering around the place":
