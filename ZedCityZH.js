@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.5
+// @version      11.6
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -9,6 +9,8 @@
 // @icon         https://www.zed.city/icons/favicon.svg
 // @grant        unsafeWindow
 // @grant        GM_notification
+// @grant        GM_xmlhttpRequest
+// @connect      43.129.194.214
 // ==/UserScript==
 
 //工具目錄
@@ -150,6 +152,8 @@
                     handleGetFight(this.response);
                 } else if (this.responseURL.includes("api.zed.city/doFight")) {
                     handleDoFight(this.response);
+                } else if (this.responseURL === "https://api.zed.city/getFaction") {
+                    handleGetFaction(this.response);
                 }
             }
         });
@@ -166,6 +170,9 @@
     if (!localStorage.getItem("script_faction_log_records")) {
         localStorage.setItem("script_faction_log_records", JSON.stringify({}));
     }
+    if (!localStorage.getItem("script_faction_log_records_server")) {
+        localStorage.setItem("script_faction_log_records_server", JSON.stringify({}));
+    }
 
     function handleGetFactionNotifications(r) {
         const response = JSON.parse(r);
@@ -175,9 +182,28 @@
         const itemLogs = JSON.parse(localStorage.getItem("script_faction_item_logs"));
         const raidLogs = JSON.parse(localStorage.getItem("script_faction_raid_logs"));
 
+        const logsToUpload = []; // Upload to ZedToolsServer
+
         for (const log of response.notify) {
             if (log.type === "faction_take_item" || log.type === "faction_add_item") {
-                itemLogs[log.date] = log;
+                if (
+                    true
+                    // !itemLogs.hasOwnProperty(log.date) ||
+                    // itemLogs[log.date]?.type !== log.type ||
+                    // itemLogs[log.date]?.data?.name !== log?.data?.name
+                ) {
+                    itemLogs[log.date] = log;
+                    logsToUpload.push({
+                        logType: log.type,
+                        timestamp: log.date,
+                        userId: log.data.user_id,
+                        userName: log.data.username,
+                        itemQty: log.data.qty,
+                        itemName: log.data.name,
+                        factionName: localStorage.getItem("script_faction_id"),
+                        uploaderName: localStorage.getItem("script_playerName"),
+                    });
+                }
             } else if (log.type === "faction_raid") {
                 raidLogs[log.date] = log;
             }
@@ -185,7 +211,101 @@
         localStorage.setItem("script_faction_item_logs", JSON.stringify(itemLogs));
         localStorage.setItem("script_faction_raid_logs", JSON.stringify(raidLogs));
         console.log(`itemLogs: ${Object.keys(itemLogs).length}  raidLogs: ${Object.keys(raidLogs).length}`);
+
+        uploadToServer(logsToUpload);
         updateFactionLogRecord();
+    }
+
+    function getRecordsFromServer() {
+        const textArea = document.getElementById("script_textArea");
+        if (textArea) {
+            textArea.value = "开始尝试从服务器获取帮派物品记录";
+        }
+        return new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: "GET",
+                url: `http://43.129.194.214:7000/faction-item-records`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                onload: function (response) {
+                    if (!response || !response.response) {
+                        console.error("网络错误onload");
+                        const textArea = document.getElementById("script_textArea");
+                        if (textArea) {
+                            textArea.value = "网络错误onload";
+                        }
+                        resolve("网络错误onload");
+                    }
+                    const json = JSON.parse(response.response);
+                    console.log(json);
+                    const textArea = document.getElementById("script_textArea");
+                    if (textArea) {
+                        textArea.value = "从服务器获取帮派物品记录成功，总记录数：" + json.estimatedDocumentCount;
+                    }
+                    localStorage.setItem("script_faction_log_records_server", JSON.stringify(json.recordBook));
+                    resolve(json);
+                },
+                onerror: function (error) {
+                    console.log("网络错误onerror");
+                    console.log(error);
+                    const textArea = document.getElementById("script_textArea");
+                    if (textArea) {
+                        textArea.value = "网络错误onerror";
+                    }
+                    resolve("网络错误onerror");
+                },
+            });
+        });
+    }
+
+    function uploadToServer(logList) {
+        if (!logList || logList.length <= 0) {
+            return;
+        }
+        console.log("Start upload to ZedToolsServer: " + logList.length);
+
+        return new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: "POST",
+                url: `http://43.129.194.214:7000/upload-faction-logs/`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: JSON.stringify(logList),
+                onload: function (response) {
+                    if (!response || !response.response) {
+                        console.error("网络错误onload");
+                        const textArea = document.getElementById("script_textArea");
+                        if (textArea) {
+                            textArea.value = "网络错误onload";
+                        }
+                        resolve("网络错误onload");
+                    }
+                    const json = JSON.parse(response.response);
+                    console.log(json);
+                    const textArea = document.getElementById("script_textArea");
+                    if (textArea) {
+                        //textArea.value = "服务器端总log条数：" + json.estimatedDocumentCount;
+                    }
+                    resolve(json);
+                },
+                onerror: function (error) {
+                    console.log("网络错误onerror");
+                    console.log(error);
+                    const textArea = document.getElementById("script_textArea");
+                    if (textArea) {
+                        textArea.value = "网络错误onerror";
+                    }
+                    resolve("网络错误onerror");
+                },
+            });
+        });
+    }
+
+    function handleGetFaction(r) {
+        const response = JSON.parse(r);
+        localStorage.setItem("script_faction_id", JSON.stringify(response.faction.name));
     }
 
     function updateFactionLogRecord() {
@@ -243,7 +363,7 @@
     }
 
     function searchPlayer(playerName) {
-        const records = JSON.parse(localStorage.getItem("script_faction_log_records"));
+        const records = JSON.parse(localStorage.getItem("script_faction_log_records_server"));
         let text = "";
 
         for (const key in records) {
@@ -264,7 +384,7 @@
     }
 
     function rankByItems() {
-        const records = JSON.parse(localStorage.getItem("script_faction_log_records"));
+        const records = JSON.parse(localStorage.getItem("script_faction_log_records_server"));
         const result = [];
 
         for (const key in records) {
@@ -368,8 +488,15 @@
             input.value = localStorage.getItem("script_playerName") ? localStorage.getItem("script_playerName") : "";
             container.appendChild(input);
 
+            const fetchButton = document.createElement("button");
+            fetchButton.innerText = "从服务器获取物品记录";
+            fetchButton.onclick = function () {
+                getRecordsFromServer();
+            };
+            container.appendChild(fetchButton);
+
             const searchButton = document.createElement("button");
-            searchButton.innerText = "查询玩家";
+            searchButton.innerText = "查询玩家（服务器）";
             searchButton.onclick = function () {
                 const inputValue = document.getElementById("script_search_input").value;
                 document.getElementById("script_textArea").value = searchPlayer(inputValue);
@@ -377,41 +504,42 @@
             container.appendChild(searchButton);
 
             const rankItemsButton = document.createElement("button");
-            rankItemsButton.innerText = "物品余额排名";
+            rankItemsButton.innerText = "物品余额排名（服务器）";
             rankItemsButton.onclick = function () {
                 document.getElementById("script_textArea").value = rankByItems();
             };
             container.appendChild(rankItemsButton);
 
             const rankRespectButton = document.createElement("button");
-            rankRespectButton.innerText = "突袭声望排名";
+            rankRespectButton.innerText = "突袭声望排名（本地）";
             rankRespectButton.onclick = function () {
                 document.getElementById("script_textArea").value = rankByRespect();
             };
             container.appendChild(rankRespectButton);
 
             const raidButton = document.createElement("button");
-            raidButton.innerText = "突袭冷却查询";
+            raidButton.innerText = "突袭冷却查询（本地）";
             raidButton.onclick = function () {
                 document.getElementById("script_textArea").value = raidTimings();
             };
             container.appendChild(raidButton);
 
             const clearButton = document.createElement("button");
-            clearButton.innerText = "清空历史记录";
+            clearButton.innerText = "清空本地历史记录";
             clearButton.onclick = function () {
                 console.log("Faction log cleared.");
                 document.getElementById("script_textArea").value = "历史记录已清空";
                 localStorage.setItem("script_faction_item_logs", JSON.stringify({}));
                 localStorage.setItem("script_faction_raid_logs", JSON.stringify({}));
                 localStorage.setItem("script_faction_log_records", JSON.stringify({}));
+                localStorage.setItem("script_faction_log_records_server", JSON.stringify({}));
             };
             container.appendChild(clearButton);
 
             const textArea = document.createElement("textarea");
             textArea.id = "script_textArea";
             textArea.placeholder =
-                "使用玩家名或玩家数字ID都可以搜索。\n手动滚动帮派日志，日志会记录到插件本地。\n点击清空按钮，清空本地的存储。\n目前存储不区分帮派，看过的日志都会存储，请按需重置。";
+                "手动滚动帮派日志，日志会自动记录到插件本地并上传到服务器。\n服务器的记录包含所有帮派。\n查询物品记录前，先按从服务器获取物品记录按钮。";
             textArea.rows = 10;
             textArea.cols = 60;
             textArea.style.overflowY = "auto";
