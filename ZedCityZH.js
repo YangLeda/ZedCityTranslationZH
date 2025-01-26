@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.6
+// @version      11.7
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -373,9 +373,7 @@
             }
             for (const key in record.items) {
                 if (record.items[key] !== 0) {
-                    text += `${record.items[key]}x ${dict(key)} （每个${numberFormatter(getWorthPrice(key))}, 总计${numberFormatter(
-                        record.items[key] * getWorthPrice(key)
-                    )}）\n`;
+                    text += `${record.items[key]}x ${dict(key)} （最新价值每个${numberFormatter(getWorthPrice(key))}）\n`;
                 }
             }
         }
@@ -390,13 +388,7 @@
         for (const key in records) {
             const record = records[key];
             const playerName = record.playerNames[0];
-            const items = record.items;
-            let itemsWorth = 0;
-
-            for (const key in record.items) {
-                itemsWorth += Number(record.items[key]) * Number(getWorthPrice(key));
-            }
-            result.push({ playerName: playerName, itemsWorth: itemsWorth });
+            result.push({ playerName: playerName, itemsWorth: record.balance });
         }
 
         function compareByWorth(a, b) {
