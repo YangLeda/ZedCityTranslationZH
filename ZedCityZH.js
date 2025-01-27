@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.8
+// @version      11.9
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -784,6 +784,9 @@
     if (!localStorage.getItem("script_junkStore_ironBarStock")) {
         localStorage.setItem("script_junkStore_ironBarStock", 0);
     }
+    if (!localStorage.getItem("script_junkStore_limit_left")) {
+        localStorage.setItem("script_junkStore_limit_left", 0);
+    }
 
     function handleGetStoreJunkLimit(r) {
         const response = JSON.parse(r);
@@ -804,6 +807,13 @@
                     localStorage.setItem("script_junkStore_ironBarStock", item.quantity);
                 }
             }
+        }
+
+        // 当前购买限额
+        let limitLeft = response?.limits?.limit_left;
+        if (limitLeft) {
+            limitLeft += 240;
+            localStorage.setItem("script_junkStore_limit_left", limitLeft);
         }
     }
 
@@ -1587,15 +1597,18 @@
             if (ironBarStock > 360) {
                 ironBarStock = 360;
             }
+            let limitLeft = Number(localStorage.getItem("script_junkStore_limit_left"));
+            let buyNum = ironBarStock > limitLeft ? limitLeft : ironBarStock;
+
             const btn360 = document.createElement("button");
             btn360.className = "script-store-max-btn";
-            btn360.textContent = ironBarStock;
+            btn360.textContent = buyNum;
             btn360.style.cssText = "position: absolute; bottom: 10px; left: 10px; z-index: 1000; pointer-events: auto;";
             btn360.addEventListener("click", () => {
                 const input = modal.querySelector("input");
                 // react hack
                 let lastValue = input.value;
-                input.value = ironBarStock;
+                input.value = buyNum;
                 let event = new Event("input", { bubbles: true });
                 event.simulated = true;
                 let tracker = input._valueTracker;
