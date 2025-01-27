@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      11.7
+// @version      11.8
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -83,49 +83,6 @@
 
 (() => {
     /* ZedTools START */
-
-    // 物品价值表
-    function getWorthPrice(itemName) {
-        const itemWorthList = {
-            Logs: 7,
-            Coal: 25,
-            "Gun Powder": 50,
-            Scrap: 8,
-            "Iron Bar": 105,
-            Nails: 12,
-            Steel: 241,
-            Wire: 2500,
-            Rope: 6000,
-            Plastic: 4000,
-            Tarp: 6000,
-            Fuel: 3000,
-            Water: 100,
-            "Barley Seeds": 100,
-            Gears: 4000,
-            "Cooked Fish": 175,
-            Beer: 300,
-            "e-Cola": 4000,
-            炸药: 20000,
-            "Pistol Ammo": 300,
-            "Silver key": 10000,
-            "Advanced Tools": 50000,
-            Pickaxe: 2170,
-            "Wooden Fishing Rod": 2800,
-            "Zed Pack": 50000,
-            Chocolate: 800,
-            "Zed Juice": 50,
-            ZedBull: 6000,
-            "Unrefined Plastic": 30000,
-            Thread: 1500,
-        };
-
-        if (itemWorthList.hasOwnProperty(itemName)) {
-            return itemWorthList[itemName];
-        } else {
-            console.log("getWorthPrice can not find " + itemName);
-            return 0;
-        }
-    }
 
     // XMLHttpRequest hook
     const open_prototype = XMLHttpRequest.prototype.open;
@@ -371,9 +328,10 @@
             if (playerName.toLowerCase() !== record.playerNames[0].toLowerCase() && Number(playerName) !== record.playerId) {
                 continue;
             }
+            text += `当前余额 ${numberFormatter(record.balance)}\n\n`;
             for (const key in record.items) {
                 if (record.items[key] !== 0) {
-                    text += `${record.items[key]}x ${dict(key)} （最新价值每个${numberFormatter(getWorthPrice(key))}）\n`;
+                    text += `${record.items[key]}x ${dict(key)}\n`;
                 }
             }
         }
