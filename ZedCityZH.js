@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      12.1
+// @version      12.2
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1843,6 +1843,7 @@
     //1.1 通用頁面
     const dictCommon = {
         "Offline for maintenance": "离线维护中",
+        "You gained": "你获得了",
         purge: "大清洗",
         stronghold: "据点",
         Faction: "帮派",
@@ -2067,6 +2068,9 @@
         "Zed Mart": "丧尸商场",
         "Donator Store": "捐赠商店",
         Incinerator: "焚烧炉",
+        Search: "搜索",
+        ID: "ID",
+        "No survivors found": "未找到幸存者",
 
         //----------------/ 市場狀態(購買,上架)
         Buy: "购买",
@@ -2473,6 +2477,15 @@
         Vehicle: "车辆",
         "No Vehicle": "没有车辆",
         "You need a vehicle to explore": "你需要一辆车来远征",
+        Stinger: "毒刺",
+        Efficiency: "效率",
+        Capacity: "容量",
+
+        "EXPLOSIVES FACTORY": "炸药工厂",
+        "ADVANCED REFINERY": "高级精炼厂",
+        "ABANDONED SCRAPYARD": "废弃废品场",
+        "ABANDONED FORGE": "废弃锻造厂",
+        "BUILDING WORKS": "建筑工程",
     };
 
     //----1.4-4 資源
@@ -2511,7 +2524,6 @@
         Water: "水",
         Wire: "铁丝",
         "Zed Juice": "丧尸汁",
-
         Oilcloth: "油布",
         Ash: "灰烬",
         "Purify Water": "净化水",
@@ -2562,10 +2574,11 @@
 
     //----1.4-6 醫療
     const dictItemMedical = {
+        "Med Booster": "医疗增强剂",
         Bandage: "绷带",
         "Effect: Reduce recovery time by 10 minutes, increases life by 10 and medical cooldown by 5 minutes":
-            "效果：减少10分钟的恢复时间，增加10点生命值和5分钟的医疗冷却时间",
-        "Med Booster": "医疗助推器",
+            "效果：减少10分钟的恢复时间，增加10点生命值，医疗冷却时间延长5分钟",
+        Morphine: "吗啡",
         "Effect: Reduce recovery time by 20 minutes, increases life by 20 and medical cooldown by 15 minutes":
             "效果：减少20分钟恢复时间，增加20点生命值，医疗冷却时间延长15分钟",
         "Small Med Kit": "小型医疗包",
@@ -2574,15 +2587,25 @@
         "Med Kit": "医疗包",
         "Effect: Reduce recovery time by 1 hour, increases life by 50 and medical cooldown by 30 minutes":
             "效果：减少1小时恢复时间，增加50点生命值，医疗冷却时间延长30分钟",
+        "Energy Vial": "能量瓶",
+        "Effect: Reduce recovery time by 10 minutes and increases life by": "效果：减少恢复时间10分钟并增加生命值",
+        "Health Vial": "生命瓶",
+        "Detox Vial": "解毒瓶",
+        "Effect: Resets cooldown booster by 12 hours": "效果：重置增强剂冷却时间12小时",
     };
 
     //----1.4-7 增強
     const dictEnhance = {
         "Booster (Medical)": "增强剂（医疗）",
+        "Booster (Energy Drink": "增强剂（能量饮料）",
         "Booster (Energy Drink)": "增强剂（能量饮料）",
         "Booster (Special": "增强剂（特殊）",
         "Booster (Easter": "增强剂（复活节）",
-        "Adrenaline Booster": "肾上腺素助推器",
+        "Booster (Food": "增强剂（食物）",
+        "Booster (Food)": "增强剂（食物）",
+        "Booster (Alcohol)": "增强剂（酒精）",
+        "Booster (Medical": "增强剂（医疗）",
+        "Booster (Alcohol": "增强剂（酒精）",
 
         //----------------/ 食物
         "Animal Meat": "动物肉",
@@ -2595,6 +2618,18 @@
         "Mixed Vegetables": "混合蔬菜",
         "Pumpkin Pie": "南瓜派",
         Sandwich: "三明治",
+        "Morale Vial": "士气瓶",
+
+        "Effect: Increases morale by 10 and booster cooldown by 30 minutes": "效果：增加10点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by 20 and booster cooldown by 30 minutes": "效果：增加20点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by 50 and booster cooldown by 30 minutes": "效果：增加50点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by 65 and booster cooldown by 30 minutes": "效果：增加65点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by 75 and booster cooldown by 30 minutes": "效果：增加75点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by 100 and booster cooldown by 30 minutes": "效果：增加100点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by 125 and booster cooldown by 30 minutes": "效果：增加125点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by 300 and booster cooldown by 30 minutes": "效果：增加300点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by 500 and booster cooldown by 30 minutes": "效果：增加500点士气，增强剂冷却时间30分钟",
+        "Effect: Increases morale by": "效果：增加士气",
 
         //----------------/ 能量
         Coffee: "咖啡",
@@ -2602,55 +2637,30 @@
         Eyebellini: "眼球鸡尾酒",
         "Witch's Brew": "巫师饮品",
         ZedBull: "丧尸红牛",
+        "Adrenaline Booster": "肾上腺素增强剂",
+
+        "Effect: Increases energy by 25 and booster cooldown by 2 hours": "效果：增加25点能量，增强剂冷却时间延长2小时",
+        "Effect: Increases energy by 30 and booster cooldown by 2 hours": "效果：增加30点能量，增强剂冷却时间延长2小时",
+        "Effect: Increases energy by 250 and booster cooldown by 2 hours": "效果：增加250点能量，增强剂冷却时间延长2小时",
+        "Effect: Increases energy by": "效果：增加能量",
 
         //----------------/ 飲料
         Beer: "啤酒",
         Vodka: "伏特加",
         Whiskey: "威士忌",
-
-        "Effect: Increases rad immunity by 1 and booster cooldown by 1 hour": "效果：增加辐射免疫力1，增强剂冷却时间1小时",
-        "Effect: Increases morale by 20 and booster cooldown by 30 minutes": "效果：增加士气20，增强剂冷却时间30分钟",
-        "Effect: Increases morale by 65 and booster cooldown by 30 minutes": "效果：增加士气65，增强剂冷却时间30分钟",
-
-        "Energy Vial": "能量瓶",
-        "Health Vial": "生命瓶",
-        "Morale Vial": "士气瓶",
         "Radiation Vial": "辐射瓶",
-        "Detox Vial": "解毒瓶",
-        "Booster (Food)": "增强剂（食物）",
-        "Booster (Alcohol)": "增强剂（酒精）",
-        "Effect: Increases energy by": "效果：增加能量",
-        "Effect: Reduce recovery time by 10 minutes and increases life by": "效果：减少恢复时间10分钟并增加生命值",
-        "Effect: Increases morale by": "效果：增加士气",
+
+        "Effect: Increases rad immunity by 1 and booster cooldown by 1 hour": "效果：增加1点辐射免疫力，增强剂冷却时间延长1小时",
+        "Effect: Increases rad immunity by 2 and booster cooldown by 1 hour": "效果：增加2点辐射免疫力，增强剂冷却时间延长1小时",
+        "Effect: Increases rad immunity by 3 and booster cooldown by 1 hour": "效果：增加3点辐射免疫力，增强剂冷却时间延长1小时",
         "Effect: Increases rad immunity by": "效果：增加辐射免疫力",
-        "Effect: Resets cooldown booster by 12 hours": "效果：重置冷却时间增强剂12小时",
 
-        "Booster (Energy Drink": "增强剂（能量饮料）",
-        "Booster (Medical": "增强剂（医疗）",
-        "Booster (Food": "增强剂（食物）",
-        "Booster (Alcohol": "增强剂（酒精）",
-
-        "Effect: Increases morale by 100 and booster cooldown by 30 minutes": "效果：增加士气100，增强剂冷却时间30分钟",
-        "Effect: Increases morale by 10 and booster cooldown by 30 minutes": "效果：增加士气10，增强剂冷却时间30分钟",
-        "Effect: Increases morale by 100, rad immunity by 10 and booster cooldown by 30 minutes":
-            "效果：增加士气100，辐射免疫力10，增强剂冷却时间30分钟",
-        "Effect: Increases energy by 25 and booster cooldown by 2 hours": "效果：增加能量25，增强剂冷却时间2小时",
-        "Effect: Increases morale by 50 and booster cooldown by 1 hour": "效果：增加50点士气和1小时的增益冷却时间",
+        "Effect: Increases morale by 50 and booster cooldown by 1 hour": "效果：增加50点士气，增强剂冷却时间延长1小时",
         "Effect: Increases morale by 50, energy by 10, rad immunity by 5 and booster cooldown by 30 minutes":
-            "效果：增加50点士气、10点能量、5点辐射免疫力和30分钟的增益冷却时间",
-        "Effect: Increases energy by 30 and booster cooldown by 2 hours": "效果：增加30点能量和2小时的增益冷却时间",
-        "Effect: Increases morale by 100, energy by 25 and booster cooldown by 30 minutes": "效果：增加100点士气、25点能量和30分钟的增益冷却时间",
-        "Effect: Increases morale by 500 and booster cooldown by 30 minutes": "效果：增加500点士气和30分钟的增益冷却时间",
-
-        Morphine: "吗啡",
-
-        "Effect: Increases morale by 75 and booster cooldown by 30 minutes": "效果：增加75点士气，助推器冷却时间延长30分钟",
-        "Effect: Increases morale by 300 and booster cooldown by 30 minutes": "效果：增加300点士气，助推器冷却时间延长30分钟",
-        "Effect: Increases morale by 125 and booster cooldown by 30 minutes": "效果：增加125点士气，助推器冷却时间延长30分钟",
-        "Effect: Increases rad immunity by 2 and booster cooldown by 1 hour": "效果：增加2点辐射免疫，助推器冷却时间延长1小时",
-        "Effect: Increases rad immunity by 3 and booster cooldown by 1 hour": "效果：增加3点辐射免疫，助推器冷却时间延长1小时",
-        "Effect: Increases morale by 50 and booster cooldown by 30 minutes": "效果：增加士气50，增强剂冷却时间30分钟",
-        "Effect: Increases energy by 250 and booster cooldown by 2 hours": "效果：增加250点能量，助推器冷却时间延长2小时",
+            "效果：增加50点士气、10点能量、5点辐射免疫力，增强剂冷却时间延长30分钟",
+        "Effect: Increases morale by 100, rad immunity by 10 and booster cooldown by 30 minutes":
+            "效果：增加100点士气，10点辐射免疫力，增强剂冷却时间延长30分钟",
+        "Effect: Increases morale by 100, energy by 25 and booster cooldown by 30 minutes": "效果：增加100点士气、25点能量，增强剂冷却时间延长30分钟",
     };
 
     //----1.4-8 道具裝備
@@ -2673,15 +2683,12 @@
         "Lucky coin": "幸运硬币",
         "Security Card": "安保卡",
         "Bronze Key": "青铜钥匙",
-
         "Silver key": "银钥匙",
         "Police RFID": "警察射频ID",
         Compass: "指南针",
         Crowbar: "撬棍",
         Flashlight: "手电筒",
-
         Transceiver: "无线电收发器",
-
         Binoculars: "双筒望远镜",
         "Helps you see": "帮助你看得更清楚",
     };
@@ -3023,6 +3030,15 @@
         "Wait, y'know what... If you've got the room maybe you could start working on it? Only thing is you'll need a big enough garage to work on it. I'll give you the blueprints to make advanced tools which should help you to get started":
             "等等，你知道吗……如果你有地方，也许你可以开始修理它？唯一的问题是你需要一个足够大的车库。我会给你制作高级工具的蓝图，这应该能帮助你开始。",
         "Objective: Build garage": "目标：建造车库",
+        //---------------Garbo-11
+        "So she's purring over now is she? All working?": "那么她现在运转正常了吗？一切都正常吗？",
+        "You give Garbo a cheeky smirk and a nod": "你对着加尔博调皮地笑了笑并点了点头",
+        "Well! Theres nothing else for it! I always wanted to go check out the military base not too far from here, but making it on foot would be far too dangerous. How about we take that ride of yours over there and check out what glorious loot the generals quarters has for us?":
+            "好吧！没有别的办法了！我一直想去看看离这儿不远的军事基地，但步行去那里太危险了。我们开着你的车去那里，看看将军的住所里有什么好东西怎么样？",
+        "You reach into your pocket to grab the keys to your new ride": "你把手伸进口袋去拿你新车的钥匙",
+        "I guess we'll have to scavenge for a long time or hunt some soldiers to find the key. Let's go!":
+            "我想我们得花很长时间去搜寻或者猎杀一些士兵来找到钥匙。我们走吧！",
+        "Objective: Find Generals RFID": "目标：将军的射频ID",
 
         //---------------BUDDY-1
         "You hop over a tall fence in a large courtyard surrounded by an old library building. You begin walking inwards, the area is completely concealed with the fence being the only exit. You begin to feel uneasy and the area almost feels like a deathtrap. At that moment two doors open on either side of the courtyard as floods of zombies begin to pour out. With no option but forward or back, you begin to run forward until you crash through the front door of the library and up the stairs. At the top of the stairs a young well muscled man beckons you behind a large door while excitedly laughing, jumping and egging you on":
@@ -3194,7 +3210,7 @@
         General: "综合",
         "A place for general discussions": "一个进行综合讨论的地方",
         Ideas: "创意",
-        "Ideas & Suggestions for alpha": "Alpha测试的创意与建议",
+        "Ideas & Suggestions": "创意与建议",
 
         Name: "名字",
         Topics: "话题",
@@ -3219,6 +3235,7 @@
         Bold: "粗体",
         "Add Reply": "添加回复",
         Post: "发布",
+        "an hour ago": "1小时前",
     };
 
     //2.1 其他 (尚未整理的翻譯)
@@ -3226,19 +3243,13 @@
         "A bag of Cement mix": "一袋水泥混合料",
 
         Miscellaneous: "杂项",
-        Stinger: "毒刺",
-        Efficiency: "效率",
-        Capacity: "容量",
         leave: "离开",
         visit: "查看",
-        "You gained": "你获得了",
+
         "Your rad is already full": "你的辐射值已经满了",
         "Your energy has been refilled": "你的能量已经重新填充",
 
         None: "无",
-        Search: "搜索",
-        ID: "ID",
-        "No survivors found": "未找到幸存者",
         Continue: "继续",
         "Your scavenging skill level needs to be": "你的拾荒技能等级需要达到",
         Fish: "钓鱼",
@@ -3249,10 +3260,8 @@
         Collect: "收集",
 
         "will show a total time if you are crafting more than 1x": "如果你制作超过1个，将显示总时间",
-
         "Medical Bay Level": "医疗间等级",
         "Bench Level": "制作台等级",
-
         "An essential item to make your rod work": "使鱼竿运作的必需品",
         V: "V",
         High: "高",
@@ -3264,10 +3273,8 @@
         Offline: "离线",
         Retry: "重试",
         Lockpicks: "撬锁工具",
-
         "Coming Soon": "即将推出",
         "Donator House is coming soon": "捐赠者之家即将推出",
-
         min: "最低",
         "hours ago": "小时前",
         "Active an hour ago": "1小时前在线",
@@ -3275,6 +3282,22 @@
 
     //2.2 版本更新
     const dictVersion = {
+        //v1.0.5
+        "It has been an incredible first month in Zed City! Over 1,350 of you have joined the fight, with more than 900 new survivors":
+            "在泽德城的第一个月真是不可思议！超过 1350 名玩家加入了战斗，还有 900 多名新的幸存者",
+        "Together, you've forged 5,049,777 items, attempted 1,006,579 scavenges, and embarked on 57,453 hunts. We want to thank each and every one of you for your incredible support. We're committed to continuously improving and expanding the experience, and we can’t wait to share what’s coming next":
+            "你们一起锻造了 5049777 件物品，尝试了 1006579 次拾荒，并开始了 57453 次狩猎。我们要感谢你们每一位的大力支持。我们致力于不断改进和扩展游戏体验，因此迫不及待地想分享接下来的内容",
+        "Server Migration": "服务器迁移",
+        "While we're not experiencing any slowdown yet, we've been preparing to upgrade our infrastructure to support future growth and additional services, such as in-game chat and real-time updates":
+            "虽然我们还没有遇到任何放缓的情况，但我们一直在准备升级我们的基础设施，以支持未来的增长和额外的服务，比如游戏内聊天和实时更新",
+        "Economy Balancing": "经济平衡",
+        "Iron Bar supply in the Junk Store has been increased due to high demand": "由于需求量大，废品店的铁锭供应量有所增加",
+        "Fuel Depot trades have been reduced to": "燃料库交易已降至",
+        "Store buy limit error message has been fixed": "修复了商店购买限制错误消息",
+        "Active perks won't display until some perks are active": "在一些特权处于激活状态之前，不会显示激活的特权",
+        "Added loading animation to crafting lists": "为合成列表添加了加载动画",
+        "Scope for discord login has been reduced to only what is required": "Discord 登录的范围已缩小到仅需的范围",
+
         //v1.0.4
         "Points will now be known as Zed Coin, we have added the ability to list these on the market":
             "点数现在将被称为丧尸币，我们已添加将其列入市场的功能",
