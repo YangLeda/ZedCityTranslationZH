@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      12.2
+// @version      12.3
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -118,9 +118,6 @@
     };
 
     /* 帮派日志相关 */
-    if (!localStorage.getItem("script_faction_item_logs")) {
-        localStorage.setItem("script_faction_item_logs", JSON.stringify({}));
-    }
     if (!localStorage.getItem("script_faction_raid_logs")) {
         localStorage.setItem("script_faction_raid_logs", JSON.stringify({}));
     }
@@ -136,38 +133,43 @@
         if (!response?.notify) {
             return;
         }
-        const itemLogs = JSON.parse(localStorage.getItem("script_faction_item_logs"));
         const raidLogs = JSON.parse(localStorage.getItem("script_faction_raid_logs"));
-
         const logsToUpload = []; // Upload to ZedToolsServer
 
         for (const log of response.notify) {
             if (log.type === "faction_take_item" || log.type === "faction_add_item") {
-                if (
-                    true
-                    // !itemLogs.hasOwnProperty(log.date) ||
-                    // itemLogs[log.date]?.type !== log.type ||
-                    // itemLogs[log.date]?.data?.name !== log?.data?.name
-                ) {
-                    itemLogs[log.date] = log;
-                    logsToUpload.push({
-                        logType: log.type,
-                        timestamp: log.date,
-                        userId: log.data.user_id,
-                        userName: log.data.username,
-                        itemQty: log.data.qty,
-                        itemName: log.data.name,
-                        factionName: localStorage.getItem("script_faction_id"),
-                        uploaderName: localStorage.getItem("script_playerName"),
-                    });
-                }
-            } else if (log.type === "faction_raid") {
+                logsToUpload.push({
+                    logType: log.type,
+                    timestamp: log.date,
+                    userId: log.data.user_id,
+                    userName: log.data.username,
+                    itemQty: log.data.qty,
+                    itemName: log.data.name,
+                    factionName: localStorage.getItem("script_faction_id"),
+                    uploaderName: localStorage.getItem("script_playerName"),
+                });
+            } else if (log.type === "faction_raid" && log.data?.users) {
                 raidLogs[log.date] = log;
+
+                if (log.date >= 1738810321) {
+                    // Server ignore raid logs before 20250206
+                    for (const user of log.data.users) {
+                        logsToUpload.push({
+                            logType: "faction_add_item",
+                            timestamp: log.date,
+                            userId: user.id,
+                            userName: user.username,
+                            itemQty: (Number(log.data.respect) / Number(log.data.users.length)).toFixed(1),
+                            itemName: "声望",
+                            factionName: localStorage.getItem("script_faction_id"),
+                            uploaderName: localStorage.getItem("script_playerName"),
+                        });
+                    }
+                }
             }
         }
-        localStorage.setItem("script_faction_item_logs", JSON.stringify(itemLogs));
         localStorage.setItem("script_faction_raid_logs", JSON.stringify(raidLogs));
-        console.log(`itemLogs: ${Object.keys(itemLogs).length}  raidLogs: ${Object.keys(raidLogs).length}`);
+        console.log(`raidLogs: ${Object.keys(raidLogs).length}`);
 
         uploadToServer(logsToUpload);
         updateFactionLogRecord();
@@ -266,34 +268,8 @@
     }
 
     function updateFactionLogRecord() {
-        const itemLogs = JSON.parse(localStorage.getItem("script_faction_item_logs"));
         const raidLogs = JSON.parse(localStorage.getItem("script_faction_raid_logs"));
         const result = {};
-
-        for (const key in itemLogs) {
-            const userIdInLog = Number(itemLogs[key]?.data?.user_id);
-            if (userIdInLog && !result[userIdInLog]) {
-                result[userIdInLog] = {
-                    playerId: userIdInLog,
-                    playerNames: [itemLogs[key]?.data?.username],
-                    items: {},
-                    respectFromRaids: 0,
-                    lastRaid: null,
-                };
-            }
-            if (itemLogs[key].type === "faction_take_item") {
-                result[userIdInLog].items[itemLogs[key].data.name] = result[userIdInLog].items[itemLogs[key].data.name]
-                    ? Number(result[userIdInLog].items[itemLogs[key].data.name]) - Number(itemLogs[key].data.qty)
-                    : -Number(itemLogs[key].data.qty);
-                // `${itemLogs[key].data.username} 取走了 ${itemLogs[key].data.qty}x ${dict(itemLogs[key].data.name)}\n`;
-            }
-            if (itemLogs[key].type === "faction_add_item") {
-                result[userIdInLog].items[itemLogs[key].data.name] = result[userIdInLog].items[itemLogs[key].data.name]
-                    ? Number(result[userIdInLog].items[itemLogs[key].data.name]) + Number(itemLogs[key].data.qty)
-                    : Number(itemLogs[key].data.qty);
-                // `${itemLogs[key].data.username} 存入了 ${itemLogs[key].data.qty}x ${dict(itemLogs[key].data.name)}\n`;
-            }
-        }
 
         for (const key in raidLogs) {
             if (raidLogs[key].type === "faction_raid" && raidLogs[key].data?.users) {
@@ -303,7 +279,6 @@
                         result[userIdInLog] = {
                             playerId: userIdInLog,
                             playerNames: [user.username],
-                            items: {},
                             respectFromRaids: 0,
                             lastRaid: null,
                         };
@@ -479,7 +454,6 @@
             clearButton.onclick = function () {
                 console.log("Faction log cleared.");
                 document.getElementById("script_textArea").value = "历史记录已清空";
-                localStorage.setItem("script_faction_item_logs", JSON.stringify({}));
                 localStorage.setItem("script_faction_raid_logs", JSON.stringify({}));
                 localStorage.setItem("script_faction_log_records", JSON.stringify({}));
                 localStorage.setItem("script_faction_log_records_server", JSON.stringify({}));
