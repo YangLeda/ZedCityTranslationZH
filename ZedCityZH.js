@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      12.5
+// @version      12.6
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1844,7 +1844,11 @@
 
     /* 拾荒统计 */
     function addScavengeRecords() {
-        if (!window.location.href.includes("zed.city/scavenge") && !window.location.href.includes("zed.city/exploring")) {
+        if (
+            !window.location.href.includes("zed.city/scavenge") &&
+            !window.location.href.includes("zed.city/exploring") &&
+            !window.location.href.includes("zed.city/outposts")
+        ) {
             return;
         }
         const insertToElem = document.body.querySelector(".q-page.q-layout-padding");
@@ -2717,7 +2721,7 @@
         Cloth: "布料",
         Coal: "煤炭",
         "Dirty Water": "脏水",
-        Explosives: "爆炸物",
+        Explosives: "炸药",
         "Fishing Reel": "鱼线轮",
         Flux: "助焊剂",
         Fuel: "燃料",
@@ -4017,6 +4021,19 @@
         "Search Workshop": "搜索作坊",
         "Vending Machine": "自动售货机",
         "Takeover outpost to access building works": "抢占前哨站以进入建筑工程",
+        "Foundation Pit": "地基坑",
+        "Secure Lockup Door": "安全门",
+        "Security Vault": "保险库",
+        Lockbox: "保险箱",
+        Abandoned: "废弃的",
+        "You do not have any Explosives": "你没有任何炸药",
+        "You tookover the outpost": "你占领了前哨站",
+        Abandon: "放弃",
+        "Abandon Outpost": "放弃前哨站",
+        "Are you sure you want to abandon this outpost": "你确定要放弃这个前哨站吗",
+        "Protected Cooldown": "保护冷却时间",
+        "You activated the Vending Machine and gained": "你启动了自动售货机并获得了",
+        "Owner is defending": "所有者防御中",
     };
 
     /* 词典结束 感谢七包茶整理 */
