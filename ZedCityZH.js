@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      12.3
+// @version      12.4
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -32,6 +32,9 @@
 /* 拾荒统计 */
 /* 狩猎统计 */
 /* 锻炼细节显示 */
+/* 显示物价 */
+/* 远征图1油泵交易倒计时 */
+/* 显示车重 */
 
 //字典
 //1.1 通用頁面
@@ -111,11 +114,26 @@
                     handleDoFight(this.response);
                 } else if (this.responseURL === "https://api.zed.city/getFaction") {
                     handleGetFaction(this.response);
+                } else if (this.responseURL === "https://api.zed.city/loadItems") {
+                    handleLoadItems(this.response);
                 }
             }
         });
         return open_prototype.apply(this, arguments);
     };
+
+    let itemWorths = null;
+    getItemWorth("");
+
+    async function getItemWorth(itemName) {
+        if (!itemWorths) {
+            itemWorths = await getItemWorthsFromServer();
+        }
+        if (itemWorths.hasOwnProperty(itemName)) {
+            return Number(itemWorths[itemName].price);
+        }
+        return 0;
+    }
 
     /* 帮派日志相关 */
     if (!localStorage.getItem("script_faction_raid_logs")) {
@@ -212,6 +230,34 @@
                     if (textArea) {
                         textArea.value = "网络错误onerror";
                     }
+                    resolve("网络错误onerror");
+                },
+            });
+        });
+    }
+
+    function getItemWorthsFromServer() {
+        const textArea = document.getElementById("script_textArea");
+        console.log("开始尝试从服务器获取物价表");
+        return new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                method: "GET",
+                url: `http://43.129.194.214:7000/item-worths`,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                onload: function (response) {
+                    if (!response || !response.response) {
+                        console.error("网络错误onload");
+                        resolve("网络错误onload");
+                    }
+                    const json = JSON.parse(response.response);
+                    console.log(json);
+                    resolve(json);
+                },
+                onerror: function (error) {
+                    console.log("网络错误onerror");
+                    console.log(error);
                     resolve("网络错误onerror");
                 },
             });
@@ -321,10 +367,17 @@
         for (const key in records) {
             const record = records[key];
             const playerName = record.playerNames[0];
-            result.push({ playerName: playerName, itemsWorth: record.balance });
+            result.push({ playerName: playerName, itemsWorth: record.balance, latestLogTimestamp: record.latestLogTimestamp });
         }
 
         function compareByWorth(a, b) {
+            const isAAFK = !a.latestLogTimestamp || Math.floor(Date.now() / 1000) - a.latestLogTimestamp > 259200;
+            const isBAFK = !b.latestLogTimestamp || Math.floor(Date.now() / 1000) - b.latestLogTimestamp > 259200;
+            if (isAAFK && !isBAFK) {
+                return 1;
+            } else if (!isAAFK && isBAFK) {
+                return -1;
+            }
             return b.itemsWorth - a.itemsWorth;
         }
         result.sort(compareByWorth);
@@ -496,6 +549,12 @@
     if (!localStorage.getItem("script_energy")) {
         localStorage.setItem("script_energy", 0);
     }
+    if (!localStorage.getItem("script_vehicle_max_weight")) {
+        localStorage.setItem("script_vehicle_max_weight", 0);
+    }
+    if (!localStorage.getItem("script_vehicle_weight")) {
+        localStorage.setItem("script_vehicle_weight", 0);
+    }
 
     function handleGetStats(r) {
         localStorage.setItem("script_getStats", r);
@@ -523,6 +582,12 @@
             if (timestamp - previousTimestamp > 30000) {
                 localStorage.setItem("script_raidIsAlreadyNotified", false);
             }
+        }
+
+        // Vehicle
+        if (response?.vehicle?.vars) {
+            localStorage.setItem("script_vehicle_max_weight", response.vehicle.vars.max_weight);
+            localStorage.setItem("script_vehicle_weight", response.vehicle.vars.weight);
         }
 
         // Bars
@@ -648,14 +713,14 @@
         if (levelElem && !insertElem) {
             levelElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_player_level"><span id="script_player_level_inner"><strong>${Math.floor(playerXp)} / ${Math.floor(
-                    currentLevelMaxXP
-                )}</strong> ${levelUpInText}</span></div>`
+                `<div id="script_player_level" class="script_do_not_translate"><span id="script_player_level_inner" class="script_do_not_translate"><strong class="script_do_not_translate">${Math.floor(
+                    playerXp
+                )} / ${Math.floor(currentLevelMaxXP)}</strong> ${levelUpInText}</span></div>`
             );
         } else if (levelElem && insertElem) {
-            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong>${Math.floor(playerXp)} / ${Math.floor(
-                currentLevelMaxXP
-            )}</strong> ${levelUpInText}`;
+            insertElem.querySelector("#script_player_level_inner").innerHTML = `<strong class="script_do_not_translate">${Math.floor(
+                playerXp
+            )} / ${Math.floor(currentLevelMaxXP)}</strong> ${levelUpInText}`;
         }
 
         // 插入用于显示倒计时的div
@@ -663,7 +728,8 @@
         if (levelElem?.parentElement?.parentElement?.parentElement && !insertElem) {
             levelElem?.parentElement?.parentElement?.parentElement.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_countdowns_container" style="display: flex; align-items: center; justify-content: center; gap: 15px;"></div>`
+                `<div id="script_countdowns_container" class="script_do_not_translate" style="display: flex; align-items: center; justify-content: center; gap: 15px;"></div>
+                <div id="script_countdowns_container_2" class="script_do_not_translate" style="display: flex; align-items: center; justify-content: center; gap: 15px;"></div>`
             );
         }
     }
@@ -687,7 +753,7 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_energyBar_logo" style="order: 99; cursor: pointer;"><span class="script_do_not_translate" style="font-size: 12px;">能量 ${timeReadable(
+                    `<div id="script_energyBar_logo" style="order: 1; cursor: pointer;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">能量 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
@@ -699,7 +765,7 @@
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_energyBar_logo" style="order: 99; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">能量已满</span></div>`
+                    `<div id="script_energyBar_logo" style="order: 1; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">能量已满</span></div>`
                 );
                 insertToElem.querySelector("#script_energyBar_logo").addEventListener("click", () => {
                     history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_gym"));
@@ -721,7 +787,7 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_radBar_logo" style="order: 100; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">辐射 ${timeReadable(
+                    `<div id="script_radBar_logo" style="order: 2; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">辐射 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
@@ -733,7 +799,7 @@
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_radBar_logo" style="order: 100; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">辐射已满</span></div>`
+                    `<div id="script_radBar_logo" style="order: 2; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">辐射已满</span></div>`
                 );
                 insertToElem.querySelector("#script_radBar_logo").addEventListener("click", () => {
                     history.pushState(null, null, "https://www.zed.city/scavenge");
@@ -808,7 +874,7 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_junk_store_limit_logo" style="order: 102; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">商店 ${timeReadable(
+                    `<div id="script_junk_store_limit_logo" style="order: 4; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">商店 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
@@ -820,7 +886,7 @@
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_junk_store_limit_logo" style="order: 102; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">商店已刷新</span></div>`
+                    `<div id="script_junk_store_limit_logo" style="order: 4; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">商店已刷新</span></div>`
                 );
                 insertToElem.querySelector("#script_junk_store_limit_logo").addEventListener("click", () => {
                     history.pushState(null, null, "https://www.zed.city/store/junk");
@@ -874,7 +940,7 @@
         }
 
         // 拾荒统计
-        if (jobName?.startsWith("job_scavenge_")) {
+        if (jobName?.startsWith("job_scavenge_") || response?.job?.layout === "room_scavenge") {
             const records = JSON.parse(localStorage.getItem("script_scavenge_records"));
             const mapName = response?.job?.name;
             if (!records.hasOwnProperty(mapName)) {
@@ -902,6 +968,12 @@
 
         // 锻炼统计
         handleGymStartJob(response);
+
+        // 远征图1油泵交易倒计时
+        if (jobName?.startsWith("job_fuel_depot_fuel_trader_1")) {
+            const timestamp = Date.now() + 10800 * 1000; // 3 hours
+            localStorage.setItem("script_exploration_fuelTrade_cooldown_at_ms", timestamp);
+        }
     }
 
     /* 锻炼细节显示 */
@@ -1012,7 +1084,7 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_forge_logo" style="order: 101; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(
+                    `<div id="script_forge_logo" style="order: 3; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">熔炉 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
@@ -1024,7 +1096,7 @@
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_forge_logo" style="order: 101; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span></div>`
+                    `<div id="script_forge_logo" style="order: 3; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">熔炉未工作</span></div>`
                 );
                 insertToElem.querySelector("#script_forge_logo").addEventListener("click", () => {
                     history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_furnace"));
@@ -1074,7 +1146,7 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_radio_tower_logo" style="order: 103; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">电塔 ${timeReadable(
+                    `<div id="script_radio_tower_logo" style="order: 5; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">电塔 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
@@ -1086,7 +1158,7 @@
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_radio_tower_logo" style="order: 103; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">电塔已刷新</span></div>`
+                    `<div id="script_radio_tower_logo" style="order: 5; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">电塔已刷新</span></div>`
                 );
                 insertToElem.querySelector("#script_radio_tower_logo").addEventListener("click", () => {
                     history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_radio_tower"));
@@ -1113,7 +1185,7 @@
         if (localStorage.getItem("script_raidTimestamp") === "0") {
             return;
         }
-        const insertToElem = document.body.querySelector("#script_countdowns_container");
+        const insertToElem = document.body.querySelector("#script_countdowns_container_2");
         if (!insertToElem) {
             return;
         }
@@ -1123,7 +1195,7 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_raidCooldown_logo" style="order: 104; cursor: pointer; "><span class="script_do_not_translate" style="font-size: 12px;">突袭 ${timeReadable(
+                    `<div id="script_raidCooldown_logo" style="order: 1; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">突袭 ${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
@@ -1135,7 +1207,7 @@
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_raidCooldown_logo" style="order: 104; cursor: pointer; "><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">突袭已冷却</span></div>`
+                    `<div id="script_raidCooldown_logo" style="order: 1; cursor: pointer; " class="script_do_not_translate"><span class="script_do_not_translate" style="background-color: #ef5350; font-size: 12px;">突袭已冷却</span></div>`
                 );
                 insertToElem.querySelector("#script_raidCooldown_logo").addEventListener("click", () => {
                     history.pushState(null, null, "https://www.zed.city/raids");
@@ -1155,7 +1227,7 @@
 
     /* 状态栏显示总BS */
     function updateBSDisplay() {
-        const insertToElem = document.body.querySelector("#script_countdowns_container");
+        const insertToElem = document.body.querySelector("#script_countdowns_container_2");
         if (!insertToElem) {
             return;
         }
@@ -1164,7 +1236,7 @@
         if (!logoElem) {
             insertToElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_bs_logo" style="order: 105;"><span class="script_do_not_translate" style="font-size: 12px; color: green;">战力：${numberFormatter(
+                `<div id="script_bs_logo" style="order: 99;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px; color: green;">战力：${numberFormatter(
                     totalBS
                 )}</span></div>`
             );
@@ -1175,6 +1247,151 @@
         }
     }
     setInterval(updateBSDisplay, 500);
+
+    /* 远征图1油泵交易倒计时 */
+    function updateFuelTradeDisplay() {
+        const insertToElem = document.body.querySelector("#script_countdowns_container_2");
+        if (!insertToElem) {
+            return;
+        }
+        const logoElem = document.body.querySelector("#script_fuelTrade_logo");
+        const cooldownTimestamp = localStorage.getItem("script_exploration_fuelTrade_cooldown_at_ms")
+            ? localStorage.getItem("script_exploration_fuelTrade_cooldown_at_ms")
+            : 0;
+        const timeLeftSec = Math.floor((cooldownTimestamp - Date.now()) / 1000);
+        if (!logoElem) {
+            if (timeLeftSec > 0) {
+                insertToElem.insertAdjacentHTML(
+                    "beforeend",
+                    `<div id="script_fuelTrade_logo" style="order: 2;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">油泵：${timeReadable(
+                        timeLeftSec
+                    )}</span></div>`
+                );
+            } else {
+                insertToElem.insertAdjacentHTML(
+                    "beforeend",
+                    `<div id="script_fuelTrade_logo" style="order: 2;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">油泵已冷却</span></div>`
+                );
+            }
+        } else {
+            if (timeLeftSec > 0) {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">油泵：${timeReadable(timeLeftSec)}</span>`;
+            } else {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">油泵已冷却</span>`;
+            }
+        }
+    }
+    setInterval(updateFuelTradeDisplay, 500);
+
+    /* 显示车重 */
+    function updateVehicleWeightDisplay() {
+        const insertToElem = document.body.querySelector("#script_countdowns_container_2");
+        if (!insertToElem) {
+            return;
+        }
+        const max_weight = Number(localStorage.getItem("script_vehicle_max_weight")).toFixed(1);
+        const weight = Number(localStorage.getItem("script_vehicle_weight")).toFixed(1);
+        if (max_weight <= 0) {
+            return;
+        }
+
+        const color = percentageToHexColor(weight / max_weight);
+
+        const logoElem = document.body.querySelector("#script_vehicleWeight_logo");
+        if (!logoElem) {
+            insertToElem.insertAdjacentHTML(
+                "beforeend",
+                `<div id="script_vehicleWeight_logo" style="order: 98;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px; color: ${color};">车重：${weight}/${max_weight}</span></div>`
+            );
+        } else {
+            logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px; color: ${color};">车重：${weight}/${max_weight}</span>`;
+        }
+    }
+    setInterval(updateVehicleWeightDisplay, 500);
+
+    function percentageToHexColor(percentage) {
+        percentage = Math.max(0, Math.min(1, percentage));
+
+        let r = 255;
+        let g = Math.round(255 * (1 - percentage));
+        let b = Math.round(255 * (1 - percentage));
+
+        return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+    }
+
+    /* 显示物价 */
+    function onElementAdded(selector, callback) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === "characterData" && mutation.target.parentNode.matches(".q-item__label")) {
+                    callback(mutation.target.parentNode);
+                }
+
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) {
+                        if (node.matches(selector)) {
+                            callback(node);
+                        }
+                        node.querySelectorAll(selector).forEach((child) => callback(child));
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true, attributes: false, characterData: true });
+    }
+
+    onElementAdded(".q-item__label", (element) => {
+        showItemWorths(element);
+    });
+
+    async function showItemWorths(element) {
+        const added = element.querySelector(".script_addedPrice");
+        const itemName = getOriTextFromElement(element);
+        const price = await getItemWorth(itemName);
+        const text = price > 0 ? ` [$${numberFormatter(price)}]` : "";
+
+        if (added && added.textContent !== text) {
+            added.textContent = text;
+        } else if (!added) {
+            element.insertAdjacentHTML("beforeend", `<span class="script_do_not_translate script_addedPrice" style="color: green;">${text}</span>`);
+        }
+    }
+
+    async function handleLoadItems(r) {
+        const response = JSON.parse(r);
+        if (!response?.vehicle_items) {
+            return;
+        }
+
+        let totalWorth = 0;
+        let totalWeight = 0;
+        for (const item of response.vehicle_items) {
+            const perPrice = await getItemWorth(item.name);
+            const quantity = item.quantity;
+            const weight = Number(item.vars.weight);
+            totalWorth += perPrice * quantity;
+            totalWeight += weight * quantity;
+        }
+
+        localStorage.setItem("script_vehicle_weight", totalWeight);
+
+        const text = "【车辆中物品总价值：" + numberFormatter(totalWorth) + "】";
+
+        // 在页面下方显示车辆中物品总价值
+        const insertToElem = document.body.querySelector(".q-page.q-layout-padding div");
+        if (!insertToElem) {
+            return;
+        }
+        const textElem = document.body.querySelector("#script_vehicle_worth");
+        if (!textElem) {
+            insertToElem.insertAdjacentHTML(
+                "beforeBegin",
+                `<div id="script_vehicle_worth" class="script_do_not_translate"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
+            );
+        } else {
+            textElem.innerHTML = `<div class="script_do_not_translate" style="font-size: 12px; ">${text}</div>`;
+        }
+    }
 
     /* 倒计时弹窗 */
     function pushSystemNotifications() {
@@ -1607,17 +1824,21 @@
 
     /* 拾荒统计 */
     function addScavengeRecords() {
-        if (!window.location.href.includes("zed.city/scavenge")) {
+        if (!window.location.href.includes("zed.city/scavenge") && !window.location.href.includes("zed.city/exploring")) {
             return;
         }
-        const insertToElem = document.body.querySelector(".q-page.q-layout-padding div");
+        const insertToElem = document.body.querySelector(".q-page.q-layout-padding");
         if (!insertToElem) {
             return;
         }
-        const textElem = document.body.querySelector("#script_scavenge_records");
+        let textElem = document.body.querySelector("#script_scavenge_records");
+        if (textElem && textElem.nextSibling) {
+            textElem.remove();
+            textElem = null;
+        }
 
         const records = JSON.parse(localStorage.getItem("script_scavenge_records"));
-        let text = "【拾荒统计】<br/>";
+        let text = "<br/>【拾荒统计】";
         for (const mapKey in records) {
             text += "<br/>";
             const map = records[mapKey];
@@ -1630,7 +1851,7 @@
         if (!textElem) {
             insertToElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_scavenge_records"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
+                `<div id="script_scavenge_records" class="script_do_not_translate"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
             );
         } else {
             textElem.innerHTML = `<div class="script_do_not_translate" style="font-size: 12px; ">${text}</div>`;
@@ -1788,7 +2009,7 @@
         if (!textElem) {
             insertToElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_hunting_records"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
+                `<div id="script_hunting_records" class="script_do_not_translate"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
             );
         } else {
             textElem.innerHTML = `<div class="script_do_not_translate" style="font-size: 12px; ">${text}</div>`;
@@ -2116,7 +2337,7 @@
         "Fight Outcome": "战斗结果",
         "You are injured for": "你受伤",
         "You are injured": "你受伤了",
-        DEFEATED: "战败",
+        DEFEATED: "击败",
         VS: "VS",
         WINNER: "胜利",
     };
@@ -3258,7 +3479,7 @@
     const dictVersion = {
         //v1.0.5
         "It has been an incredible first month in Zed City! Over 1,350 of you have joined the fight, with more than 900 new survivors":
-            "在泽德城的第一个月真是不可思议！超过 1350 名玩家加入了战斗，还有 900 多名新的幸存者",
+            "在Zed City的第一个月真是不可思议！超过 1350 名玩家加入了战斗，还有 900 多名新的幸存者",
         "Together, you've forged 5,049,777 items, attempted 1,006,579 scavenges, and embarked on 57,453 hunts. We want to thank each and every one of you for your incredible support. We're committed to continuously improving and expanding the experience, and we can’t wait to share what’s coming next":
             "你们一起锻造了 5049777 件物品，尝试了 1006579 次拾荒，并开始了 57453 次狩猎。我们要感谢你们每一位的大力支持。我们致力于不断改进和扩展游戏体验，因此迫不及待地想分享接下来的内容",
         "Server Migration": "服务器迁移",
@@ -3268,7 +3489,7 @@
         "Iron Bar supply in the Junk Store has been increased due to high demand": "由于需求量大，废品店的铁锭供应量有所增加",
         "Fuel Depot trades have been reduced to": "燃料库交易已降至",
         "Store buy limit error message has been fixed": "修复了商店购买限制错误消息",
-        "Active perks won't display until some perks are active": "在一些特权处于激活状态之前，不会显示激活的特权",
+        "Active perks won't display until some perks are active": "在一些特效处于激活状态之前，不会显示激活的特效",
         "Added loading animation to crafting lists": "为合成列表添加了加载动画",
         "Scope for discord login has been reduced to only what is required": "Discord 登录的范围已缩小到仅需的范围",
 
@@ -3716,7 +3937,41 @@
     };
 
     //2.3 词典：待处理 (bot7420新增的会添加到这里，七包茶可以从这里移除整理到其它位置)
-    const dictPending = {};
+    const dictPending = {
+        // "You have been awarded 8x Whiskey for your membership this month"
+        "Rations resupply": "口粮补给",
+        "Claim Rations": "领取口粮",
+        "So she's purring over now is she? All working": "所以她现在发动起来了？一切正常",
+        "Well! Theres nothing else for it then! I always wanted to go check out the military base not too far from here, but making it on foot would be far too dangerous. How about we take that ride of yours over there and check out what glorious loot the generals quarters has for us":
+            "好吧！那就别无选择了！我一直想去看看离这儿不远的军事基地，但步行过去实在太危险了。不如我们开你的座驾过去看看将军宿舍里有什么好东西",
+        "I guess we'll have to scavenge for a long time or hunt some soldiers to find the key. Let's go":
+            "看来我们得搜寻很久或者猎杀一些士兵才能找到钥匙。走吧",
+        "Unload Items": "卸载物品",
+        "Are you sure you want to unload all your items": "你确定要卸载所有物品",
+        "There are no items to unload": "没有可卸载的物品",
+        Unload: "卸载",
+        "Unload Item": "卸载物品",
+        Travel: "旅行",
+        "You are traveling": "你正在旅行",
+        "Return To City": "返回城市",
+        "Population: NaN": "人口：NaN",
+        Population: "人口",
+        Zone: "区域",
+        "Defeat all NPCs to gain access": "击败所有NPC以获得进入权限",
+        "Fuel Pumps": "加油泵",
+        "Secure Panel": "安全面板",
+        Unlock: "解锁",
+        "Not Available": "不可用",
+        "Respawning in": "复活倒计时",
+        "Your vehicle is overweight, travel is restricted": "你的车辆超重，旅行受限",
+        Destroy: "摧毁",
+        "Destroy Item": "摧毁物品",
+        "Zone 2 is locked": "区域2已锁定",
+        "Are you sure you want to return to the city": "确定要返回城市吗",
+        "Items have been unloaded": "物品已卸载",
+        Open: "打开",
+        "Fuel Trade": "燃料交易",
+    };
 
     /* 词典结束 感谢七包茶整理 */
 
@@ -3797,6 +4052,10 @@
             return;
         }
 
+        if (node.classList?.contains("script_do_not_translate")) {
+            return;
+        }
+
         if (node.placeholder) {
             translatePlaceholder(node);
         }
@@ -3822,6 +4081,10 @@
         }
 
         if (node.parentNode.classList.contains("script_do_not_translate")) {
+            return;
+        }
+
+        if (node.parentNode.classList.contains("countdown-timer")) {
             return;
         }
 
