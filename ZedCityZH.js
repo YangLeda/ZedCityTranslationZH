@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      12.4
+// @version      12.5
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -1236,10 +1236,15 @@
         if (!logoElem) {
             insertToElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_bs_logo" style="order: 99;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px; color: green;">战力：${numberFormatter(
+                `<div id="script_bs_logo" style="order: 99; cursor: pointer;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px; color: green;">战力：${numberFormatter(
                     totalBS
                 )}</span></div>`
             );
+            insertToElem.querySelector("#script_bs_logo").addEventListener("click", () => {
+                history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_gym"));
+                history.pushState(null, null, "https://www.zed.city/stronghold/" + localStorage.getItem("script_stronghold_id_gym"));
+                history.go(-1);
+            });
         } else {
             logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px; color: green;">战力：${numberFormatter(
                 totalBS
@@ -1263,15 +1268,25 @@
             if (timeLeftSec > 0) {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_fuelTrade_logo" style="order: 2;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">油泵：${timeReadable(
+                    `<div id="script_fuelTrade_logo" style="order: 2; cursor: pointer;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">油泵：${timeReadable(
                         timeLeftSec
                     )}</span></div>`
                 );
+                insertToElem.querySelector("#script_fuelTrade_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/explore");
+                    history.pushState(null, null, "https://www.zed.city/explore");
+                    history.go(-1);
+                });
             } else {
                 insertToElem.insertAdjacentHTML(
                     "beforeend",
-                    `<div id="script_fuelTrade_logo" style="order: 2;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">油泵已冷却</span></div>`
+                    `<div id="script_fuelTrade_logo" style="order: 2; cursor: pointer;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">油泵已冷却</span></div>`
                 );
+                insertToElem.querySelector("#script_fuelTrade_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/explore");
+                    history.pushState(null, null, "https://www.zed.city/explore");
+                    history.go(-1);
+                });
             }
         } else {
             if (timeLeftSec > 0) {
@@ -1301,8 +1316,13 @@
         if (!logoElem) {
             insertToElem.insertAdjacentHTML(
                 "beforeend",
-                `<div id="script_vehicleWeight_logo" style="order: 98;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px; color: ${color};">车重：${weight}/${max_weight}</span></div>`
+                `<div id="script_vehicleWeight_logo" style="order: 98; cursor: pointer;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px; color: ${color};">车重：${weight}/${max_weight}</span></div>`
             );
+            insertToElem.querySelector("#script_vehicleWeight_logo").addEventListener("click", () => {
+                history.pushState(null, null, "https://www.zed.city/inventory");
+                history.pushState(null, null, "https://www.zed.city/inventory");
+                history.go(-1);
+            });
         } else {
             logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px; color: ${color};">车重：${weight}/${max_weight}</span>`;
         }
@@ -1345,11 +1365,11 @@
     });
 
     async function showItemWorths(element) {
-        const added = element.querySelector(".script_addedPrice");
         const itemName = getOriTextFromElement(element);
         const price = await getItemWorth(itemName);
         const text = price > 0 ? ` [$${numberFormatter(price)}]` : "";
 
+        const added = element.querySelector(".script_addedPrice");
         if (added && added.textContent !== text) {
             added.textContent = text;
         } else if (!added) {
@@ -1375,7 +1395,7 @@
 
         localStorage.setItem("script_vehicle_weight", totalWeight);
 
-        const text = "【车辆中物品总价值：" + numberFormatter(totalWorth) + "】";
+        const text = "【车辆中物品总价值：$" + numberFormatter(totalWorth) + "】";
 
         // 在页面下方显示车辆中物品总价值
         const insertToElem = document.body.querySelector(".q-page.q-layout-padding div");
@@ -1386,10 +1406,10 @@
         if (!textElem) {
             insertToElem.insertAdjacentHTML(
                 "beforeBegin",
-                `<div id="script_vehicle_worth" class="script_do_not_translate"><div class="script_do_not_translate" style="font-size: 12px; ">${text}</div></div>`
+                `<div id="script_vehicle_worth" class="script_do_not_translate"><div class="script_do_not_translate" style="font-size: 14px;">${text}</div></div>`
             );
         } else {
-            textElem.innerHTML = `<div class="script_do_not_translate" style="font-size: 12px; ">${text}</div>`;
+            textElem.innerHTML = `<div class="script_do_not_translate" style="font-size: 14px;">${text}</div>`;
         }
     }
 
@@ -1879,7 +1899,7 @@
 
             if (pendingFight.status !== 0) {
                 console.error("handleHuntingStartJob previous status !== 0");
-                console.error(pendingFight);
+                // console.error(pendingFight);
             }
             pendingFight.status = 1;
             pendingFight.mapName1 = mapName1;
@@ -3638,12 +3658,12 @@
         "Event Time (GMT): 30th October 2024 22:00:00 - 6th November": "活动时间（GMT）：2024年10月30日22:00:00 - 11月6日",
 
         //v0.3.0
-        Outposts: "前哨基地",
+        Outposts: "前哨站",
         PvP: "玩家对战",
         "Fight other players to gain control of key outposts scattered throughout Zed City. Outposts can be found in the Military Base, Demolition Site and Construction Yard. You can control up to 3 outposts, with each offering unique actions and new crafting recipes":
-            "与其他玩家战斗，争夺分布在Zed城的关键前哨基地。前哨基地可以在军事基地、拆除场和建筑工地找到。你可以控制最多3个前哨基地，每个前哨基地提供独特的行动和新的制作配方",
-        "Take over outposts and battle for dominance over the best land": "占领前哨基地，争夺最佳土地的统治权",
-        "Take position in your outpost to defend it and defeat anyone attacking": "在你的前哨基地占据位置，防守并击败任何攻击者",
+            "与其他玩家战斗，争夺分布在Zed城的关键前哨站。前哨站可以在军事基地、拆除场和建筑工地找到。你可以控制最多3个前哨站，每个前哨站提供独特的行动和新的制作配方",
+        "Take over outposts and battle for dominance over the best land": "占领前哨站，争夺最佳土地的统治权",
+        "Take position in your outpost to defend it and defeat anyone attacking": "在你的前哨站占据位置，防守并击败任何攻击者",
         "Be a contributor to war by manufacturing explosives or a defender of the peace by constructing defences":
             "通过制造炸药成为战争的贡献者，或者通过建造防御设施成为和平的捍卫者",
         "Explore Zones": "探索区域",
@@ -3938,9 +3958,10 @@
 
     //2.3 词典：待处理 (bot7420新增的会添加到这里，七包茶可以从这里移除整理到其它位置)
     const dictPending = {
-        // "You have been awarded 8x Whiskey for your membership this month"
-        "Rations resupply": "口粮补给",
-        "Claim Rations": "领取口粮",
+        // "You have been awarded 8x Whiskey for your membership this month" // 需要用正则形式翻译
+        // 前哨站悬浮用户名需要用规则排除
+        "Rations resupply": "配给补给",
+        "Claim Rations": "领取配给",
         "So she's purring over now is she? All working": "所以她现在发动起来了？一切正常",
         "Well! Theres nothing else for it then! I always wanted to go check out the military base not too far from here, but making it on foot would be far too dangerous. How about we take that ride of yours over there and check out what glorious loot the generals quarters has for us":
             "好吧！那就别无选择了！我一直想去看看离这儿不远的军事基地，但步行过去实在太危险了。不如我们开你的座驾过去看看将军宿舍里有什么好东西",
@@ -3971,6 +3992,31 @@
         "Items have been unloaded": "物品已卸载",
         Open: "打开",
         "Fuel Trade": "燃料交易",
+        "Bulk Goods Lockup": "大货仓",
+        "Scrap Pile": "废铁堆",
+        "Warm Springs": "温泉",
+        "Red River": "红河",
+        "Grand Lake": "大湖",
+        "No raids found": "未找到突袭",
+        "Secure Gate": "安全门",
+        "Undead Workman": "不死工人",
+        "Undead Supervisor": "不死主管",
+        "Weakness: Bladed": "弱点: 刀刃",
+        "Explosive Debris Cache": "炸药残骸箱",
+        Loot: "拾取",
+        Owner: "所有者",
+        Takeover: "抢占",
+        "Takeover outpost to access explosives factory": "抢占前哨站以进入炸药工厂",
+        "Takeover Outpost": "抢占前哨站",
+        "Takeover outpost to access advanced refinery": "抢占前哨站以进入高级精炼厂",
+        "Coffee Machine": "咖啡机",
+        Activate: "启动",
+        "Takeover outpost to access abandoned scrapyard": "抢占前哨站以进入废弃废料场",
+        "Processing Plant": "加工厂",
+        "Takeover outpost to access abandoned forge": "抢占前哨站以进入废弃锻造厂",
+        "Search Workshop": "搜索作坊",
+        "Vending Machine": "自动售货机",
+        "Takeover outpost to access building works": "抢占前哨站以进入建筑工程",
     };
 
     /* 词典结束 感谢七包茶整理 */
