@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      12.6
+// @version      12.7
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -34,6 +34,7 @@
 /* 锻炼细节显示 */
 /* 显示物价 */
 /* 远征图1油泵交易倒计时 */
+/* 远征图5炸药残骸开箱倒计时 */
 /* 显示车重 */
 
 //字典
@@ -940,7 +941,7 @@
         }
 
         // 拾荒统计
-        if (jobName?.startsWith("job_scavenge_") || response?.job?.layout === "room_scavenge") {
+        if (jobName?.startsWith("job_scavenge_") || response?.job?.layout === "room_scavenge" || response?.job?.layout === "scavenge") {
             const records = JSON.parse(localStorage.getItem("script_scavenge_records"));
             const mapName = response?.job?.name;
             if (!records.hasOwnProperty(mapName)) {
@@ -973,6 +974,12 @@
         if (jobName?.startsWith("job_fuel_depot_fuel_trader_1")) {
             const timestamp = Date.now() + 10800 * 1000; // 3 hours
             localStorage.setItem("script_exploration_fuelTrade_cooldown_at_ms", timestamp);
+        }
+
+        // 远征图5炸药残骸开箱倒计时
+        if (jobName?.startsWith("job_demolition_site_explosive_debris_cache")) {
+            const timestamp = Date.now() + 43200 * 1000; // 12 hours
+            localStorage.setItem("script_exploration_map5_cooldown_at_ms", timestamp);
         }
     }
 
@@ -1297,6 +1304,51 @@
         }
     }
     setInterval(updateFuelTradeDisplay, 500);
+
+    /* 远征图5炸药残骸开箱倒计时 */
+    function updateMap5Display() {
+        const insertToElem = document.body.querySelector("#script_countdowns_container_2");
+        if (!insertToElem) {
+            return;
+        }
+        const logoElem = document.body.querySelector("#script_map5_logo");
+        const cooldownTimestamp = localStorage.getItem("script_exploration_map5_cooldown_at_ms")
+            ? localStorage.getItem("script_exploration_map5_cooldown_at_ms")
+            : 0;
+        const timeLeftSec = Math.floor((cooldownTimestamp - Date.now()) / 1000);
+        if (!logoElem) {
+            if (timeLeftSec > 0) {
+                insertToElem.insertAdjacentHTML(
+                    "beforeend",
+                    `<div id="script_map5_logo" style="order: 3; cursor: pointer;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">图5：${timeReadable(
+                        timeLeftSec
+                    )}</span></div>`
+                );
+                insertToElem.querySelector("#script_map5_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/explore");
+                    history.pushState(null, null, "https://www.zed.city/explore");
+                    history.go(-1);
+                });
+            } else {
+                insertToElem.insertAdjacentHTML(
+                    "beforeend",
+                    `<div id="script_map5_logo" style="order: 3; cursor: pointer;" class="script_do_not_translate"><span class="script_do_not_translate" style="font-size: 12px;">图5已冷却</span></div>`
+                );
+                insertToElem.querySelector("#script_map5_logo").addEventListener("click", () => {
+                    history.pushState(null, null, "https://www.zed.city/explore");
+                    history.pushState(null, null, "https://www.zed.city/explore");
+                    history.go(-1);
+                });
+            }
+        } else {
+            if (timeLeftSec > 0) {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">图5：${timeReadable(timeLeftSec)}</span>`;
+            } else {
+                logoElem.innerHTML = `<span class="script_do_not_translate" style="font-size: 12px;">图5已冷却</span>`;
+            }
+        }
+    }
+    setInterval(updateMap5Display, 500);
 
     /* 显示车重 */
     function updateVehicleWeightDisplay() {
@@ -4033,7 +4085,13 @@
         "Are you sure you want to abandon this outpost": "你确定要放弃这个前哨站吗",
         "Protected Cooldown": "保护冷却时间",
         "You activated the Vending Machine and gained": "你启动了自动售货机并获得了",
-        "Owner is defending": "所有者防御中",
+        "Owner is defending": "拥有者防御中",
+        "Owner is inactive": "拥有者不活跃",
+        "Main Compound": "主基地",
+        "Secure Gatehouse": "警卫室",
+        "Vehicle Lockup": "车辆封存区",
+        "Generals Quarters": "将军宿舍",
+        Barracks: "军营",
     };
 
     /* 词典结束 感谢七包茶整理 */
