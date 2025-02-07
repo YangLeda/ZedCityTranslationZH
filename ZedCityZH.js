@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      12.7
+// @version      12.8
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -123,15 +123,15 @@
         return open_prototype.apply(this, arguments);
     };
 
-    let itemWorths = null;
-    getItemWorth("");
+    if (!localStorage.getItem("script_itemWorths")) {
+        localStorage.setItem("script_itemWorths", JSON.stringify({}));
+    }
+    getItemWorthsFromServer();
 
-    async function getItemWorth(itemName) {
-        if (!itemWorths) {
-            itemWorths = await getItemWorthsFromServer();
-        }
-        if (itemWorths.hasOwnProperty(itemName)) {
-            return Number(itemWorths[itemName].price);
+    function getItemWorth(itemName) {
+        const json = JSON.parse(localStorage.getItem("script_itemWorths"));
+        if (json && json.hasOwnProperty(itemName)) {
+            return Number(json[itemName].price);
         }
         return 0;
     }
@@ -254,6 +254,7 @@
                     }
                     const json = JSON.parse(response.response);
                     console.log(json);
+                    localStorage.setItem("script_itemWorths", JSON.stringify(json));
                     resolve(json);
                 },
                 onerror: function (error) {
@@ -977,7 +978,7 @@
         }
 
         // 远征图5炸药残骸开箱倒计时
-        if (jobName?.startsWith("job_demolition_site_explosive_debris_cache")) {
+        if (jobName?.startsWith("job_demolition_site_explosive_cache")) {
             const timestamp = Date.now() + 43200 * 1000; // 12 hours
             localStorage.setItem("script_exploration_map5_cooldown_at_ms", timestamp);
         }
@@ -1416,9 +1417,9 @@
         showItemWorths(element);
     });
 
-    async function showItemWorths(element) {
+    function showItemWorths(element) {
         const itemName = getOriTextFromElement(element);
-        const price = await getItemWorth(itemName);
+        const price = getItemWorth(itemName);
         const text = price > 0 ? ` [$${numberFormatter(price)}]` : "";
 
         const added = element.querySelector(".script_addedPrice");
@@ -1429,7 +1430,7 @@
         }
     }
 
-    async function handleLoadItems(r) {
+    function handleLoadItems(r) {
         const response = JSON.parse(r);
         if (!response?.vehicle_items) {
             return;
@@ -1438,7 +1439,7 @@
         let totalWorth = 0;
         let totalWeight = 0;
         for (const item of response.vehicle_items) {
-            const perPrice = await getItemWorth(item.name);
+            const perPrice = getItemWorth(item.name);
             const quantity = item.quantity;
             const weight = Number(item.vars.weight);
             totalWorth += perPrice * quantity;
