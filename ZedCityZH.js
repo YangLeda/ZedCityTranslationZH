@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      12.9
+// @version      13.0
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @match        https://www.zed.city/*
@@ -87,6 +87,9 @@
 
 (() => {
     /* ZedTools START */
+
+    const userLanguage = navigator.language || navigator.userLanguage;
+    const isZH = userLanguage.startsWith("zh");
 
     // XMLHttpRequest hook
     const open_prototype = XMLHttpRequest.prototype.open;
@@ -238,8 +241,11 @@
     }
 
     function getItemWorthsFromServer() {
-        const textArea = document.getElementById("script_textArea");
-        console.log("开始尝试从服务器获取物价表");
+        if (localStorage.getItem("script_itemWorths_timestamp") && Date.now() - localStorage.getItem("script_itemWorths_timestamp") < 36000000) {
+            // 10 hours
+            return;
+        }
+        console.log("开始从服务器获取物价表");
         return new Promise((resolve, reject) => {
             GM_xmlhttpRequest({
                 method: "GET",
@@ -253,8 +259,10 @@
                         resolve("网络错误onload");
                     }
                     const json = JSON.parse(response.response);
+                    console.log("已从服务器获取物价表");
                     console.log(json);
                     localStorage.setItem("script_itemWorths", JSON.stringify(json));
+                    localStorage.setItem("script_itemWorths_timestamp", Date.now());
                     resolve(json);
                 },
                 onerror: function (error) {
@@ -1575,10 +1583,9 @@
             document.querySelectorAll(".q-item").forEach((item) => {
                 let label = item.querySelector(".q-item__label");
                 let buySpan = item.querySelector("span.block");
-                if (label && buySpan && getOriTextFromElement(label) === "Nails" && getOriTextFromElement(buySpan) === "Buy") {
+                if (label && buySpan && getOriTextFromElement(label).startsWith("Nails") && getOriTextFromElement(buySpan) === "Buy") {
                     item.style.display = "none";
-                }
-                if (label && buySpan && getOriTextFromElement(buySpan) === "Sell" && getOriTextFromElement(label) !== "Nails") {
+                } else if (label && buySpan && getOriTextFromElement(buySpan) === "Sell" && !getOriTextFromElement(label).startsWith("Nails")) {
                     item.style.display = "none";
                 }
             });
@@ -1605,10 +1612,9 @@
             label.style.fontSize = "20px";
             const savedState = localStorage.getItem("script_translate") === "enabled";
             checkbox.checked = savedState;
-            label.textContent = savedState ? "汉化已开启" : "汉化已关闭";
+            label.textContent = savedState ? "启用汉化 Enable Chinese translation" : "启用汉化 Enable Chinese translation";
             checkbox.addEventListener("change", () => {
                 const isChecked = checkbox.checked;
-                label.textContent = isChecked ? "汉化已开启" : "汉化已关闭";
                 localStorage.setItem("script_translate", isChecked ? "enabled" : "disabled");
                 location.reload();
             });
@@ -1629,10 +1635,10 @@
             label.style.fontSize = "20px";
             const savedState = localStorage.getItem("script_settings_notifications") === "enabled";
             checkbox.checked = savedState;
-            label.textContent = savedState ? "弹窗通知已开启" : "弹窗通知已关闭";
+            const isTranslation = localStorage.getItem("script_translate") === "enabled";
+            label.textContent = isTranslation ? "启用通知弹窗" : "Enable system notification popups";
             checkbox.addEventListener("change", () => {
                 const isChecked = checkbox.checked;
-                label.textContent = isChecked ? "弹窗通知已开启" : "弹窗通知已关闭";
                 localStorage.setItem("script_settings_notifications", isChecked ? "enabled" : "disabled");
             });
             container.appendChild(checkbox);
@@ -1652,10 +1658,10 @@
             label.style.fontSize = "20px";
             const savedState = localStorage.getItem("script_settings_junk") === "enabled";
             checkbox.checked = savedState;
-            label.textContent = savedState ? "废品场屏蔽垃圾物品购买" : "废品场屏蔽垃圾物品购买";
+            const isTranslation = localStorage.getItem("script_translate") === "enabled";
+            label.textContent = isTranslation ? "废品商店屏蔽不常用物品买卖" : "Hide uncommon item trades in Junk Store";
             checkbox.addEventListener("change", () => {
                 const isChecked = checkbox.checked;
-                label.textContent = isChecked ? "废品场屏蔽垃圾物品购买" : "废品场屏蔽垃圾物品购买";
                 localStorage.setItem("script_settings_junk", isChecked ? "enabled" : "disabled");
             });
             container.appendChild(checkbox);
@@ -1675,9 +1681,10 @@
             label.style.fontSize = "20px";
             const savedState = localStorage.getItem("script_estimate_levelup_time_switch") === "enabled";
             checkbox.checked = savedState;
-            label.textContent = savedState
-                ? "状态栏显示预计下次人物升级时间（按每小时获取12*5+12=72XP计算）"
-                : "状态栏显示预计下次人物升级时间（按每小时获取12*5+12=72XP计算）";
+            const isTranslation = localStorage.getItem("script_translate") === "enabled";
+            label.textContent = isTranslation
+                ? "状态栏显示预计下次人物升级时间（每小时72XP）"
+                : "Show estimated player upgrade time in status bar (72XP per hour)";
             checkbox.addEventListener("change", () => {
                 const isChecked = checkbox.checked;
                 localStorage.setItem("script_estimate_levelup_time_switch", isChecked ? "enabled" : "disabled");
@@ -4125,7 +4132,7 @@
     // document.querySelector("title").textContent
 
     if (!localStorage.getItem("script_translate")) {
-        localStorage.setItem("script_translate", "enabled");
+        localStorage.setItem("script_translate", isZH ? "enabled" : "disabled");
     }
     if (!localStorage.getItem("script_settings_notifications")) {
         localStorage.setItem("script_settings_notifications", "enabled");
