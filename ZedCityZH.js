@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      13.0
+// @version      13.1
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
+// @license      CC-BY-NC-SA-4.0
 // @match        https://www.zed.city/*
 // @match        https://wiki.zed.city/*
 // @icon         https://www.zed.city/icons/favicon.svg
