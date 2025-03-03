@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      13.1
+// @version      13.2
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @license      CC-BY-NC-SA-4.0
@@ -71,7 +71,7 @@
 //----1.4-9 雜項
 //----1.4-10 獎盃
 //1.5 技能狀態
-//1.6 書
+//1.6 遠征
 //1.7 貨幣
 //1.8 怪物
 //1.9 任務
@@ -3029,8 +3029,85 @@
         "Luck Perk": "幸运特技",
     };
 
-    //1.6 書
-    const dictItemBook = {};
+    //1.6 遠征
+    const dictExplore = {
+        "Rations resupply": "配给补给",
+        "Claim Rations": "领取配给",
+        "So she's purring over now is she? All working": "所以她现在发动起来了？一切正常",
+        "Well! Theres nothing else for it then! I always wanted to go check out the military base not too far from here, but making it on foot would be far too dangerous. How about we take that ride of yours over there and check out what glorious loot the generals quarters has for us":
+            "好吧！那就别无选择了！我一直想去看看离这儿不远的军事基地，但步行过去实在太危险了。不如我们开你的座驾过去看看将军宿舍里有什么好东西",
+        "I guess we'll have to scavenge for a long time or hunt some soldiers to find the key. Let's go":
+            "看来我们得搜寻很久或者猎杀一些士兵才能找到钥匙。走吧",
+        "Unload Items": "卸载物品",
+        "Are you sure you want to unload all your items": "你确定要卸载所有物品",
+        "There are no items to unload": "没有可卸载的物品",
+        Unload: "卸载",
+        "Unload Item": "卸载物品",
+        Travel: "旅行",
+        "You are traveling": "你正在旅行",
+        "Return To City": "返回城市",
+        "Population: NaN": "人口：NaN",
+        Population: "人口",
+        Zone: "区域",
+        "Defeat all NPCs to gain access": "击败所有NPC以获得进入权限",
+        "Fuel Pumps": "加油泵",
+        "Secure Panel": "安全面板",
+        Unlock: "解锁",
+        "Not Available": "不可用",
+        "Respawning in": "复活倒计时",
+        "Your vehicle is overweight, travel is restricted": "你的车辆超重，旅行受限",
+        Destroy: "摧毁",
+        "Destroy Item": "摧毁物品",
+        "Zone 2 is locked": "区域2已锁定",
+        "Are you sure you want to return to the city": "确定要返回城市吗",
+        "Items have been unloaded": "物品已卸载",
+        Open: "打开",
+        "Fuel Trade": "燃料交易",
+        "Bulk Goods Lockup": "大货仓",
+        "Scrap Pile": "废铁堆",
+        "Warm Springs": "温泉",
+        "Red River": "红河",
+        "Grand Lake": "大湖",
+        "No raids found": "未找到突袭",
+        "Secure Gate": "安全门",
+        "Undead Workman": "不死工人",
+        "Undead Supervisor": "不死主管",
+        "Weakness: Bladed": "弱点: 刀刃",
+        "Explosive Debris Cache": "炸药残骸箱",
+        Loot: "拾取",
+        Owner: "所有者",
+        Takeover: "抢占",
+        "Takeover outpost to access explosives factory": "抢占前哨站以进入炸药工厂",
+        "Takeover Outpost": "抢占前哨站",
+        "Takeover outpost to access advanced refinery": "抢占前哨站以进入高级精炼厂",
+        "Coffee Machine": "咖啡机",
+        Activate: "启动",
+        "Takeover outpost to access abandoned scrapyard": "抢占前哨站以进入废弃废料场",
+        "Processing Plant": "加工厂",
+        "Takeover outpost to access abandoned forge": "抢占前哨站以进入废弃锻造厂",
+        "Search Workshop": "搜索作坊",
+        "Vending Machine": "自动售货机",
+        "Takeover outpost to access building works": "抢占前哨站以进入建筑工程",
+        "Foundation Pit": "地基坑",
+        "Secure Lockup Door": "安全门",
+        "Security Vault": "保险库",
+        Lockbox: "保险箱",
+        Abandoned: "废弃的",
+        "You do not have any Explosives": "你没有任何炸药",
+        "You tookover the outpost": "你占领了前哨站",
+        Abandon: "放弃",
+        "Abandon Outpost": "放弃前哨站",
+        "Are you sure you want to abandon this outpost": "你确定要放弃这个前哨站吗",
+        "Protected Cooldown": "保护冷却时间",
+        "You activated the Vending Machine and gained": "你启动了自动售货机并获得了",
+        "Owner is defending": "拥有者防御中",
+        "Owner is inactive": "拥有者不活跃",
+        "Main Compound": "主基地",
+        "Secure Gatehouse": "警卫室",
+        "Vehicle Lockup": "车辆封存区",
+        "Generals Quarters": "将军宿舍",
+        Barracks: "军营",
+    };
 
     //1.7 貨幣
     const dictItemCurrencies = {
@@ -4020,82 +4097,6 @@
     const dictPending = {
         // "You have been awarded 8x Whiskey for your membership this month" // 需要用正则形式翻译
         // 前哨站悬浮用户名需要用规则排除
-        "Rations resupply": "配给补给",
-        "Claim Rations": "领取配给",
-        "So she's purring over now is she? All working": "所以她现在发动起来了？一切正常",
-        "Well! Theres nothing else for it then! I always wanted to go check out the military base not too far from here, but making it on foot would be far too dangerous. How about we take that ride of yours over there and check out what glorious loot the generals quarters has for us":
-            "好吧！那就别无选择了！我一直想去看看离这儿不远的军事基地，但步行过去实在太危险了。不如我们开你的座驾过去看看将军宿舍里有什么好东西",
-        "I guess we'll have to scavenge for a long time or hunt some soldiers to find the key. Let's go":
-            "看来我们得搜寻很久或者猎杀一些士兵才能找到钥匙。走吧",
-        "Unload Items": "卸载物品",
-        "Are you sure you want to unload all your items": "你确定要卸载所有物品",
-        "There are no items to unload": "没有可卸载的物品",
-        Unload: "卸载",
-        "Unload Item": "卸载物品",
-        Travel: "旅行",
-        "You are traveling": "你正在旅行",
-        "Return To City": "返回城市",
-        "Population: NaN": "人口：NaN",
-        Population: "人口",
-        Zone: "区域",
-        "Defeat all NPCs to gain access": "击败所有NPC以获得进入权限",
-        "Fuel Pumps": "加油泵",
-        "Secure Panel": "安全面板",
-        Unlock: "解锁",
-        "Not Available": "不可用",
-        "Respawning in": "复活倒计时",
-        "Your vehicle is overweight, travel is restricted": "你的车辆超重，旅行受限",
-        Destroy: "摧毁",
-        "Destroy Item": "摧毁物品",
-        "Zone 2 is locked": "区域2已锁定",
-        "Are you sure you want to return to the city": "确定要返回城市吗",
-        "Items have been unloaded": "物品已卸载",
-        Open: "打开",
-        "Fuel Trade": "燃料交易",
-        "Bulk Goods Lockup": "大货仓",
-        "Scrap Pile": "废铁堆",
-        "Warm Springs": "温泉",
-        "Red River": "红河",
-        "Grand Lake": "大湖",
-        "No raids found": "未找到突袭",
-        "Secure Gate": "安全门",
-        "Undead Workman": "不死工人",
-        "Undead Supervisor": "不死主管",
-        "Weakness: Bladed": "弱点: 刀刃",
-        "Explosive Debris Cache": "炸药残骸箱",
-        Loot: "拾取",
-        Owner: "所有者",
-        Takeover: "抢占",
-        "Takeover outpost to access explosives factory": "抢占前哨站以进入炸药工厂",
-        "Takeover Outpost": "抢占前哨站",
-        "Takeover outpost to access advanced refinery": "抢占前哨站以进入高级精炼厂",
-        "Coffee Machine": "咖啡机",
-        Activate: "启动",
-        "Takeover outpost to access abandoned scrapyard": "抢占前哨站以进入废弃废料场",
-        "Processing Plant": "加工厂",
-        "Takeover outpost to access abandoned forge": "抢占前哨站以进入废弃锻造厂",
-        "Search Workshop": "搜索作坊",
-        "Vending Machine": "自动售货机",
-        "Takeover outpost to access building works": "抢占前哨站以进入建筑工程",
-        "Foundation Pit": "地基坑",
-        "Secure Lockup Door": "安全门",
-        "Security Vault": "保险库",
-        Lockbox: "保险箱",
-        Abandoned: "废弃的",
-        "You do not have any Explosives": "你没有任何炸药",
-        "You tookover the outpost": "你占领了前哨站",
-        Abandon: "放弃",
-        "Abandon Outpost": "放弃前哨站",
-        "Are you sure you want to abandon this outpost": "你确定要放弃这个前哨站吗",
-        "Protected Cooldown": "保护冷却时间",
-        "You activated the Vending Machine and gained": "你启动了自动售货机并获得了",
-        "Owner is defending": "拥有者防御中",
-        "Owner is inactive": "拥有者不活跃",
-        "Main Compound": "主基地",
-        "Secure Gatehouse": "警卫室",
-        "Vehicle Lockup": "车辆封存区",
-        "Generals Quarters": "将军宿舍",
-        Barracks: "军营",
     };
 
     /* 词典结束 感谢七包茶整理 */
@@ -4105,7 +4106,7 @@
         ...dictMission,
         ...dictFaction,
         ...dictSkill,
-        ...dictItemBook,
+        ...dictExplore,
         ...dictItemCurrencies,
         ...dictMonster,
         ...dictOther,
