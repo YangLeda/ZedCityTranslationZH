@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      13.2
+// @version      13.3
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @license      CC-BY-NC-SA-4.0
@@ -581,7 +581,10 @@
 
         // Total BS
         const totalBS =
-            Number(response.skills.strength) + Number(response.skills.speed) + Number(response.skills.defense) + Number(response.skills.agility);
+            Number(response.base_stats.strength) +
+            Number(response.base_stats.speed) +
+            Number(response.base_stats.defense) +
+            Number(response.base_stats.agility);
         localStorage.setItem("script_totalBS", totalBS);
 
         // Raid
@@ -605,8 +608,8 @@
         const currentEnergy = response.energy;
         const currentRad = response.rad;
         const energyRegenIntervalMinute = response.membership ? 10 : 15;
-        const maxEnergy = response.skills.max_energy + (response.membership ? 50 : 0);
-        const maxRad = response.skills.max_rad;
+        const maxEnergy = response.stats.max_energy + (response.membership ? 50 : 0);
+        const maxRad = response.stats.max_rad;
         const energyRegen = response.energy_regen ? response.energy_regen : 0;
         const radRegen = response.rad_regen ? response.rad_regen : 0;
 
@@ -1006,7 +1009,7 @@
         const gain = response?.outcome?.rewards?.gain;
         const stat = response?.outcome?.rewards?.skill;
         const energy = response?.outcome?.iterations * 5;
-        const statBefore = Number(getStats.skills[stat]);
+        const statBefore = Number(getStats.base_stats[stat]);
         const moralBefore = Number(getStats.morale);
         let moralAfter = 0;
         for (const item of response?.reactive_items_qty) {
