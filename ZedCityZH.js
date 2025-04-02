@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Zed汉化 & ZedTools
 // @namespace    http://tampermonkey.net/
-// @version      13.4
+// @version      13.5
 // @description  网页游戏Zed City的汉化和工具插件。Chinese translation and tools for the web game Zed City.
 // @author       bot7420
 // @license      CC-BY-NC-SA-4.0
@@ -42,6 +42,7 @@
 //1.1 通用頁面
 //----------------/ 登入首頁
 //----------------/ 個人
+//----------------/ 戰鬥日誌
 //----------------/ 會員
 //----------------/ 城市
 //----------------/ 市場狀態(購買,上架)
@@ -49,6 +50,7 @@
 //----------------/ 戰鬥狀態
 //1.2 幫派
 //----------------/ 權限
+//----------------/ 傳承跟日誌(待補充)
 //1.3 地點
 //1.4 庫存
 //----1.4-1 武器
@@ -81,10 +83,11 @@
 //----------------/ Buddy
 //----------------/ Meat
 //----------------/ Gray
-//2.0 幫助說明
-//2.1 其他 (尚未整理的翻譯)
-//2.2 版本更新
-//2.3 词典：待处理
+//2.0 規則
+//2.1 論壇
+//3.0 其他 (尚未整理的翻譯)
+//3.1 版本更新
+//3.2 詞典：待處理
 
 (() => {
     /* ZedTools START */
@@ -2278,6 +2281,13 @@
         "New Password": "新密码",
         "Repeat Password": "重复密码",
 
+        //----------------/ 戰鬥日誌
+        "Opponent": "对手",
+        "Outcome": "结果",
+        "DATE": "日期",
+        "ACTION": "行动",
+
+
         //----------------/ 會員
         GBP: "英镑",
         "Membership Perks": "会员特权",
@@ -2287,7 +2297,7 @@
         "Months Free": "免费月份",
         "Zed Pack": "丧尸包",
         "Donator Pack": "捐赠者礼包",
-        "Effect: Contains 31 days membership, 75 Zed Coin and a random loot drop": "效果：包含31天会员资格、75点数和一个随机掉落物",
+        "Effect: Contains 31 days membership, 75 Zed Coin and a random loot drop": "效果：包含31天会员资格、75丧尸币和一个随机掉落物",
         Discount: "折扣",
         USD: "美元",
         EUR: "欧元",
@@ -2560,6 +2570,29 @@
         "Faction Profile": "帮派资料",
 
         Gameplay: "游戏玩法",
+
+    //----------------/ 傳承跟日誌(待補充)
+        "Active Effects": "当前效果",
+        Legacy: "传承",
+        Survivalists: "生存者",
+        Influence: "影响力",
+        "Active a day ago": "一天前活跃",
+        "Faction Legacy": "派系传承",
+        Requirements: "要求",
+        Hunters: "猎人",
+        "Hunting Energy Cost": "狩猎能量消耗",
+        "Switch Legacy": "切换传承",
+        Industrialists: "工业家",
+        "Worker Efficiency": "工人效率",
+        Active: "活跃",
+        Warlords: "军阀",
+        Traders: "商人",
+        "Market Tax": "市场税率",
+        Filter: "筛选",
+        "Select faction member": "选择派系成员",
+        "Filter activity type": "筛选活动类型",
+
+
     };
 
     //1.3 地點
@@ -3062,6 +3095,7 @@
         Destroy: "摧毁",
         "Destroy Item": "摧毁物品",
         "Zone 2 is locked": "区域2已锁定",
+        "Zone 3 is locked": "区域3已锁定",
         "Are you sure you want to return to the city": "确定要返回城市吗",
         "Items have been unloaded": "物品已卸载",
         Open: "打开",
@@ -3110,6 +3144,8 @@
         "Vehicle Lockup": "车辆封存区",
         "Generals Quarters": "将军宿舍",
         Barracks: "军营",
+        "Travel to Construction Yard to access advanced refinery": "前往施工场可访问高级精炼厂",
+        "Travel to Construction Yard to access abandoned scrapyard": "前往施工场可访问废弃废料场",
     };
 
     //1.7 貨幣
@@ -3131,6 +3167,10 @@
         Spitter: "喷吐者",
         "Frenzied Spitter": "狂暴喷吐者",
         "Weakness: Piercing": "弱点：穿刺",
+        "Undead Workman": "不死工人",
+        "Undead Supervisor": "不死主管",
+        "Weakness: Bladed": "弱点: 刀刃",
+
     };
 
     //1.9 任務
@@ -3527,8 +3567,33 @@
         "Objective: Procure a large number of vials and ash for Gray": "目标：为Gray获取大量瓶子和灰烬",
     };
 
-    //2.0 幫助說明
-    const dictSupport = {
+    //2.0 規則
+    const dictRules = {
+        "Real-World Transactions: ACCOUNT TERMINATION": "现实交易：账号封禁",
+        "Exchanging in-game currency or assets for real money or external services, including items from other games, is strictly forbidden. Any accounts involved in such transactions will be permanently banned from the game":
+            "严禁将游戏内货币或资产兑换为真实货币或外部服务，包括来自其他游戏的物品。任何涉及此类交易的账号将被永久封禁",
+        "Account Buying & Selling: ACCOUNT TERMINATION": "账号买卖：账号封禁",
+        "Ownership of an account is non-transferable. Any accounts that are bought, sold, or traded will be permanently banned from the game":
+            "账号所有权不可转让。任何被买卖或交易的账号都将被永久封禁",
+        "Bug Abuse: ACCOUNT TERMINATION": "利用漏洞：账号封禁",
+        "Even though we do our best to ensure that the game is free of bugs, they can still occur. If you find a bug, please report it to us immediately. Any players who continue to exploit a bug will be permanently banned from the game":
+            "尽管我们尽力确保游戏没有漏洞，但漏洞仍可能存在。如果你发现漏洞，请立即报告。任何继续利用漏洞的玩家将被永久封禁",
+        "Multiple Accounts: Game Ban": "多账号：游戏封禁",
+        "You must not create more than one account! Using more than one account can give you an unfair advantage over other players and is strictly forbidden. Any players found to be using multiple accounts will be banned from the game":
+            "不得创建多个账号！使用多个账号会给你带来不公平的优势，这是严格禁止的。任何发现使用多个账号的玩家将被封禁",
+        "Account Sharing: Game Ban": "账号共享：游戏封禁",
+        "You must not share your account with anyone else. Sharing your account can lead to your account being compromised, and you will be held responsible for any actions taken on your account. Any players found to be sharing their account will be banned from the game":
+            "不得与他人共享账号。共享账号可能会导致账号被盗，并且你需对账号上的所有行为负责。任何发现共享账号的玩家将被封禁",
+        "Automated Bots / Scripts: Game Ban": "自动化脚本/机器人：游戏封禁",
+        "You must not use any automated bots or scripts to play the game, this includes any software, browser extensions, or hardware that automates gameplay. Any players found to be using automated bots or scripts will be banned from the game":
+            "不得使用任何自动化脚本或机器人进行游戏，包括任何软件、浏览器扩展或硬件设备。任何发现使用自动化脚本的玩家将被封禁",
+
+
+
+    };
+
+    //2.1 論壇
+    const dictForum = {
         Guide: "指南",
         FAQ: "常见问题",
         Forum: "论坛",
@@ -3591,9 +3656,13 @@
         "Add Reply": "添加回复",
         Post: "发布",
         "an hour ago": "1小时前",
+
+        "Faction recruitment and information": "派系招募与信息",
+        "days ago": "天前",
+
     };
 
-    //2.1 其他 (尚未整理的翻譯)
+    //3.0 其他 (尚未整理的翻譯)
     const dictOther = {
         "A bag of Cement mix": "一袋水泥混合料",
 
@@ -3635,8 +3704,50 @@
         "Active an hour ago": "1小时前在线",
     };
 
-    //2.2 版本更新
+    //3.1 版本更新
     const dictVersion = {
+        Rules: "规则",
+
+        //v1.0.7
+        "Bandages and other medical items have been reduced in weight, both Med Kits have been made more effective":
+            "绷带和其他医疗物品的重量已减少，两个医疗包的效果已提升",
+        "A bug with faction max members since the last release has been fixed": "上次更新以来派系最大成员数的错误已修复",
+        "Armour items will now show the % boost they give": "护甲物品现在会显示其提供的百分比加成",
+        "Fixed bug with speed perk not applying correctly": "修复了速度加成未正确应用的错误",
+
+        //v1.0.6
+        "Bandages and other medical items have been reduced in weight, both Med Kits have been made more effective":
+            "绷带和其他医疗物品的重量已减少，两个医疗包的效果已提升",
+        "A bug with faction max members since the last release has been fixed": "上次更新以来派系最大成员数的错误已修复",
+        "Armour items will now show the % boost they give": "护甲物品现在会显示其提供的百分比加成",
+        "Fixed bug with speed perk not applying correctly": "修复了速度加成未正确应用的错误",
+        "Choose between 5 unique faction legacies, each legacy will give unique perks to enhance gameplay for all faction members":
+            "可在五种独特的派系传承中选择，每种传承都能为所有派系成员提供独特加成，增强游戏体验",
+        "Filters have been added to faction activity to give a more detailed overview of member actions":
+            "派系活动已添加筛选器，以提供更详细的成员行动概览",
+        "A new stat has been added for worker efficiency, efficiency boosts will be reduced if faction members become inactive":
+            "新增了工人效率属性，如果派系成员变得不活跃，效率加成将会减少",
+        "Gym Stats": "健身房数据",
+        "You can now view a breakdown of your stats and effects in the gym for each stat": "你现在可以在健身房查看每项属性的详细数据和效果",
+        Balancing: "平衡调整",
+        "Vending Machines & Coffee Machines will now cost 2 Zed Coin to operate": "自动售货机和咖啡机现在需要 2 枚丧尸币才能运行",
+        "Armour items have been adjusted to give a % boost to your defense, which will make them more useful in combat":
+            "护甲物品已调整为提供防御百分比加成，使其在战斗中更有用",
+        "Fight Logs": "战斗日志",
+        "You can now access your fight logs by clicking on your avatar in the top right": "你现在可以通过点击右上角的头像来访问你的战斗日志",
+        "Skill Points Reset": "技能点重置",
+        "This has now been fixed, if you previously reset your skill points then your skills will have been reset again and your skill points will be correct":
+            "此问题已修复，如果你之前重置了技能点，则你的技能将再次被重置，并且技能点数将恢复正确",
+        "City -> Survivors will now order by online and a total online count has been added":
+            "城市 -> 幸存者列表现在按在线状态排序，并新增了在线总数显示",
+        "Added new forum section for faction discussions & recruitment": "新增了一个用于派系讨论和招募的论坛版块",
+        "Fixed visual bug when unequipping weapons / armour": "修复了卸下武器/护甲时的视觉错误",
+        "A bug causing morale to reset, if you upgraded your skill while over the limit has been fixed":
+            "修复了在超过上限时升级技能会导致士气重置的错误",
+        "Visual fixes have been made for iPhone & other mac devices": "针对 iPhone 和其他 Mac 设备进行了视觉修复",
+        "Zed City time will now show correctly in the left menu when exploring": "在探索时，左侧菜单现在会正确显示 Zed City 时间",
+        "Issues with some items not having a default weight has been fixed": "修复了一些物品没有默认重量的问题",
+
         //v1.0.5
         "It has been an incredible first month in Zed City! Over 1,350 of you have joined the fight, with more than 900 new survivors":
             "在Zed City的第一个月真是不可思议！超过 1350 名玩家加入了战斗，还有 900 多名新的幸存者",
@@ -4096,84 +4207,12 @@
         "Added report a bug to sub menu": "在子菜单中添加了报告bug功能。",
     };
 
-    //2.3 词典：待处理 (bot7420新增的会添加到这里，七包茶可以从这里移除整理到其它位置)
+    //3.2 詞典：待處理 (bot7420新增的会添加到这里，七包茶可以从这里移除整理到其它位置)
     const dictPending = {
         // "You have been awarded 8x Whiskey for your membership this month" // 需要用正则形式翻译
         // 前哨站悬浮用户名需要用规则排除
 
-        Rules: "规则",
-        "Bandages and other medical items have been reduced in weight, both Med Kits have been made more effective":
-            "绷带和其他医疗物品的重量已减少，两个医疗包的效果已提升",
-        "A bug with faction max members since the last release has been fixed": "上次更新以来派系最大成员数的错误已修复",
-        "Armour items will now show the % boost they give": "护甲物品现在会显示其提供的百分比加成",
-        "Fixed bug with speed perk not applying correctly": "修复了速度加成未正确应用的错误",
-        "Choose between 5 unique faction legacies, each legacy will give unique perks to enhance gameplay for all faction members":
-            "可在五种独特的派系传承中选择，每种传承都能为所有派系成员提供独特加成，增强游戏体验",
-        "Filters have been added to faction activity to give a more detailed overview of member actions":
-            "派系活动已添加筛选器，以提供更详细的成员行动概览",
-        "A new stat has been added for worker efficiency, efficiency boosts will be reduced if faction members become inactive":
-            "新增了工人效率属性，如果派系成员变得不活跃，效率加成将会减少",
-        "Gym Stats": "健身房数据",
-        "You can now view a breakdown of your stats and effects in the gym for each stat": "你现在可以在健身房查看每项属性的详细数据和效果",
-        Balancing: "平衡调整",
-        "Vending Machines & Coffee Machines will now cost 2 Zed Coin to operate": "自动售货机和咖啡机现在需要 2 枚 Zed Coin 才能运行",
-        "Armour items have been adjusted to give a % boost to your defense, which will make them more useful in combat":
-            "护甲物品已调整为提供防御百分比加成，使其在战斗中更有用",
-        "Fight Logs": "战斗日志",
-        "You can now access your fight logs by clicking on your avatar in the top right": "你现在可以通过点击右上角的头像来访问你的战斗日志",
-        "Skill Points Reset": "技能点重置",
-        "This has now been fixed, if you previously reset your skill points then your skills will have been reset again and your skill points will be correct":
-            "此问题已修复，如果你之前重置了技能点，则你的技能将再次被重置，并且技能点数将恢复正确",
-        "City -> Survivors will now order by online and a total online count has been added":
-            "城市 -> 幸存者列表现在按在线状态排序，并新增了在线总数显示",
-        "Added new forum section for faction discussions & recruitment": "新增了一个用于派系讨论和招募的论坛版块",
-        "Fixed visual bug when unequipping weapons / armour": "修复了卸下武器/护甲时的视觉错误",
-        "A bug causing morale to reset, if you upgraded your skill while over the limit has been fixed":
-            "修复了在超过上限时升级技能会导致士气重置的错误",
-        "Visual fixes have been made for iPhone & other mac devices": "针对 iPhone 和其他 Mac 设备进行了视觉修复",
-        "Zed City time will now show correctly in the left menu when exploring": "在探索时，左侧菜单现在会正确显示 Zed City 时间",
-        "Issues with some items not having a default weight has been fixed": "修复了一些物品没有默认重量的问题",
-        "Faction recruitment and information": "派系招募与信息",
-        "days ago": "天前",
-        "Real-World Transactions: ACCOUNT TERMINATION": "现实交易：账号封禁",
-        "Exchanging in-game currency or assets for real money or external services, including items from other games, is strictly forbidden. Any accounts involved in such transactions will be permanently banned from the game":
-            "严禁将游戏内货币或资产兑换为真实货币或外部服务，包括来自其他游戏的物品。任何涉及此类交易的账号将被永久封禁",
-        "Account Buying & Selling: ACCOUNT TERMINATION": "账号买卖：账号封禁",
-        "Ownership of an account is non-transferable. Any accounts that are bought, sold, or traded will be permanently banned from the game":
-            "账号所有权不可转让。任何被买卖或交易的账号都将被永久封禁",
-        "Bug Abuse: ACCOUNT TERMINATION": "利用漏洞：账号封禁",
-        "Even though we do our best to ensure that the game is free of bugs, they can still occur. If you find a bug, please report it to us immediately. Any players who continue to exploit a bug will be permanently banned from the game":
-            "尽管我们尽力确保游戏没有漏洞，但漏洞仍可能存在。如果你发现漏洞，请立即报告。任何继续利用漏洞的玩家将被永久封禁",
-        "Multiple Accounts: Game Ban": "多账号：游戏封禁",
-        "You must not create more than one account! Using more than one account can give you an unfair advantage over other players and is strictly forbidden. Any players found to be using multiple accounts will be banned from the game":
-            "不得创建多个账号！使用多个账号会给你带来不公平的优势，这是严格禁止的。任何发现使用多个账号的玩家将被封禁",
-        "Account Sharing: Game Ban": "账号共享：游戏封禁",
-        "You must not share your account with anyone else. Sharing your account can lead to your account being compromised, and you will be held responsible for any actions taken on your account. Any players found to be sharing their account will be banned from the game":
-            "不得与他人共享账号。共享账号可能会导致账号被盗，并且你需对账号上的所有行为负责。任何发现共享账号的玩家将被封禁",
-        "Automated Bots / Scripts: Game Ban": "自动化脚本/机器人：游戏封禁",
-        "You must not use any automated bots or scripts to play the game, this includes any software, browser extensions, or hardware that automates gameplay. Any players found to be using automated bots or scripts will be banned from the game":
-            "不得使用任何自动化脚本或机器人进行游戏，包括任何软件、浏览器扩展或硬件设备。任何发现使用自动化脚本的玩家将被封禁",
-        "Active Effects": "当前效果",
-        "Travel to Construction Yard to access advanced refinery": "前往施工场可访问高级精炼厂",
-        "Travel to Construction Yard to access abandoned scrapyard": "前往施工场可访问废弃废料场",
-        Legacy: "传承",
-        Survivalists: "生存者",
-        Influence: "影响力",
-        "Active a day ago": "一天前活跃",
-        "Faction Legacy": "派系传承",
-        Requirements: "要求",
-        Hunters: "猎人",
-        "Hunting Energy Cost": "狩猎能量消耗",
-        "Switch Legacy": "切换传承",
-        Industrialists: "工业家",
-        "Worker Efficiency": "工人效率",
-        Active: "活跃",
-        Warlords: "军阀",
-        Traders: "商人",
-        "Market Tax": "市场税率",
-        Filter: "筛选",
-        "Select faction member": "选择派系成员",
-        "Filter activity type": "筛选活动类型",
+
     };
 
     /* 词典结束 感谢七包茶整理 */
@@ -4197,10 +4236,11 @@
         ...dictItemEquipment,
         ...dictItemOther,
         ...dictItemTrophy,
+        ...dictRules,
         ...dictVehicle,
         ...dictVersion,
         ...dictPending,
-        ...dictSupport,
+        ...dictForum,
     };
     const dictAllLowerCase = {};
     for (const key in dictAll) {
